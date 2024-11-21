@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'BoldBold';
+    src: url('/bold_bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SequelSans';
+    src: url('/sequel_sans.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+  

@@ -28,80 +28,104 @@
     <link rel="stylesheet" href="./src/styles.css">
 </head>
     
-<body class="text-lightBlack flex flex-col justify-between align-top p-4 h-svh overflow-x-hidden">
+<body class="text-lightBlack flex flex-col justify-between align-top p-4 h-auto overflow-x-hidden items-center">
     <background class="fixed w-full h-full overflow-hidden -z-10 -m-4 opacity-10 sm:opacity-15">
         <img src="./img/WCMW_logo_12.svg" alt="WCMW Background dancing guy" class="w-full h-full object-contain">
     </background>
 
-    <header class="flex flex-row flex-wrap justify-between align-top max-h-48">
-        <img src="./img/WCMW_16.svg" alt="WCMW Logo" class="w-1/5 max-h-32">
-        <img src="./img/WCMW_5.svg" alt="When Coffee Meets Whisky" class="w-3/5 max-h-10 md:w-2/5">
-    </header>
+    <section class="flex flex-col justify-between h-screen w-full max-w-[2560px] lg:px-16">
+        
+      <top class="flex flex-row flex-wrap justify-between align-top max-h-48">
+          <img src="./img/WCMW_16.svg" alt="WCMW Logo" class="w-1/5 max-h-32">
+          <img src="./img/WCMW_5.svg" alt="When Coffee Meets Whisky" class="w-3/5 max-h-10 md:w-2/5">
+      </top>
 
-    <main class="flex flex-row flex-wrap justify-center my-6 sm:my-0" id="boom">
-        <img src="./img/WCMW_BOOM.svg" alt="WCMW boom" id="spinner" class="max-h-40">
-        <img src="./img/WCMW_BOOM_LINE.svg" alt="WCMW boom" class=" opacity-40 absolute -z-10 max-h-40 animate-ping-slow">
-    </main>
+      <main class="flex flex-row flex-wrap justify-center mb-6 mt-[180px] sm:mb-0 sm:mt-0" id="boom">
+          <img src="./img/WCMW_BOOM.svg" alt="WCMW boom" id="spinner" class="max-h-40">
+          <img src="./img/WCMW_BOOM_LINE.svg" alt="WCMW boom" class=" opacity-40 absolute -z-10 max-h-40 animate-ping-slow">
+      </main>
 
-    <footer class="flex flex-col-reverse justify-center sm:justify-between items-center sm:flex-row sm:space-y-0 sm:items-end font-BoldBold h-full sm:h-max">
-        <div class="flex flex-col items-start text-xl mt-5">
-            <h3 class="sm:hidden text-2xl sm:text-4xl uppercase flex flex-row space-x-2">Darba Laiks</h3>
-            <div class="flex flex-col w-full px-6 sm:px-12 font-SequelSans">
-                <div class="group flex flex-col">
-                    <div class="flex flex-row justify-between space-x-2">
-                        <span>I</span>
-                        <span>-</span>
-                    </div>
-                </div>
-                <div class="group flex flex-col">
-                    <div class="flex flex-row justify-between space-x-2">
-                        <span>II</span>
-                        <span>10 - 18</span>
-                    </div>
-                </div>
-                <div class="group flex flex-col">
-                    <div class="flex flex-row justify-between space-x-2">
-                        <span>III</span>
-                        <span>10 - 18</span>
-                    </div>
-                </div>
-                <div class="group flex flex-col">
-                    <div class="flex flex-row justify-between space-x-2">
-                        <span>IV</span>
-                        <span>10 - 23</span>
-                    </div>
-                </div>
-                <div class="group flex flex-col">
-                    <div class="flex flex-row justify-between space-x-2">
-                        <span>V</span>
-                        <span>10 - 02</span>
-                    </div>
-                </div>
-                <div class="group flex flex-col">
-                    <div class="flex flex-row justify-between space-x-2">
-                        <span>VI</span>
-                        <span>18 - 02</span>
-                    </div>
-                </div>
-                <div class="group flex flex-col">
-                    <div class="flex flex-row justify-between space-x-2">
-                        <span>VII</span>
-                        <span>-</span>
-                    </div>
-                </div>
-            </div>
-            <h3 class="hidden text-2xl sm:text-4xl uppercase sm:flex flex-row space-x-2 mt-5">Darba Laiks</h3>
-        </div>
+      <bottom class="flex flex-col mb-6 justify-end items-center font-BoldBold h-full pb-6 sm:justify-between sm:flex-row sm:space-y-0 sm:items-end sm:h-max sm:pb-0">
 
-        <div class="flex flex-col font-BoldBold text-xl sm:items-end items-center">
-            <h3 class="text-2xl sm:text-4xl uppercase flex flex-row space-x-2 sm:mb-5 sm:flex-row-reverse sm:space-x-0">Kontakti</h3>
-            <p><a class="font-SequelSans text-lg underline hover:no-underline" href="https://www.google.com/maps/dir/?api=1&destination=Baznīcas+iela+20%2F22%2C+Rīga">Baznīcas iela 20/22, Rīga</a></p>
-            <p>tteeellll<a class=" cursor-pointer font-SequelSans text-lg ml-2 underline hover:no-underline" href="tel:+37123009200">+371 23009200</a></p>
-            <p>eemaiilll<a class=" cursor-pointer font-SequelSans text-lg ml-2 underline hover:no-underline" href="mailto:hi@wcmw.bar">hi@wcmw.bar</a></p>
-            <p>insttttaaa<a class=" cursor-pointer font-SequelSans text-lg ml-2 underline hover:no-underline" href="https://instagr.am/wcmw.bar">@wcmw.bar</a></p>
-            <p>faceboook<a class=" cursor-pointer font-SequelSans text-lg ml-2 underline hover:no-underline" href="https://fb.com/wcmw.bar">/wcmw.bar</a></p>
-        </div>
-    </footer>
+          <div class="flex flex-col items-start text-xl mb-12 sm:mb-0">
+              <h3 class="sm:hidden flex text-2xl uppercase flex-row space-x-2">Darba Laiks</h3>
+              <h3 class="hidden sm:flex sm:text-4xl uppercase flex-row space-x-2">Darba Laiks</h3>
+              <div class="flex flex-col w-full px-6 sm:px-12 font-SequelSans">
+                  <div class="group flex flex-col">
+                      <div class="flex flex-row justify-between space-x-2">
+                          <span>I</span>
+                          <span>-</span>
+                      </div>
+                  </div>
+                  <div class="group flex flex-col">
+                      <div class="flex flex-row justify-between space-x-2">
+                          <span>II</span>
+                          <span>10 - 18</span>
+                      </div>
+                  </div>
+                  <div class="group flex flex-col">
+                      <div class="flex flex-row justify-between space-x-2">
+                          <span>III</span>
+                          <span>10 - 18</span>
+                      </div>
+                  </div>
+                  <div class="group flex flex-col">
+                      <div class="flex flex-row justify-between space-x-2">
+                          <span>IV</span>
+                          <span>10 - 23</span>
+                      </div>
+                  </div>
+                  <div class="group flex flex-col">
+                      <div class="flex flex-row justify-between space-x-2">
+                          <span>V</span>
+                          <span>10 - 02</span>
+                      </div>
+                  </div>
+                  <div class="group flex flex-col">
+                      <div class="flex flex-row justify-between space-x-2">
+                          <span>VI</span>
+                          <span>18 - 02</span>
+                      </div>
+                  </div>
+                  <div class="group flex flex-col">
+                      <div class="flex flex-row justify-between space-x-2">
+                          <span>VII</span>
+                          <span>-</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="flex flex-col font-BoldBold text-xl sm:items-end items-center">
+
+              <h3 class="text-2xl uppercase flex flex-row space-x-2 sm:text-4xl sm:mb-5 sm:flex-row-reverse sm:space-x-0">Kontakti</h3>
+
+              <p><a class="font-SequelSans text-lg underline hover:no-underline" href="https://www.google.com/maps/dir/?api=1&destination=Baznīcas+iela+20%2F22%2C+Rīga">Baznīcas iela 20/22, Rīga</a></p>
+              <p>tteeellll<a class=" cursor-pointer font-SequelSans text-lg ml-2 underline hover:no-underline" href="tel:+37123009200">+371 23009200</a></p>
+              <p>eemaiilll<a class=" cursor-pointer font-SequelSans text-lg ml-2 underline hover:no-underline" href="mailto:hi@wcmw.bar">hi@wcmw.bar</a></p>
+              <p>insttttaaa<a class=" cursor-pointer font-SequelSans text-lg ml-2 underline hover:no-underline" href="https://instagr.am/wcmw.bar">@wcmw.bar</a></p>
+              <p>faceboook<a class=" cursor-pointer font-SequelSans text-lg ml-2 underline hover:no-underline" href="https://fb.com/wcmw.bar">/wcmw.bar</a></p>
+          </div>
+      </bottom>
+    </section>
+
+    <section class="flex flex-col justify-between align-center w-full h-[40svh] sm:h-[80svh] sm:mt-16 max-w-[2560px] lg:px-16">
+        <iframe src="https://ra.co/promoters/108567/widget/events?theme=light&transparentBackground=true&customBackgroundColor=&customTextColor=%23000" height="100%" width="100%" style="border:none; overflow: hidden;" scrolling="no" seamless="seamless"></iframe>
+    </section>
+    
+    <section class="flex flex-col justify-between align-center h-dvh">
+      <h3 class="text-2xl uppercase self-center sm:text-4xl font-BoldBold">Driiiiinnnksss</h3>
+      <img src="./menu/menu_1.jpg" alt="WCMW Menu 1" class="hidden sm:block w-full mix-blend-darken max-w-[2560px]">
+      <img src="./menu/menu_2.jpg" alt="WCMW Menu 1" class="hidden sm:block w-full mix-blend-darken max-w-[2560px]">
+      <img src="./menu/menu_3.jpg" alt="WCMW Menu 1" class="hidden sm:block w-full mix-blend-darken max-w-[2560px]">
+      <img src="./menu/menu_1_l.jpg" alt="WCMW Menu 1" class="sm:hidden w-full mix-blend-darken">
+      <img src="./menu/menu_1_r.jpg" alt="WCMW Menu 1" class="sm:hidden w-full mix-blend-darken">
+      <img src="./menu/menu_2_l.jpg" alt="WCMW Menu 1" class="sm:hidden w-full mix-blend-darken">
+      <img src="./menu/menu_2_r.jpg" alt="WCMW Menu 1" class="sm:hidden w-full mix-blend-darken">
+      <img src="./menu/menu_3_m.jpg" alt="WCMW Menu 1" class="sm:hidden w-full mix-blend-darken">
+    </section>
+    
+    
 </body>
 
 <!-- Google Tag Manager (noscript) -->

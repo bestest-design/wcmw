@@ -1,173 +1,523 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-yellow overflow-x-hidden">
+<html lang="en" class="bg-yellow overflow-x-hidden scroll-smooth">
+
 <head>
-    <title>WCMW - When Coffee Meets Whisky</title>
-    <meta name="description" content="WHEN COFFEE MEETS WHISKY ☕️ Specialty Coffee 🥃 Japanese Whisky 📻 Listening Bar Run by @tstudiolv">
-    
-    <!-- Google Tag Manager -->
-    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-MKS33536"></script>
+  <title>WCMW - When Coffee Meets Whisky</title>
+  <meta name="description"
+    content="WHEN COFFEE MEETS WHISKY ☕️ Specialty Coffee 🥃 Japanese Whisky 📻 Listening Bar Run by @tstudiolv">
 
-    <!-- Facebook Meta Tags -->
-    <meta property="og:url" content="https://wcmw.bar">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="WCMW - When Coffee Meets Whisky">
-    <meta property="og:description" content="WHEN COFFEE MEETS WHISKY ☕️ Specialty Coffee 🥃 Japanese Whisky 📻 Listening Bar Run by @tstudiolv">
-    <meta property="og:image" content="https://opengraph.b-cdn.net/production/documents/152f14e3-d016-4a56-8f34-838274b69e12.jpg?token=zt8LzwEuH_tmnFVU6AT83PPqgMbcFMbAebMQ3lWTXrk&height=312&width=820&expires=33243308366">
+  <!-- Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-MKS33536"></script>
 
-    <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta property="twitter:domain" content="wcmw.bar">
-    <meta property="twitter:url" content="https://wcmw.bar">
-    <meta name="twitter:title" content="WCMW - When Coffee Meets Whisky">
-    <meta name="twitter:description" content="WHEN COFFEE MEETS WHISKY ☕️ Specialty Coffee 🥃 Japanese Whisky 📻 Listening Bar Run by @tstudiolv">
-    <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/documents/152f14e3-d016-4a56-8f34-838274b69e12.jpg?token=zt8LzwEuH_tmnFVU6AT83PPqgMbcFMbAebMQ3lWTXrk&height=312&width=820&expires=33243308366">
+  <!-- Facebook Meta Tags -->
+  <meta property="og:url" content="https://wcmw.bar">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="WCMW - When Coffee Meets Whisky">
+  <meta property="og:description"
+    content="WHEN COFFEE MEETS WHISKY ☕️ Specialty Coffee 🥃 Japanese Whisky 📻 Listening Bar Run by @tstudiolv">
+  <meta property="og:image"
+    content="https://opengraph.b-cdn.net/production/documents/152f14e3-d016-4a56-8f34-838274b69e12.jpg?token=zt8LzwEuH_tmnFVU6AT83PPqgMbcFMbAebMQ3lWTXrk&height=312&width=820&expires=33243308366">
 
-    <link rel="icon" href="./img/favicon.svg" sizes="any" type="image/svg+xml">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="./src/styles.css">
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="twitter:domain" content="wcmw.bar">
+  <meta property="twitter:url" content="https://wcmw.bar">
+  <meta name="twitter:title" content="WCMW - When Coffee Meets Whisky">
+  <meta name="twitter:description"
+    content="WHEN COFFEE MEETS WHISKY ☕️ Specialty Coffee 🥃 Japanese Whisky 📻 Listening Bar Run by @tstudiolv">
+  <meta name="twitter:image"
+    content="https://opengraph.b-cdn.net/production/documents/152f14e3-d016-4a56-8f34-838274b69e12.jpg?token=zt8LzwEuH_tmnFVU6AT83PPqgMbcFMbAebMQ3lWTXrk&height=312&width=820&expires=33243308366">
+
+  <link rel="icon" href="./img/favicon.svg" sizes="any" type="image/svg+xml">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="./src/styles.css">
 </head>
-    
-<body class="text-lightBlack flex flex-col justify-between align-top p-4 h-auto items-center">
-    <background class="fixed w-full h-full overflow-hidden -z-10 -m-4 opacity-10 sm:opacity-15">
-        <img src="./img/WCMW_logo_12.svg" alt="WCMW Background dancing guy" class="w-full h-full object-contain">
-    </background>
 
-    <section class="flex flex-col justify-between sm:h-svh h-auto w-full max-w-[2560px] lg:px-16">
-        
-      <top class="flex flex-row flex-wrap justify-between align-top max-h-48">
-          <img src="./img/WCMW_16.svg" alt="WCMW Logo" class="w-1/5 max-h-32">
-          <img src="./img/WCMW_5.svg" alt="When Coffee Meets Whisky" class="w-3/5 max-h-10 md:w-2/5">
-      </top>
+<body class="text-lightBlack flex flex-col justify-between align-top pt-3 sm:p-4 h-auto items-center self-center mx-auto max-w-[2560px]">
+  <background class="fixed w-full h-full overflow-hidden -z-10 -m-4 opacity-5">
+    <img src="./img/WCMW_logo_12.svg" alt="WCMW Background dancing guy" class="w-full h-full object-contain">
+  </background>
 
-      <main class="flex flex-row flex-wrap justify-center my-12 sm:mb-0 sm:mt-0" id="boom">
-          <img src="./img/WCMW_BOOM.svg" alt="WCMW boom" id="spinner" class="max-h-40">
-          <img src="./img/WCMW_BOOM_LINE.svg" alt="WCMW boom" class="opacity-40 absolute -z-10 max-h-40 animate-ping-slow">
-      </main>
+  <section class="flex flex-col justify-start min-h-[100dvh] lg:min-h-[90dvh] h-auto w-full">
 
-      <bottom class="flex flex-col mb-6 justify-end items-center font-BoldBold h-full pb-6 sm:justify-between sm:flex-row sm:space-y-0 sm:items-end sm:h-max sm:pb-0">
+    <top class="flex flex-row flex-wrap justify-between align-top">
+      <img src="./img/WCMW_16.svg" alt="WCMW Logo" class="h-fit p-4 lg:p-0 lg:h-[10rem]">
+      <nav class="my-6 mx-auto lg:my-0 lg:mx-0 flex flex-col items-center lg:items-end font-BoldBold">
+        <a class="text-4xl uppercase hover:italic hover:tracking-wide" href="#about">About</a>
+        <a class="text-4xl uppercase hover:italic hover:tracking-wide" href="#drinks">Drinks</a>
+        <a class="text-4xl uppercase hover:italic hover:tracking-wide" href="#events">Events</a>
+        <a class="text-4xl uppercase hover:italic hover:tracking-wide" href="#contacts">Contacts</a>
+      </nav>
+    </top>
 
-          <div class="flex flex-col items-start text-xl mb-12 sm:mb-0">
-              <h3 class="sm:hidden flex text-2xl uppercase flex-row space-x-2">Darba Laiks</h3>
-              <h3 class="hidden sm:flex sm:text-4xl uppercase flex-row space-x-2">Darba Laiks</h3>
-              <div class="flex flex-col w-full px-6 sm:px-12 font-SequelSans">
-                  <div class="group flex flex-col">
-                      <div class="flex flex-row justify-between space-x-2">
-                          <span>I</span>
-                          <span>-</span>
-                      </div>
-                  </div>
-                  <div class="group flex flex-col">
-                      <div class="flex flex-row justify-between space-x-2">
-                          <span>II</span>
-                          <span>10 - 18</span>
-                      </div>
-                  </div>
-                  <div class="group flex flex-col">
-                      <div class="flex flex-row justify-between space-x-2">
-                          <span>III</span>
-                          <span>10 - 18</span>
-                      </div>
-                  </div>
-                  <div class="group flex flex-col">
-                      <div class="flex flex-row justify-between space-x-2">
-                          <span>IV</span>
-                          <span>10 - 23</span>
-                      </div>
-                  </div>
-                  <div class="group flex flex-col">
-                      <div class="flex flex-row justify-between space-x-2">
-                          <span>V</span>
-                          <span>10 - 02</span>
-                      </div>
-                  </div>
-                  <div class="group flex flex-col">
-                      <div class="flex flex-row justify-between space-x-2">
-                          <span>VI</span>
-                          <span>18 - 02</span>
-                      </div>
-                  </div>
-                  <div class="group flex flex-col">
-                      <div class="flex flex-row justify-between space-x-2">
-                          <span>VII</span>
-                          <span>-</span>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          
-          <div class="flex flex-col font-BoldBold text-xl sm:items-end items-center">
+    <hero class="flex flex-col my-auto items-center justify-center w-full h-1/2" id="boom">
+      <img src="./img/WCMW_BOOM.svg" alt="WCMW boom" id="spinner" class="max-h-40">
+      <img src="./img/WCMW_BOOM_LINE.svg" alt="WCMW boom" class="opacity-40 absolute -z-10 max-h-40 animate-ping-slow">
+    </hero>
+  </section>
 
-              <h3 class="text-2xl uppercase flex flex-row space-x-2 sm:text-4xl sm:mb-5 sm:flex-row-reverse sm:space-x-0">Kontakti</h3>
+  <section class="flex lg:hidden flex-col gap-8 px-4 py-12 font-SequelSans">
+    <article class="w-full bg-yellow/50 rounded p-6">
+      <small>Welcome to <bold>When Coffee Meets Whisky</bold><br>Baltics' first listening bar, where bold flavors and deep sounds create an unforgettable experience</small>
+    </article>
+  
+    <pic class="w-full h-[50vh] relative overflow-hidden rounded">
+      <img src="./pics/slide_2.jpg" class="w-full h-full object-cover" alt="WCMW Wall of fame">
+    </pic>
+  
+    <article class="w-full bg-yellow/50 rounded p-6">
+      <small>Our story began a decade ago, with <bold>T Studio</bold><br>the music shop next door, fueling our passion and setting the rhythm of our nights</small>
+    </article>
+  
+    <pic class="w-full h-[50vh] relative overflow-hidden rounded">
+      <img src="./pics/slide_1.jpg" class="w-full h-full object-cover" alt="The WCMW bar">
+    </pic>
+  
+    <article class="w-full bg-yellow/50 rounded p-6">
+      <small>In a space with elevated atmosphere and refined acoustics, specialty coffee meets the finest Japanese whisky selection. With the interior design curated by <bold>Binski Studio</bold> and the sound system powered by <bold>Reflector Audio</bold>, it's a place where the art of sound isn't just heard, it's celebrated</small>
+    </article>
+  
+    <pic class="w-full h-[50vh] relative overflow-hidden rounded">
+      <img src="./pics/slide_3.jpg" class="w-full h-full object-cover" alt="The WCMW bar">
+    </pic>
+  </section>
 
-              <p><a class="font-SequelSans text-lg underline hover:no-underline" href="https://www.google.com/maps/dir/?api=1&destination=Baznīcas+iela+20%2F22%2C+Rīga">Baznīcas iela 20/22, Rīga</a></p>
-              <p>tteeellll<a class=" cursor-pointer font-SequelSans text-lg ml-2 underline hover:no-underline" href="tel:+37123009200">+371 23009200</a></p>
-              <p>eemaiilll<a class=" cursor-pointer font-SequelSans text-lg ml-2 underline hover:no-underline" href="mailto:hi@wcmw.bar">hi@wcmw.bar</a></p>
-              <p>insttttaaa<a class=" cursor-pointer font-SequelSans text-lg ml-2 underline hover:no-underline" href="https://instagr.am/wcmw.bar">@wcmw.bar</a></p>
-              <p>faceboook<a class=" cursor-pointer font-SequelSans text-lg ml-2 underline hover:no-underline" href="https://fb.com/wcmw.bar">/wcmw.bar</a></p>
-          </div>
-      </bottom>
-    </section>
+  <section class="h-[300vh] hidden lg:flex overflow-visible font-SequelSans mx-4"
+    style="view-timeline-name: --slider-scroll; view-timeline-axis: block;">
+    <container id="about" class="h-screen w-screen sticky top-0 flex flex-col overflow-hidden px-4">
+      <slider class="translate-x-[10vw] flex flex-row h-full w-[250vw] will-change-transform animate-slider-scroll"
+        style="animation-timeline: --slider-scroll; animation-range: contain 0% contain 100%;">
 
-    <section class="flex flex-col justify-between align-center w-full h-[40dvh] sm:h-[80dvh] sm:mt-16 max-w-[2560px] lg:px-16">
-        <iframe src="https://ra.co/promoters/108567/widget/events?theme=light&transparentBackground=true&customBackgroundColor=&customTextColor=%23000" height="100%" width="100%" style="border:none; overflow: hidden;" scrolling="no" seamless="seamless"></iframe>
-    </section>
-    
-    <section class="flex flex-col justify-between align-center h-dvh">
-      <h3 class="text-2xl uppercase self-center sm:text-4xl font-BoldBold">Driiiiinnnksss</h3>
-      <img src="./menu/menu_1.jpg" alt="WCMW Menu 1" class="hidden sm:block w-full mix-blend-darken max-w-[2560px]">
-      <img src="./menu/menu_2.jpg" alt="WCMW Menu 1" class="hidden sm:block w-full mix-blend-darken max-w-[2560px]">
-      <img src="./menu/menu_3.jpg" alt="WCMW Menu 1" class="hidden sm:block w-full mix-blend-darken max-w-[2560px]">
-      <img src="./menu/menu_1_l.jpg" alt="WCMW Menu 1" class="sm:hidden w-full mix-blend-darken">
-      <img src="./menu/menu_1_r.jpg" alt="WCMW Menu 1" class="sm:hidden w-full mix-blend-darken">
-      <img src="./menu/menu_2_l.jpg" alt="WCMW Menu 1" class="sm:hidden w-full mix-blend-darken">
-      <img src="./menu/menu_2_r.jpg" alt="WCMW Menu 1" class="sm:hidden w-full mix-blend-darken">
-      <img src="./menu/menu_3_m.jpg" alt="WCMW Menu 1" class="sm:hidden w-full mix-blend-darken">
-    </section>
-    
-    
+        <article class="w-[70vw] h-fit -mr-[80vw] mt-6 self-start bg-yellow/90 rounded p-12 z-10">
+          <p>Welcome to <bold>When Coffee Meets Whisky</bold><br>Baltics' first listening bar, where bold flavors and
+            deep sounds create an unforgettable experience</p>
+        </article>
+
+        <pic class="w-[70vw] h-[95vh] relative overflow-hidden rounded">
+          <img src="./pics/slide_2.jpg"
+            class="w-full h-full object-cover will-change-[object-position] animate-img-parallax"
+            style="animation-timeline: view(y); animation-range: entry exit" alt="WCMW Wall of fame">
+        </pic>
+
+        <article class="w-[70vw] h-fit -mr-[70vw] -translate-x-[10vw] mt-6 self-center bg-yellow/90 rounded p-12 z-10">
+          <p>Our story began a decade ago, with <bold>T Studio</bold><br>the music shop next door, fueling our passion
+            and setting the rhythm of our nights</p>
+        </article>
+
+        <pic class="w-[70vw] h-[95vh] ml-10 translate-y-[25vh] relative overflow-hidden rounded">
+          <img src="./pics/slide_1.jpg"
+            class="w-full h-full object-cover will-change-[object-position] animate-img-parallax"
+            style="animation-timeline: view(y); animation-range: entry exit" alt="The WCMW bar">
+        </pic>
+
+        <article
+          class="w-[70vw] h-fit -mr-[70vw] -translate-x-[20vw] translate-y-20 self-end bg-yellow/90 rounded p-12 z-10">
+          <p>In a space with elevated atmosphere and refined acoustics, specialty coffee meets the finest Japanese
+            whisky selection. With the interior design curated by <bold>Binski Studio</bold> and the sound system
+            powered by <bold>Reflector Audio</bold>, it's a place where the art of sound isn't just heard, it's
+            celebrated</p>
+        </article>
+
+        <pic class="w-[70vw] h-[95vh] ml-10 translate-y-[50vh] relative overflow-hidden rounded">
+          <img src="./pics/slide_3.jpg"
+            class="w-full h-full object-cover will-change-[object-position] animate-img-parallax"
+            style="animation-timeline: view(y); animation-range: entry exit" alt="The WCMW bar">
+        </pic>
+      </slider>
+    </container>
+  </section>
+
+  <section id="drinks" class="flex flex-col w-full justify-between align-center min-h-dvh lg:-translate-y-[10vh]">
+    <h2 class="uppercase font-BoldBold">Driiiiinnnksss</h2>
+
+    <container class="mt-20 flex flex-col lg:flex-row space-x-0 lg:space-x-16 rounded p-2">
+      <drinks class="flex flex-col space-y-6 w-full lg:w-[45%]">
+        <h5 class="font-BoldBold uppercase text-black mb-4">Signature Cocktailssssssssssssss</h5>
+        <drink>
+          <h5 class="font-BoldBold">Liquid Love <price class="font-SequelSans float-right">15</price>
+          </h5>
+          <small>Nikka Coffey Vodka, passion, Sakura cherry, lemon, foam, prosecco</small>
+        </drink>
+
+        <drink>
+          <h5 class="font-BoldBold">Jazz Kissa <price class="font-SequelSans float-right">14</price>
+          </h5>
+          <small>Shinobu Whisky, lemon, plum, yuzu, red wine, foam</small>
+        </drink>
+
+        <drink>
+          <h5 class="font-BoldBold">Inner City Blues <price class="font-SequelSans float-right">14</price>
+          </h5>
+          <small>Shinobu Whisky, Kahlua, sugar, espresso, foam</small>
+        </drink>
+
+        <drink>
+          <h5 class="font-BoldBold">Japanese Yuzu Night <price class="font-SequelSans float-right">14</price>
+          </h5>
+          <small>Yuzu gin, lemon, yuzu syrup, yuzu bitters, foam</small>
+        </drink>
+
+        <drink>
+          <h5 class="font-BoldBold">Yuzu Martini <price class="font-SequelSans float-right">15</price>
+          </h5>
+          <small>Floral gin, Yuzu sake, pineapple, sugar</small>
+        </drink>
+
+        <drink>
+          <h5 class="font-BoldBold">All That's Nice <price class="font-SequelSans float-right">12</price>
+          </h5>
+          <small>Spiced Roselle Vietnamese Gin, lemon, ginger</small>
+        </drink>
+
+        <drink>
+          <h5 class="font-BoldBold">Black Widow <price class="font-SequelSans float-right">14</price>
+          </h5>
+          <small>Gin, Creme de Cassis, Kahlua, lime, bitters</small>
+        </drink>
+
+        <drink>
+          <h5 class="font-BoldBold">Matcha Symphony <price class="font-SequelSans float-right">14</price>
+          </h5>
+          <small>Moba matcha, Roku Gin, lemon, sugar, foam</small>
+        </drink>
+
+        <drink>
+          <h5 class="font-BoldBold">Jalapeno Sour <price class="font-SequelSans float-right">12</price>
+          </h5>
+          <small>Shinobu Whisky, jalapeno, lemon, sugar, pineapple juice, foam</small>
+        </drink>
+
+        <h5 class="mt-20 font-BoldBold uppercase text-black mb-4">WCMW Specialssssssssssssss</h5>
+
+        <drink>
+          <h5 class="font-BoldBold">When Coffee Meets Negroni <price class="font-SequelSans float-right">14</price>
+          </h5>
+          <small>Coffee bean infused negroni (Gin,Vermouth, Campari)</small>
+        </drink>
+      </drinks>
+
+      <drinks class="flex flex-col space-y-6 w-full lg:w-[55%]">
+        <drink class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Japanese Rum <ml class="font-SequelSans float-right">50ml/700ml</ml>
+          </h5>
+          <small>Minoki Mizunara Cask Finished Rum <price class="float-right">8/60</price></small>
+          <small>Ryoma Rum <price class="float-right">9/70</price></small>
+        </drink>
+        <drink class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Japanese Vodka <ml class="font-SequelSans float-right">50ml/700ml</ml>
+          </h5>
+          <small>Nikka Coffey Vodka <price class="float-right">8/55</price></small>
+          <small>Ukiyo Japanese Rice Vodka <price class="float-right">9/60</price></small>
+        </drink>
+        <drink class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Japanese ginnnnnnnnnnnnnnn <ml class="font-SequelSans float-right">
+              50ml/700ml</ml>
+          </h5>
+          <small>Roku Gin <price class="float-right">7/55</price></small>
+          <small>Etsu Yuzu Gin <price class="float-right">8/60</price></small>
+          <small>Nikka Coffey Gin <price class="float-right">9/65</price></small>
+          <small>Song Cai Spiced Rossel Gin <price class="float-right">9/65</price></small>
+          <small>Song Cai Dry Gin <price class="float-right">9/65</price></small>
+          <small>Komasa Gin Sakurajima Komikan <price class="float-right">10/70</price></small>
+          <small>Sakari Shukugawa Japanese Craft Gin <price class="float-right">12/75</price></small>
+        </drink>
+        <drink class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Japanese Whisky <ml class="font-SequelSans float-right">50ml/700ml</ml>
+          </h5>
+          <small>Nikka from The Barrel Blended Malt <price class="float-right">9/60</price></small>
+          <small>Shinobu Pure Malt Mizunara Oak Finish <price class="float-right">12/85</price>
+          </small>
+          <small>Togouchi Beer Cask Finish <price class="float-right">10/70</price></small>
+          <small>Kujira 5yo Ryukyu White Oak Virgin Cask <price class="float-right">14/95</price>
+          </small>
+          <small>Hibiki Japanese Harmony <price class="float-right">15/130</price></small>
+          <small>The Matsui Single Malt Japanese Whisky, The Pleated Cask <price class="float-right">
+              17/180</price></small>
+        </drink>
+        <drink class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">sakeeeeeeeeeeeeeeeeeee <ml class="font-SequelSans float-right">50ml/720ml
+            </ml>
+          </h5>
+          <small>Bijito Sake Nihonshu Junmai <price class="float-right">5/35</price></small>
+          <small>Bijito Sake Junmai Ginjo <price class="float-right">5/35</price></small>
+          <small>Ile Four Yuzu Sake <price class="float-right">6/35</price></small>
+        </drink>
+        <drink class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Shochu <ml class="font-SequelSans float-right">50ml/700ml</ml>
+          </h5>
+          <small>Sanwa iichiko Silhouette Shochu 25% <price class="float-right">9/60</price></small>
+        </drink>
+        <drink class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Soju <ml class="font-SequelSans float-right">350ml</ml>
+          </h5>
+          <small>Jinro Soju <price class="float-right">10</price></small>
+          <small>Options: Grape, Strawberry, Peach, Grapefruit, Plum, Chamisul</small>
+        </drink>
+      </drinks>
+    </container>
+
+    <container class="mt-20 flex flex-col lg:flex-row space-x-0 lg:space-x-16 rounded p-2">
+      <drinks class="flex flex-col space-y-6 w-full lg:w-[45%]">
+        <type class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Coffee</h5>
+          <small>Espresso <span class="float-right">2</span></small>
+          <small>Double Espresso <span class="float-right">3</span></small>
+          <small>Americano <span class="float-right">3</span></small>
+          <small>Espresso Macchiato <span class="float-right">2.5</span></small>
+          <small>Double Espresso Macchiato <span class="float-right">3.5</span></small>
+          <small>Cappuccino <span class="float-right">3.5</span></small>
+          <small>Double Cappuccino <span class="float-right">4</span></small>
+          <small>Caffe Latte <span class="float-right">4.5</span></small>
+          <small>Flat White <span class="float-right">4</span></small>
+          <small>Iced Latte <span class="float-right">4.5</span></small>
+          <small>Espresso Tonic <span class="float-right">5</span></small>
+          <small>Moba Ceremonial Matcha <span class="float-right">6</span></small>
+          <small>Boba Matcha <span class="float-right">7</span></small>
+          <small>Hot Chocolate <span class="float-right">3.5</span></small>
+          <small>Tea <span class="float-right">3</span></small>
+          <small>Tea Pot <span class="float-right">5</span></small>
+          <small>Moba Ceremonial Matcha (30g) <span class="float-right">35</span></small>
+        </type>
+
+        <type class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Juices & Soft Drinks</h5>
+          <small>Fresh Orange Juice <span class="float-right">5</span></small>
+          <small>Fresh Grapefruit Juice <span class="float-right">5</span></small>
+          <small>OnLemon Lemonades <span class="float-right">4</span></small>
+          <small>Rudys Kombucha <span class="float-right">4</span></small>
+          <small>Ginger Beer <span class="float-right">4</span></small>
+          <small>Tonic <span class="float-right">3</span></small>
+          <small>0.2L Water (Still/Sparkling) <span class="float-right">2.5</span></small>
+          <small>0.75L Water (Still/Sparkling) <span class="float-right">4</span></small>
+        </type>
+
+        <type class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Snacks</h5>
+          <small>Olives and Popcorn <span class="float-right">6</span></small>
+          <small>Kalē Crisps <span class="float-right">4</span></small>
+          <small class="!mt-10">Ice Cream "SALDS" (250ml)<span class="float-right">6</span></small>
+          <small>Ice Cream "SALDS" (450ml)<span class="float-right">10</span></small>
+          <small>Ice Cream "SALDS" Sandwich <span class="float-right">6</span></small>
+          <small>Ice Cream "SALDS" ball <span class="float-right">2.5</span></small>
+        </type>
+      </drinks>
+
+      <drinks class="flex flex-col space-y-6 w-full lg:w-[55%]">
+        <type class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Beeeeeeeeeeeeeeeer</h5>
+          <small>Asahi 5.2% <span class="float-right">6</span></small>
+          <small>Sapporo 4.7% <span class="float-right">5.5</span></small>
+          <small>Kirin Ichiban 5% <span class="float-right">5.5</span></small>
+        </type>
+
+        <type class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Champagne & Sparkling</h5>
+          <small>Pierre Zero Chardonnay Sparkling <span class="float-right">4.5/22.5</span></small>
+          <small>Montelliana Prosecco Asolo <span class="float-right">6/30</span></small>
+          <small>Neumeyer Schaefferstein Crémant <span class="float-right">8/40</span></small>
+          <small>Andre Clouet Grande Reserve Bouzy <span class="float-right">-/65</span></small>
+          <small>De Saint Gall Blanc de Blanc 1er Cru <span class="float-right">-/70</span></small>
+          <small>Andre Clouet Rose Brut Bouzy <span class="float-right">-/80</span></small>
+          <small>Collard-Picard Cuvee Blac de Blancs <span class="float-right">-/100</span></small>
+          <small>Drappier Blanc de Quatre Blancs <span class="float-right">-/150</span></small>
+          <small>Grande Sendree 2012 <span class="float-right">-/160</span></small>
+          <small>Collard-Picard Cuvee des Archives <span class="float-right">-/350</span></small>
+        </type>
+
+        <type class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">White Wine</h5>
+          <small>Prapian Estate 3 Volte Pinot Grigio <span class="float-right">6/30</span></small>
+          <small>Venezie IGP BIO <span class="float-right"></span></small>
+          <small>Secret Coast Sauvignon <span class="float-right">6/30</span></small>
+          <small>Blanc Marlborough <span class="float-right"></span></small>
+          <small>Grace Koshu Kayagatake Yamanashi <span class="float-right">7/35</span></small>
+        </type>
+
+        <type class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Red wineeeeeeeeeeeeeeeeeeeeeeeeeeeeee</h5>
+          <small>Fortant Terroir d'Altitude Malbec <span class="float-right">6/30</span></small>
+          <small>Languedoc-Roussillon IGP <span class="float-right"></span></small>
+          <small>Lucarelli Campo Marina Primitivo <span class="float-right">6/30</span></small>
+          <small>di Manduria DOC <span class="float-right"></span></small>
+        </type>
+
+        <type class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Rose Wine</h5>
+          <small>Gaia 4-6 H Agiorgitiko Rose <span class="float-right">6/30</span></small>
+        </type>
+
+        <type class="flex flex-col space-y-2">
+          <h5 class="font-BoldBold uppercase">Non Alcoholic Cocktails</h5>
+          <small>Homemade Lemonade <span class="float-right">7</span></small>
+          <small>(Options: Lychee, Sakura, Melon, Yuzu, Passion)</small>
+          <small>Boba Lemonade (Passion or Yuzu or Mango)<span class="float-right">7</span></small>
+        </type>
+      </drinks>
+    </container>
+
+    <container class="mt-20 flex flex-col justify-center self-center w-full max-w-[90%] lg:max-w-[50%] rounded p-2">
+      <drinks class="flex flex-col space-y-6">
+        <h5 class="font-BoldBold uppercase self-center">Whisky Menu</h5>
+        <small>Shinobu Blended Whisky <span class="float-right">6/45</span></small>
+        <small>Mars Kasei Blended Malt <span class="float-right">7/50</span></small>
+        <small>Toki Suntory <span class="float-right">8/55</span></small>
+        <small>Kensei Blended Malt <span class="float-right">8/55</span></small>
+        <small>Nikka from The Barrel Blended Malt 500ml <span class="float-right">9/60</span></small>
+        <small>Kamiki Blended Malt 500ml <span class="float-right">9/65</span></small>
+        <small>Nikka Coffey Grain Whisky <span class="float-right">10/70</span></small>
+        <small>Fujimi Whisky <span class="float-right">9/65</span></small>
+        <small>Togouchi Beer Cask Finish <span class="float-right">10/70</span></small>
+        <small>Mars Cosmo <span class="float-right">10/70</span></small>
+        <small>Ensō Japanese Whisky <span class="float-right">12/85</span></small>
+        <small>Shinobu Pure Malt <span class="float-right">12/85</span></small>
+        <small>Kujira 5yo Ryukyu White Oak Virgin Cask <span class="float-right">14/95</span></small>
+        <small>Kura The Whiskey Blended Malt <span class="float-right">14/100</span></small>
+        <small>Hibiki Japanese Harmony <span class="float-right">15/130</span></small>
+        <small>Hibiki Japanese Harmony Masters Select <span class="float-right">15/150</span></small>
+        <small>The Matsui Single Malt The Peated Cask <span class="float-right">17/180</span></small>
+        <small>The Matsui Single Malt Mizunara Cask <span class="float-right">17/180</span></small>
+        <small>The Matsui Single Malt Sakura Cask <span class="float-right">17/180</span></small>
+      </drinks>
+      <drinks class="mt-20 flex flex-col">
+        <h5 class="font-BoldBold">Old Fashioned or Whisky Sour <price class="font-SequelSans float-right">11-23</price></h5>
+        <small>Ask our bartender for the best selection</small>
+        <h5 class="mt-20 font-BoldBold">When Coffee Meets Whisky Deal</h5>
+        <small>Get any of our Japanese whiskies and get any hot coffee drink for 2 euros</small>
+      </drinks>
+    </container>
+  </section>
+
+  <section id="events"
+    class="flex flex-col justify-between align-center w-full h-[40dvh] lg:h-[60dvh] lg:mt-16 max-w-[2560px]">
+    <iframe
+      src="https://ra.co/promoters/108567/widget/events?theme=light&transparentBackground=true&customBackgroundColor=&customTextColor=%23000"
+      height="calc(100% + 40px)" width="calc(100% + 40px)" style="border:none; overflow: hidden; margin: -20px;"
+      scrolling="no" seamless="seamless"></iframe>
+  </section>
+
+  <section id="contacts" class="flex flex-col w-full sm:flex-row font-BoldBold text-xl h-full justify-center sm:justify-between items-center sm:items-start self-stretch">
+    <hours class="flex flex-col w-fit h-fit items-start justify-around">
+      <h4 class="uppercase">Bar hours</h4>
+      <days class="flex flex-col font-SequelSans self-center">
+        <day class="group flex flex-col">
+          <container class="flex flex-row justify-between space-x-10">
+            <name>I</name>
+            <hour>-</hour>
+          </container>
+        </day>
+        <day class="group flex flex-col">
+          <container class="flex flex-row justify-between space-x-10">
+            <name>II</name>
+            <hour>10 - 18</hour>
+          </container>
+        </day>
+        <day class="group flex flex-col">
+          <container class="flex flex-row justify-between space-x-10">
+            <name>III</name>
+            <hour>10 - 18</hour>
+          </container>
+        </day>
+        <day class="group flex flex-col">
+          <container class="flex flex-row justify-between space-x-10">
+            <name>IV</name>
+            <hour>10 - 23</hour>
+          </container>
+        </day>
+        <day class="group flex flex-col">
+          <container class="flex flex-row justify-between space-x-10">
+            <name>V</name>
+            <hour>10 - 02</hour>
+          </container>
+        </day>
+        <day class="group flex flex-col">
+          <container class="flex flex-row justify-between space-x-10">
+            <name>VI</name>
+            <hour>18 - 02</hour>
+          </container>
+        </day>
+        <day class="group flex flex-col">
+          <container class="flex flex-row justify-between space-x-10">
+            <name>VII</name>
+            <hour>-</hour>
+          </container>
+        </day>
+      </days>
+    </hours>
+
+    <contacts class="my-10 sm:my-0 h-full flex flex-col font-BoldBold text-xl text-center sm:text-right space-y-2">
+      <line class="h-full flex flex-col">
+        <h4 class="uppercase">Contacts</h4>
+      </line>
+      <line class="h-full flex flex-col justify-end"><a class="font-SequelSans text-xl underline hover:no-underline"
+          href="https://www.google.com/maps/dir/?api=1&destination=Bazn%C4%ABcas+iela+20%2F22%2C+R%C4%ABga">Baznīcas
+          iela
+          20/22,
+          Rīga</a></line>
+      <line class="h-full flex flex-col justify-end">
+        <h5>tteeellll<a class=" cursor-pointer font-SequelSans text-xl ml-2 underline hover:no-underline"
+            href="tel:+37123009200">+371 23009200</a></h5>
+      </line>
+      <line class="h-full flex flex-col justify-end">
+        <h5>eemaiilll<a class=" cursor-pointer font-SequelSans text-xl ml-2 underline hover:no-underline"
+            href="mailto:hi@wcmw.bar">hi@wcmw.bar</a></h5>
+      </line>
+      <line class="h-full flex flex-col justify-end">
+        <h5>insttttaaa<a class=" cursor-pointer font-SequelSans text-xl ml-2 underline hover:no-underline"
+            href="https://instagr.am/wcmw.bar">@wcmw.bar</a></h5>
+      </line>
+      <line class="h-full flex flex-col justify-end">
+        <h5>faceboook<a class=" cursor-pointer font-SequelSans text-xl ml-2 underline hover:no-underline"
+            href="https://fb.com/wcmw.bar">/wcmw.bar</a></h5>
+      </line>
+    </contacts>
+  </section>
+
+
 </body>
 
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MKS33536" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MKS33536" height="0" width="0"
+    style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
-    const spinner = document.getElementById('spinner');
-    const spinEvents = [
-        'touchstart',
-        'mouseenter',
-        'mousedown',
-    ];
+  const spinner = document.getElementById('spinner');
+  const spinEvents = [
+    'touchstart',
+    'mouseenter',
+    'mousedown',
+  ];
 
-    spinEvents.forEach(function(event) { 
-        spinner.addEventListener(event, doBackspin);
-    });
+  spinEvents.forEach(function (event) {
+    spinner.addEventListener(event, doBackspin);
+  });
 
-    function doBackspin() {
-        if (!spinner.classList.contains('animate-backspin')){
-            spinner.classList.add('animate-backspin');
-            setTimeout(function() {
-                spinner.classList.remove('animate-backspin');
-            }, 3100);
-        }
+  function doBackspin() {
+    if (!spinner.classList.contains('animate-backspin')) {
+      spinner.classList.add('animate-backspin');
+      setTimeout(function () {
+        spinner.classList.remove('animate-backspin');
+      }, 3100);
     }
+  }
 
-    const boomElement = document.getElementById('boom');
-    const vibrateEvents = [
-        'touchstart',
-    ];
+  const boomElement = document.getElementById('boom');
+  const vibrateEvents = [
+    'touchstart',
+  ];
 
-    vibrateEvents.forEach(function(event) { 
-        boomElement.addEventListener(event, doVibration);
-    });
+  vibrateEvents.forEach(function (event) {
+    boomElement.addEventListener(event, doVibration);
+  });
 
-    boomElement.addEventListener('touchend', clearInterval(vibrationInterval));
+  boomElement.addEventListener('touchend', clearInterval(vibrationInterval));
 
-    function doVibration() {
-        navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
-        if (navigator.vibrate) {
-            navigator.vibrate([200]);
-        }
+  function doVibration() {
+    navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+    if (navigator.vibrate) {
+      navigator.vibrate([200]);
     }
+  }
 </script>
+
 </html>

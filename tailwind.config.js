@@ -4,6 +4,7 @@ const plugin = require('tailwindcss/plugin');
 
 module.exports = {
   plugins: [
+    require("tailwindcss-fluid-type"),
     plugin(function({ addBase }) {
      addBase({
         'html': { fontSize: "20px", fontFamily: 'SequelSans, sans-serif'},

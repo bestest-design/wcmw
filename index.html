@@ -33,101 +33,127 @@
   <link rel="stylesheet" href="./src/styles.css">
 </head>
 
-<body class="text-lightBlack flex flex-col justify-between align-top p-2 sm:p-4 h-auto items-center self-center mx-auto max-w-[2560px]">
+<body class="text-lightBlack flex flex-col justify-between align-top h-auto items-center self-center mx-auto max-w-[2560px]">
   <background class="fixed w-full h-full overflow-hidden -z-10 -m-4 opacity-5">
     <img src="./img/WCMW_logo_12.svg" alt="WCMW Background dancing guy" class="w-full h-full object-contain">
   </background>
 
-  <section class="flex flex-col justify-start min-h-[100dvh] lg:min-h-[90dvh] h-auto w-full">
+  <!-- Peek-through drink images -->
+  <img src="./pics/drink_3.jpeg" alt="" class="peek-image w-48 h-48 object-cover rounded-full top-[20vh] right-[5vw] hidden lg:block">
+  <img src="./pics/drink_5.jpeg" alt="" class="peek-image w-32 h-32 object-cover rounded-lg bottom-[30vh] left-[3vw] hidden lg:block rotate-6">
 
-    <top class="flex flex-row flex-wrap justify-between align-top">
-      <img src="./img/WCMW_16.svg" alt="WCMW Logo" class="h-fit p-4 lg:p-0 lg:h-[10rem]">
-      <nav class="my-6 mx-auto lg:my-0 lg:mx-0 flex flex-col items-center lg:items-end font-BoldBold">
-        <a class="text-4xl uppercase hover:italic hover:tracking-wide" href="#about">About</a>
-        <a class="text-4xl uppercase hover:italic hover:tracking-wide" href="#drinks">Drinks</a>
-        <a class="text-4xl uppercase hover:italic hover:tracking-wide" href="#events">Events</a>
-        <a class="text-4xl uppercase hover:italic hover:tracking-wide" href="#contacts">Contacts</a>
+  <section class="section-shell flex flex-col justify-start min-h-[100dvh] lg:min-h-[100dvh] h-auto w-full gap-8 pb-0">
+
+    <top class="flex flex-col lg:flex-row flex-wrap justify-between gap-8">
+      <img src="./img/WCMW_16.svg" alt="WCMW Logo" class="h-fit max-w-xs lg:max-w-none lg:h-[10rem]" loading="lazy">
+      <nav class="flex flex-col items-start lg:items-end font-BoldBold space-y-2">
+        <a class="text-3xl lg:text-4xl uppercase hover:italic hover:tracking-wide hover-silver-underline transition-all duration-200 animate-letter-reveal" href="#about">About</a>
+        <a class="text-3xl lg:text-4xl uppercase hover:italic hover:tracking-wide hover-silver-underline transition-all duration-200 animate-letter-reveal" style="animation-delay: 0.05s" href="#drinks">Drinks</a>
+        <a class="text-3xl lg:text-4xl uppercase hover:italic hover:tracking-wide hover-silver-underline transition-all duration-200 animate-letter-reveal" style="animation-delay: 0.1s" href="#events">Events</a>
+        <a class="text-3xl lg:text-4xl uppercase hover:italic hover:tracking-wide hover-silver-underline transition-all duration-200 animate-letter-reveal" style="animation-delay: 0.15s" href="#contacts">Contacts</a>
       </nav>
     </top>
 
-    <hero class="flex flex-col my-auto items-center justify-center w-full h-1/2" id="boom">
-      <img src="./img/WCMW_BOOM.svg" alt="WCMW boom" id="spinner" class="max-h-40">
+    <hero class="relative flex flex-col my-auto items-center justify-center w-full h-1/2" id="boom">
+      <img src="./img/WCMW_BOOM.svg" alt="WCMW boom" id="spinner" class="max-h-40 cursor-pointer">
       <img src="./img/WCMW_BOOM_LINE.svg" alt="WCMW boom" class="opacity-40 absolute -z-10 max-h-40 animate-ping-slow">
     </hero>
+
+    <!-- Infinite Marquee Strip -->
+    <div class="marquee-shell w-screen -mx-4 lg:-mx-16 overflow-hidden py-4 bg-lightBlack">
+      <div class="marquee-track animate-marquee text-sm">
+        <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">SPECIALTY COFFEE</span>
+        <span class="font-SequelSans text-silver">-</span>
+        <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">JAPANESE WHISKY</span>
+        <span class="font-SequelSans text-silver">-</span>
+        <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">LISTENING BAR</span>
+        <span class="font-SequelSans text-silver">-</span>
+        <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">REFLECTOR AUDIO</span>
+        <span class="font-SequelSans text-silver">-</span>
+        <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">SPECIALTY COFFEE</span>
+        <span class="font-SequelSans text-silver">-</span>
+        <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">JAPANESE WHISKY</span>
+        <span class="font-SequelSans text-silver">-</span>
+        <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">LISTENING BAR</span>
+        <span class="font-SequelSans text-silver">-</span>
+        <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">REFLECTOR AUDIO</span>
+        <span class="font-SequelSans text-silver">-</span>
+      </div>
+    </div>
   </section>
 
-  <section class="flex lg:hidden flex-col gap-8 px-4 py-12 font-SequelSans">
-    <article class="w-full bg-yellow/50 rounded p-6">
+  <section class="section-shell-tight flex lg:hidden flex-col gap-8 font-SequelSans">
+    <article class="w-full bg-yellow/70 rounded-3xl p-6 shadow-[0_25px_60px_rgba(0,0,0,0.12)]">
       <small>Welcome to <bold>When Coffee Meets Whisky</bold><br>Baltics' first listening bar, where bold flavors and deep sounds create an unforgettable experience</small>
     </article>
   
-    <pic class="w-full h-[50vh] relative overflow-hidden rounded">
-      <img src="./pics/slide_2.jpg" class="w-full h-full object-cover" alt="WCMW Wall of fame">
+    <pic class="photo-frame w-full h-[50vh]">
+      <img src="./pics/slide_2.jpg" class="w-full h-full object-cover" alt="WCMW Wall of fame" loading="lazy">
     </pic>
   
-    <article class="w-full bg-yellow/50 rounded p-6">
+    <article class="w-full bg-yellow/70 rounded-3xl p-6 shadow-[0_25px_60px_rgba(0,0,0,0.12)]">
       <small>Our story began a decade ago, with <bold>T Studio</bold><br>the music shop next door, fueling our passion and setting the rhythm of our nights</small>
     </article>
   
-    <pic class="w-full h-[50vh] relative overflow-hidden rounded">
-      <img src="./pics/slide_1.jpg" class="w-full h-full object-cover" alt="The WCMW bar">
+    <pic class="photo-frame w-full h-[50vh]">
+      <img src="./pics/slide_1.jpg" class="w-full h-full object-cover" alt="The WCMW bar" loading="lazy">
     </pic>
   
-    <article class="w-full bg-yellow/50 rounded p-6">
+    <article class="w-full bg-yellow/70 rounded-3xl p-6 shadow-[0_25px_60px_rgba(0,0,0,0.12)]">
       <small>In a space with elevated atmosphere and refined acoustics, specialty coffee meets the finest Japanese whisky selection. With the interior design curated by <bold>Binski Studio</bold> and the sound system powered by <bold>Reflector Audio</bold>, it's a place where the art of sound isn't just enjoyed, it's celebrated</small>
     </article>
   
-    <pic class="w-full h-[50vh] relative overflow-hidden rounded">
-      <img src="./pics/slide_3.jpg" class="w-full h-full object-cover" alt="The WCMW bar">
+    <pic class="photo-frame w-full h-[50vh]">
+      <img src="./pics/slide_3.jpg" class="w-full h-full object-cover" alt="The WCMW bar" loading="lazy">
     </pic>
   </section>
 
-  <section class="h-[300vh] hidden lg:flex overflow-visible font-SequelSans mx-4"
+  <section class="h-[300vh] hidden lg:flex overflow-visible font-SequelSans"
     style="view-timeline-name: --slider-scroll; view-timeline-axis: block;">
-    <container id="about" class="h-screen w-screen sticky top-0 flex flex-col overflow-hidden px-4">
+    <container id="about" class="h-screen w-screen sticky top-0 flex flex-col overflow-hidden">
       <slider class="translate-x-[10vw] flex flex-row h-full w-[250vw] will-change-transform animate-slider-scroll"
         style="animation-timeline: --slider-scroll; animation-range: contain 0% contain 100%;">
 
-        <article class="w-[70vw] h-fit -mr-[80vw] mt-6 self-start bg-yellow/90 rounded p-12 z-10">
+        <article class="w-[70vw] h-fit -mr-[80vw] mt-6 self-start bg-yellow/90 rounded-[32px] p-12 leading-relaxed z-10 hover:shadow-lg hover:shadow-black/10 transition-shadow duration-300">
           <p>Welcome to <bold>When Coffee Meets Whisky</bold><br>Baltics' first listening bar, where bold flavors and
             deep sounds create an unforgettable experience</p>
         </article>
 
-        <pic class="w-[70vw] h-[95vh] relative overflow-hidden rounded">
+        <pic class="photo-frame w-[70vw] h-[95vh] group rounded-tl-none rounded-bl-none">
           <img src="./pics/slide_2.jpg"
-            class="w-full h-full object-cover will-change-[object-position] animate-img-parallax"
+            class="w-full h-full object-cover will-change-[object-position] animate-img-parallax group-hover:scale-105 transition-transform duration-700"
             style="animation-timeline: view(y); animation-range: entry exit" alt="WCMW Wall of fame">
         </pic>
 
-        <article class="w-[70vw] h-fit -mr-[70vw] -translate-x-[10vw] mt-6 self-center bg-yellow/90 rounded p-12 z-10">
+        <article class="w-[70vw] h-fit -mr-[70vw] -translate-x-[10vw] mt-6 self-center bg-yellow/90 rounded-[32px] p-12 leading-relaxed z-10 hover:shadow-lg hover:shadow-black/10 transition-shadow duration-300">
           <p>Our story began a decade ago, with <bold>T Studio</bold><br>the music shop next door, fueling our passion
             and setting the rhythm of our nights</p>
         </article>
 
-        <pic class="w-[70vw] h-[95vh] ml-10 translate-y-[25vh] relative overflow-hidden rounded">
+        <pic class="photo-frame w-[70vw] h-[95vh] ml-10 translate-y-[25vh] group">
           <img src="./pics/slide_1.jpg"
-            class="w-full h-full object-cover will-change-[object-position] animate-img-parallax"
+            class="w-full h-full object-cover will-change-[object-position] animate-img-parallax group-hover:scale-105 transition-transform duration-700"
             style="animation-timeline: view(y); animation-range: entry exit" alt="The WCMW bar">
         </pic>
 
         <article
-          class="w-[70vw] h-fit -mr-[70vw] -translate-x-[20vw] translate-y-20 self-end bg-yellow/90 rounded p-12 z-10">
+          class="w-[70vw] h-fit -mr-[70vw] -translate-x-[20vw] translate-y-20 self-end bg-yellow/90 rounded-[32px] p-12 leading-relaxed z-10 hover:shadow-lg hover:shadow-black/10 transition-shadow duration-300">
           <p>In a space with elevated atmosphere and refined acoustics, specialty coffee meets the finest Japanese
             whisky selection. With the interior design curated by <bold>Binski Studio</bold> and the sound system
             powered by <bold>Reflector Audio</bold>, it's a place where the art of sound isn't just enjoyed, it's
             celebrated</p>
         </article>
 
-        <pic class="w-[70vw] h-[95vh] ml-10 translate-y-[50vh] relative overflow-hidden rounded">
+        <pic class="photo-frame w-[70vw] h-[95vh] ml-10 translate-y-[50vh] group">
           <img src="./pics/slide_3.jpg"
-            class="w-full h-full object-cover will-change-[object-position] animate-img-parallax"
+            class="w-full h-full object-cover will-change-[object-position] animate-img-parallax group-hover:scale-105 transition-transform duration-700"
             style="animation-timeline: view(y); animation-range: entry exit" alt="The WCMW bar">
         </pic>
       </slider>
     </container>
   </section>
 
-  <section id="drinks" class="flex flex-col w-full justify-between align-center min-h-dvh lg:-translate-y-[10vh]">
+  <section id="drinks" class="section-shell flex flex-col w-full justify-between align-center min-h-dvh lg:-translate-y-[10vh]">
     <h2 class="uppercase font-BoldBold text-nowrap">Driiiiinnnksss</h2>
 
     <container class="mt-20 flex flex-col lg:flex-row space-x-0 lg:space-x-16 rounded">
@@ -192,11 +218,18 @@
         <drink>
           <h5 class="font-BoldBold">When Coffee Meets Negroni <price class="font-SequelSans float-right">14</price>
           </h5>
-          <small>Coffee bean infused negroni (Gin,Vermouth, Campari)</small>
+          <small>Coffee bean infused negroni (Gin, Vermouth, Campari)</small>
         </drink>
       </drinks>
 
-      <drinks class="flex flex-col space-y-6 w-full lg:w-[55%]">
+      <drinks class="flex flex-col space-y-6 w-full lg:w-[55%] relative overflow-visible">
+        <div data-floating-drink class="hidden lg:block absolute left-0 top-6 -translate-x-[260%] w-64 h-64 pointer-events-none">
+          <div class="scroll-reveal reveal-left -z-10">
+            <div class="photo-frame w-full h-full opacity-40 shadow-[0_50px_80px_rgba(0,0,0,0.2)]">
+              <img src="./pics/drink_1.jpeg" alt="WCMW Cocktail" loading="lazy" class="object-cover">
+            </div>
+          </div>
+        </div>
         <drink class="flex flex-col space-y-2">
           <h5 class="font-BoldBold uppercase">Japanese Rum <ml class="font-SequelSans float-right">50ml/700ml</ml>
           </h5>
@@ -256,7 +289,19 @@
       </drinks>
     </container>
 
-    <container class="mt-20 flex flex-col lg:flex-row space-x-0 lg:space-x-16 rounded">
+    <div class="hidden lg:flex justify-between items-center my-24 px-24 relative">
+      <div class="photo-frame w-56 h-64 scroll-reveal reveal-left z-30 shadow-[0_60px_120px_rgba(0,0,0,0.35)]">
+        <img src="./pics/drink_4.jpeg" alt="WCMW Drink" loading="lazy" class="object-cover" data-lightbox>
+      </div>
+      <div class="photo-frame w-72 h-72 scroll-reveal reveal-center z-20 -my-8 shadow-[0_70px_140px_rgba(0,0,0,0.35)]">
+        <img src="./pics/inside_4.jpeg" alt="WCMW Interior" loading="lazy" class="object-cover" data-lightbox>
+      </div>
+      <div class="photo-frame w-56 h-64 scroll-reveal reveal-right z-10 shadow-[0_50px_100px_rgba(0,0,0,0.3)]">
+        <img src="./pics/drink_2.jpeg" alt="WCMW Cocktail" loading="lazy" class="object-cover" data-lightbox>
+      </div>
+    </div>
+
+    <container class="mt-6 flex flex-col lg:flex-row space-x-0 lg:space-x-16 rounded">
       <drinks class="flex flex-col space-y-6 w-full lg:w-[45%]">
         <type class="flex flex-col space-y-2">
           <h5 class="font-BoldBold uppercase">Coffee</h5>
@@ -355,9 +400,18 @@
       </drinks>
     </container>
 
-    <container class="mt-20 flex flex-col justify-center self-center w-full max-w-[90%] lg:max-w-[50%] rounded">
+    <div class="hidden lg:flex justify-center items-end gap-32 my-24 relative">
+      <div class="photo-frame w-72 h-48 scroll-reveal reveal-left translate-y-6 shadow-[0_60px_120px_rgba(0,0,0,0.35)]">
+        <img src="./pics/inside_6.jpeg" alt="WCMW Bar" loading="lazy" class="object-cover" data-lightbox>
+      </div>
+      <div class="photo-frame w-60 h-80 scroll-reveal reveal-right -translate-y-10 shadow-[0_70px_140px_rgba(0,0,0,0.35)]">
+        <img src="./pics/drink_6.jpeg" alt="WCMW Drink" loading="lazy" class="object-cover" data-lightbox>
+      </div>
+    </div>
+
+    <container class="mt-6 flex flex-col justify-center self-center w-full max-w-[90%] lg:max-w-[50%] rounded">
       <drinks class="flex flex-col space-y-6">
-        <h5 class="font-BoldBold uppercase self-center">Whisky Menu</h5>
+        <h4 class="font-BoldBold uppercase self-center">Whisky Menu</h4>
         <small>Shinobu Blended Whisky <span class="float-right">6/45</span></small>
         <small>Mars Kasei Blended Malt <span class="float-right">7/50</span></small>
         <small>Toki Suntory <span class="float-right">8/55</span></small>
@@ -385,17 +439,36 @@
         <small>Get any of our Japanese whiskies and get any hot coffee drink for 2 euros</small>
       </drinks>
     </container>
+
+    <div class="hidden lg:flex justify-between items-center mt-16 px-20 relative">
+      <div class="photo-frame w-56 h-56 scroll-reveal reveal-left shadow-[0_60px_110px_rgba(0,0,0,0.35)]">
+        <img src="./pics/dj_1.jpeg" alt="WCMW DJ" loading="lazy" class="object-cover" data-lightbox>
+      </div>
+      <div class="photo-frame w-80 h-44 scroll-reveal reveal-center -mx-12 shadow-[0_80px_150px_rgba(0,0,0,0.35)]">
+        <img src="./pics/inside_2.jpg" alt="WCMW Interior" loading="lazy" class="object-cover" data-lightbox>
+      </div>
+      <div class="photo-frame w-56 h-72 scroll-reveal reveal-right shadow-[0_70px_130px_rgba(0,0,0,0.35)]">
+        <img src="./pics/drink_7.jpeg" alt="WCMW Cocktail" loading="lazy" class="object-cover" data-lightbox>
+      </div>
+    </div>
   </section>
 
   <section id="events"
-    class="flex flex-col justify-between align-center w-full min-h-[40dvh] lg:min-h-[60dvh] mt-10 lg:mt-16 max-w-[2560px]">
-    <iframe class="border-none overflow-hidden sm:-m-[20px]"
-      src="https://ra.co/promoters/108567/widget/events?theme=light&transparentBackground=true&customBackgroundColor=&customTextColor=%23000"
-      height="calc(100% + 40px)" width="calc(100% + 40px)"
-      scrolling="no" seamless="seamless"></iframe>
+    class="section-shell flex flex-col justify-between align-center w-full min-h-[40dvh] lg:min-h-[60dvh] pt-0">
+    <h2 class="uppercase font-BoldBold text-nowrap mb-8">Instagrrrraaaaam</h2>
+    
+    <div data-key="Wcmw Feed " class="ft w-full" id="ft1r0p18l"></div>
+    <script src="https://wdg.fouita.com/widgets/0x3602c4.js"></script>
   </section>
 
-  <section id="contacts" class="flex flex-col w-full sm:flex-row font-BoldBold text-xl h-full justify-center sm:justify-between items-center sm:items-start self-stretch">
+  <div id="lightboxOverlay" class="lightbox-overlay" role="dialog" aria-modal="true" aria-label="Enlarged photo" aria-hidden="true">
+    <div class="lightbox-content">
+      <button type="button" class="lightbox-close" aria-label="Close image">&times;</button>
+      <img id="lightboxImage" src="" alt="Enlarged view" loading="lazy">
+    </div>
+  </div>
+
+  <section id="contacts" class="section-shell flex flex-col w-full sm:flex-row font-BoldBold text-xl h-full justify-center sm:justify-between items-center sm:items-start self-stretch gap-12">
     <hours class="flex flex-col w-fit h-fit items-start justify-around">
       <h4 class="uppercase">Bar hours</h4>
       <days class="flex flex-col font-SequelSans self-center">
@@ -472,14 +545,38 @@
     </contacts>
   </section>
 
-  <thanks class="mt-6 w-full flex flex-col justify-center items-center space-x-3">
+  <thanks class="section-shell-tight mt-6 w-full flex flex-col justify-center items-center space-x-3 text-center">
     <small class="text-[0.8rem]">thaaaanks to:</small>
     <bold class="flex flex-row space-x-3 text-[0.8rem]">
-      <a class="underline hover:no-underline" href="https://www.instagram.com/binskistudio/">Binski Studio</a>
-      <a class="underline hover:no-underline " href="https://reflectoraudio.com/">Reflector Audio</a>
-      <a class="underline hover:no-underline" href="https://www.instagram.com/tstudiolv/">T Studio</a>
+      <a class="underline hover:no-underline hover:text-silver transition-colors" href="https://www.instagram.com/binskistudio/">Binski Studio</a>
+      <a class="underline hover:no-underline hover:text-silver transition-colors" href="https://reflectoraudio.com/">Reflector Audio</a>
+      <a class="underline hover:no-underline hover:text-silver transition-colors" href="https://www.instagram.com/tstudiolv/">T Studio</a>
     </bold>
   </thanks>
+
+  <!-- Bottom Marquee -->
+  <div class="marquee-shell w-screen -mx-4 lg:-mx-16 overflow-hidden py-4 mt-8 bg-lightBlack">
+    <div class="marquee-track animate-marquee-reverse text-sm">
+      <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">WHEN COFFEE MEETS WHISKY</span>
+      <span class="font-SequelSans text-silver">-</span>
+      <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">BALTICS' FIRST LISTENING BAR</span>
+      <span class="font-SequelSans text-silver">-</span>
+      <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">BAZNICAS IELA 20/22, RIGA</span>
+      <span class="font-SequelSans text-silver">-</span>
+      <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">WHEN COFFEE MEETS WHISKY</span>
+      <span class="font-SequelSans text-silver">-</span>
+      <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">BALTICS' FIRST LISTENING BAR</span>
+      <span class="font-SequelSans text-silver">-</span>
+      <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">BAZNICAS IELA 20/22, RIGA</span>
+      <span class="font-SequelSans text-silver">-</span>
+      <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">WHEN COFFEE MEETS WHISKY</span>
+      <span class="font-SequelSans text-silver">-</span>
+      <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">BALTICS' FIRST LISTENING BAR</span>
+      <span class="font-SequelSans text-silver">-</span>
+      <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">BAZNICAS IELA 20/22, RIGA</span>
+      <span class="font-SequelSans text-silver">-</span>
+    </div>
+  </div>
 
 </body>
 
@@ -493,6 +590,7 @@
     'touchstart',
     'mouseenter',
     'mousedown',
+    'click',
   ];
 
   spinEvents.forEach(function (event) {
@@ -517,14 +615,74 @@
     boomElement.addEventListener(event, doVibration);
   });
 
-  boomElement.addEventListener('touchend', clearInterval(vibrationInterval));
-
   function doVibration() {
     navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
     if (navigator.vibrate) {
       navigator.vibrate([200]);
     }
   }
+
+  const lightboxOverlay = document.getElementById('lightboxOverlay');
+  const lightboxImage = document.getElementById('lightboxImage');
+  const lightboxClose = lightboxOverlay?.querySelector('.lightbox-close');
+  const lightboxTargets = document.querySelectorAll('img[data-lightbox]');
+
+  const setCloseGlyph = () => {
+    if (lightboxClose) {
+      lightboxClose.textContent = '×';
+    }
+  };
+
+  const lockScroll = (e) => {
+    if (lightboxOverlay?.classList.contains('visible')) {
+      e.preventDefault();
+    }
+  };
+
+  const openLightbox = (img) => {
+    if (!lightboxOverlay || !lightboxImage) return;
+    lightboxImage.src = img.src;
+    lightboxImage.alt = img.alt || 'Enlarged view';
+    lightboxOverlay.setAttribute('aria-hidden', 'false');
+    lightboxOverlay.classList.remove('closing');
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    window.addEventListener('wheel', lockScroll, { passive: false });
+    window.addEventListener('touchmove', lockScroll, { passive: false });
+    requestAnimationFrame(() => lightboxOverlay.classList.add('visible'));
+  };
+
+  const closeLightbox = () => {
+    if (!lightboxOverlay || !lightboxImage || !lightboxOverlay.classList.contains('visible')) return;
+    lightboxOverlay.classList.add('closing');
+    setTimeout(() => {
+      lightboxOverlay.classList.remove('visible', 'closing');
+      lightboxOverlay.setAttribute('aria-hidden', 'true');
+      lightboxImage.removeAttribute('src');
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      window.removeEventListener('wheel', lockScroll);
+      window.removeEventListener('touchmove', lockScroll);
+    }, 200);
+  };
+
+  lightboxTargets.forEach((img) => {
+    img.addEventListener('click', () => openLightbox(img));
+  });
+
+  setCloseGlyph();
+  lightboxClose?.addEventListener('click', closeLightbox);
+  lightboxOverlay?.addEventListener('click', (event) => {
+    if (event.target === lightboxOverlay) {
+      closeLightbox();
+    }
+  });
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeLightbox();
+    }
+  });
 </script>
 
 </html>

@@ -3,3 +3,294 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .section-shell {
+    @apply w-full max-w-[2560px] px-4 py-12 sm:px-6 lg:px-16;
+  }
+
+  .section-shell-tight {
+    @apply w-full max-w-[2560px] px-4 py-8 sm:px-6 lg:px-12;
+  }
+
+  .section-divider,
+  .silver-divider {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-silverLight/80 to-transparent;
+    background-size: 200% 100%;
+  }
+
+  .silver-divider-animated {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-silverLight/80 to-transparent animate-silver-shimmer;
+    background-size: 200% 100%;
+  }
+
+  .marquee-container,
+  .marquee-shell {
+    @apply relative w-full overflow-hidden;
+  }
+
+  .marquee-track {
+    @apply flex items-center whitespace-nowrap gap-8;
+  }
+
+  .photo-frame {
+    @apply relative overflow-hidden rounded-[32px] bg-lightBlack/5 shadow-[0_20px_45px_rgba(0,0,0,0.25)];
+  }
+
+  .photo-frame img {
+    @apply h-full w-full object-cover;
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .photo-frame:hover img {
+    @apply scale-110;
+  }
+
+  img[data-lightbox] {
+    cursor: zoom-in;
+  }
+}
+
+/* Silver shimmer gradient for accent lines */
+.silver-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #96a2a5 25%,
+    #c0c8ca 50%,
+    #96a2a5 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+}
+
+/* Scroll-driven animations for modern browsers */
+@supports (animation-timeline: scroll()) {
+  .scroll-scale {
+    animation: scaleOnScroll linear forwards;
+    animation-timeline: scroll();
+    animation-range: 0vh 50vh;
+  }
+  
+  @keyframes scaleOnScroll {
+    0% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1.15) rotate(5deg); }
+  }
+  
+  .scroll-reveal {
+    opacity: 0;
+    animation-timeline: view();
+    animation-range: entry -10% exit 120%;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal-left {
+    animation-name: revealLeft;
+  }
+  
+  .reveal-right {
+    animation-name: revealRight;
+  }
+
+  .reveal-center {
+    animation-name: revealCenter;
+  }
+
+  @keyframes revealLeft {
+    0% { opacity: 0; transform: translateY(160px) scale(0.78) rotate(0deg); }
+    60% { opacity: 1; transform: translateY(0) scale(1) rotate(-4deg); }
+    80% { opacity: 1; transform: translateY(-4px) scale(1.02) rotate(-5deg); }
+    100% { opacity: 0; transform: translateY(-120px) scale(0.9) rotate(-7deg); }
+  }
+
+  @keyframes revealRight {
+    0% { opacity: 0; transform: translateY(160px) scale(0.78) rotate(0deg); }
+    60% { opacity: 1; transform: translateY(0) scale(1) rotate(4deg); }
+    80% { opacity: 1; transform: translateY(-4px) scale(1.02) rotate(5deg); }
+    100% { opacity: 0; transform: translateY(-120px) scale(0.9) rotate(7deg); }
+  }
+  
+  @keyframes revealCenter {
+    0% { opacity: 0; transform: translateY(160px) scale(0.78); }
+    60% { opacity: 1; transform: translateY(0) scale(1.08); }
+    80% { opacity: 1; transform: translateY(-6px) scale(1.1); }
+    100% { opacity: 0; transform: translateY(-120px) scale(0.95); }
+  }
+
+  .scroll-slide-left {
+    animation: slideFromLeft cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+
+  @keyframes slideFromLeft {
+    0% { opacity: 0; transform: translateX(-100px) rotate(-3deg) scale(0.92); }
+    100% { opacity: 1; transform: translateX(0) rotate(0deg) scale(1); }
+  }
+
+  .scroll-slide-right {
+    animation: slideFromRight cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+
+  @keyframes slideFromRight {
+    0% { opacity: 0; transform: translateX(100px) rotate(3deg) scale(0.92); }
+    100% { opacity: 1; transform: translateX(0) rotate(0deg) scale(1); }
+  }
+
+  .scroll-slide-up {
+    animation: slideFromBottom cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-timeline: view();
+    animation-range: entry 0% entry 65%;
+  }
+
+  @keyframes slideFromBottom {
+    0% { opacity: 0; transform: translateY(80px) scale(0.9); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+}
+
+/* Marquee pause on hover */
+.marquee-container:hover .animate-marquee,
+.marquee-container:hover .animate-marquee-slow,
+.marquee-container:hover .animate-marquee-reverse {
+  animation-play-state: paused;
+}
+
+/* Drink item hover lift effect */
+drink:hover, type:hover {
+  transform: translateX(4px);
+  transition: transform 0.2s ease-out;
+}
+
+drink, type {
+  transition: transform 0.2s ease-out;
+}
+
+/* Silver underline hover effect */
+.hover-silver-underline {
+  position: relative;
+}
+
+.hover-silver-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background: linear-gradient(90deg, #96a2a5, #c0c8ca);
+  transition: width 0.3s ease-out;
+}
+
+.hover-silver-underline:hover::after {
+  width: 100%;
+}
+
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 8, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 3vw, 3rem);
+  z-index: 80;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  visibility: hidden;
+  cursor: default;
+  user-select: none;
+}
+
+.lightbox-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: min(95vw, 1400px);
+  max-height: 90vh;
+  border-radius: 32px;
+  overflow: hidden;
+  background: #050505;
+  animation: lightboxZoom 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 30px 120px rgba(0, 0, 0, 0.5);
+  isolation: isolate;
+  user-select: none;
+}
+
+.lightbox-overlay.closing .lightbox-content {
+  animation: lightboxFadeOut 0.18s ease forwards;
+}
+
+.lightbox-content img {
+  width: auto;
+  height: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  z-index: 2;
+}
+
+.lightbox-close:hover {
+  transform: scale(1.1);
+}
+
+@keyframes lightboxZoom {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes lightboxFadeOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+/* Peek-through image thumbnails */
+.peek-image {
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.08;
+  filter: grayscale(30%);
+  transition: opacity 0.5s ease;
+}

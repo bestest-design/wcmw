@@ -46,6 +46,7 @@ module.exports = {
         lightBlack: '#181716',
         black: '#000000',
         silver: '#96a2a5',
+        silverLight: '#c0c8ca',
       },
       keyframes: {
         backspin: {
@@ -73,13 +74,54 @@ module.exports = {
         imgParallax: {
           '0%': { objectPosition: '100% center' },
           '100%': { objectPosition: '0% center' }
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' }
+        },
+        marqueeReverse: {
+          '0%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(0%)' }
+        },
+        silverShimmer: {
+          '0%': { backgroundPosition: '-200% center' },
+          '100%': { backgroundPosition: '200% center' }
+        },
+        fadeSlideUp: {
+          '0%': { opacity: '0', transform: 'translateY(30px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
+        },
+        scaleIn: {
+          '0%': { transform: 'scale(0.8)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' }
+        },
+        floatSoft: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-10px)' }
+        },
+        letterReveal: {
+          '0%': { opacity: '0', transform: 'translateY(1em)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
+        },
+        wordReveal: {
+          '0%': { opacity: '0', clipPath: 'inset(0 100% 0 0)' },
+          '100%': { opacity: '1', clipPath: 'inset(0 0 0 0)' }
         }
       },
       animation: {
         'backspin': 'backspin 3s cubic-bezier(0.3, -0.4, 0, 1.1) 1',
         'ping-slow': 'ping 5s cubic-bezier(0, -5, 0.25, 5) infinite',
         'slider-scroll': 'sliderEnter linear forwards',
-        'img-parallax': 'imgParallax linear'
+        'img-parallax': 'imgParallax linear',
+        'marquee': 'marquee 25s linear infinite',
+        'marquee-slow': 'marquee 40s linear infinite',
+        'marquee-reverse': 'marqueeReverse 30s linear infinite',
+        'silver-shimmer': 'silverShimmer 3s linear infinite',
+        'fade-slide-up': 'fadeSlideUp 0.6s ease-out forwards',
+        'scale-in': 'scaleIn 0.5s ease-out forwards',
+        'float': 'floatSoft 6s ease-in-out infinite',
+        'letter-reveal': 'letterReveal 0.7s ease-out forwards',
+        'word-reveal': 'wordReveal 0.85s ease-out forwards'
       },
     },
   },

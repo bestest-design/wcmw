@@ -49,6 +49,15 @@
   img[data-lightbox] {
     cursor: zoom-in;
   }
+
+  .hour-plus {
+    @apply relative;
+  }
+
+  .hour-plus::after {
+    content: '+';
+    @apply absolute -right-4 top-0;
+  }
 }
 
 /* Silver shimmer gradient for accent lines */

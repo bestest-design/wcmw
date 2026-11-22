@@ -34,8 +34,8 @@
   <link rel="icon" href="./img/favicon.svg" sizes="any" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BarOrPub", "name": "WCMW - When Coffee Meets Whisky", "description": "Baltics' first listening bar: specialty coffee and Japanese whisky on a Reflector Audio sound system.", "url": "https://wcmw.bar/", "image": "https://wcmw.bar/og.jpg", "telephone": "+37123009200", "email": "hi@wcmw.bar", "address": {"@type": "PostalAddress", "streetAddress": "Baznīcas iela 20/22", "addressLocality": "Rīga", "addressCountry": "LV"}, "hasMenu": "https://wcmw.bar/#drinks", "sameAs": ["https://instagr.am/wcmw.bar", "https://fb.com/wcmw.bar", "https://ra.co/promoters/187972"], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "12:00", "closes": "22:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "12:00", "closes": "23:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "12:00", "closes": "02:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "12:00", "closes": "02:00"}]}</script>
-  <link rel="preload" href="./fonts/boldbold.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="./fonts/sequel-light.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fonts/boldbold.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
+  <link rel="preload" href="./fonts/sequel-light.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
   <link rel="stylesheet" href="./src/styles.css">
 </head>
 
@@ -182,7 +182,7 @@
 
     <section class="feed" id="instagram" aria-labelledby="instagram-title">
       <!-- RULE -->
-      <h2 class="kin" data-fit-phone id="instagram-title" style="--len:16"><span class="kin-track">Instagrrrraaaaam</span></h2>
+      <h2 class="kin" data-fit-phone id="instagram-title" style="--len:16"><span class="kin-track"><span class="kin-stack">Insta</span><span class="kin-stack">grrrr</span><span class="kin-stack">aaaaam</span></span></h2>
       <!-- Instagram feed widget: its script is injected by src/main.js when this section gets close -->
       <div class="feed-shell">
         <ul class="feed-placeholder" aria-hidden="true">

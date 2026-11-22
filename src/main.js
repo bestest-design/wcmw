@@ -5,7 +5,7 @@
 
 import { computeStatus, readHours, rigaNow } from "./status.mjs"
 import { initHero } from "./hero.mjs"
-import { setSound, storedSound, scratch, needleDrop, glug } from "./sound.mjs"
+import { setSound, storedSound, scratch, needleDrop, glug, tick } from "./sound.mjs"
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
@@ -56,7 +56,11 @@ function initSound() {
     if (on || offered || !prompt) return
     offered = true
     prompt.hidden = false
-    setTimeout(() => (prompt.hidden = true), 7000)
+    btn.classList.add("is-calling")
+    setTimeout(() => {
+      prompt.hidden = true
+      btn.classList.remove("is-calling")
+    }, 7000)
   })
   prompt?.addEventListener("click", () => set(true))
   if (storedSound()) btn.classList.add("was-on")
@@ -363,6 +367,19 @@ function initDeal() {
 }
 
 /* ------------------------------------------------------------------ */
+/* With sound on, each section's coil rule ticks like a needle drop     */
+/* ------------------------------------------------------------------ */
+function initRuleTicks() {
+  const rules = document.querySelectorAll(".coil-rule")
+  if (!rules.length || !("IntersectionObserver" in window)) return
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach((e) => e.isIntersecting && (tick(), io.unobserve(e.target))),
+    { rootMargin: "0px 0px -35% 0px" }
+  )
+  rules.forEach((r) => io.observe(r))
+}
+
+/* ------------------------------------------------------------------ */
 renderStatus()
 setInterval(renderStatus, 60 * 1000)
 initSound()
@@ -372,6 +389,7 @@ initBoom()
 initLightbox()
 initLazyWidget()
 initDeal()
+initRuleTicks()
 
 const hero = document.querySelector(".hero")
 if (hero) {

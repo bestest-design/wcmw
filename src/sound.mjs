@@ -137,3 +137,20 @@ export function glug() {
     o.stop(t + d + 0.16)
   })
 }
+
+/** Soft needle tick when a section's coil rule draws in. */
+export function tick() {
+  if (!enabled) return
+  const c = audio()
+  if (!c) return
+  const t = c.currentTime
+  const src = c.createBufferSource()
+  src.buffer = noiseBuffer(c, 0.03, (i, n) => (Math.random() * 2 - 1) * (1 - i / n))
+  const hp = c.createBiquadFilter()
+  hp.type = "highpass"
+  hp.frequency.value = 2500
+  const g = c.createGain()
+  g.gain.value = 0.18
+  src.connect(hp).connect(g).connect(c.destination)
+  src.start(t)
+}

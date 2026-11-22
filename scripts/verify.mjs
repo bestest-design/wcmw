@@ -30,8 +30,9 @@ for (const target of ["#drinks", "#events", "#contacts"]) {
 }
 
 // Branded stretched headings: intentional spellings, never "corrected".
+const headingTexts = [...html.matchAll(/<h[23][^>]*>([\s\S]*?)<\/h[23]>/g)].map((m) => m[1].replace(/<[^>]+>/g, "").trim())
 for (const word of ["Driiiiinnnksss", "Instagrrrraaaaam", "Eeeeeeeeevents", "Signature Cocktailssssssssssssss", "Red wineeeeeeeeeeeeeeeeeeeeeeeeeeeeee"]) {
-  check(html.includes(`>${word}<`), `branded heading "${word}" missing or respelled`)
+  check(headingTexts.includes(word), `branded heading "${word}" missing or respelled`)
 }
 
 // Menu: every item from src/menu.data.mjs is rendered, with its price.

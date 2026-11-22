@@ -1,31 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-const { text } = require('stream/consumers');
-const plugin = require('tailwindcss/plugin');
 
 module.exports = {
-  plugins: [
-    require("tailwindcss-fluid-type"),
-    plugin(function({ addBase }) {
-     addBase({
-        'html': { fontSize: "20px", fontFamily: 'SequelSans, sans-serif'},
-        'h1': { fontSize: "3.815rem" },
-        'h2': { fontSize: "3.052rem" },
-        'h3': { fontSize: "2.441rem" },
-        'h4': { fontSize: "1.953rem" },
-        'h5': { fontSize: "1.563rem" },
-        'h6': { fontSize: "1.25rem" },
-        'p': { fontSize: "1.953rem", },
-        'ml': { fontSize: "0.8rem", textTransform: 'lowercase' }, 
-        'small': { fontSize: "1.15rem" },
-        'price': { fontSize: "1.15rem" },
-        'bold': { 
-          fontFamily: 'BoldBold, sans-serif',
-          wordSpacing: '-0.2em',
-          textTransform: 'uppercase',
-        },
-      })
-    }),
-  ],
+  plugins: [],
   content: [
     './index.html',
     './src/**/*.{js,jsx,ts,tsx,vue,css}',

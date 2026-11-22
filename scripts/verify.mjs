@@ -100,6 +100,23 @@ for (const [now, open, text] of cases) {
 const listed = [...html.matchAll(/data-day="(\d)" data-open="([\d:]+)" data-close="([\d:]+)"/g)].map((m) => m.slice(1).join(" "))
 check(listed.join("|") === "3 12:00 22:00|4 12:00 23:00|5 12:00 02:00|6 12:00 02:00", `hours list changed: ${listed.join("|")}`)
 
+// Structured data (search engines, maps) must agree with the visible hours list.
+const ldRaw = (html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/) || [])[1]
+let ld = null
+try {
+  ld = JSON.parse(ldRaw)
+} catch {
+  check(false, "JSON-LD missing or invalid")
+}
+if (ld) {
+  const dayNo = { Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 }
+  const ldHours = (ld.openingHoursSpecification || []).map((o) => `${dayNo[o.dayOfWeek]} ${o.opens} ${o.closes}`).join("|")
+  check(ld["@type"] === "BarOrPub", "JSON-LD must describe a BarOrPub")
+  check(ldHours === listed.join("|"), `JSON-LD hours (${ldHours}) differ from the hours list`)
+  check(ld.telephone === "+37123009200" && html.includes('href="tel:+37123009200"'), "phone number mismatch between JSON-LD and page")
+}
+check(html.includes('content="https://wcmw.bar/og.jpg"') && fs.existsSync(path.join(siteDir, "og.jpg")), "own OG image missing")
+
 if (failures.length) {
   console.error(`verify: ${failures.length} check(s) failed:`)
   for (const f of failures) console.error(`  ✗ ${f}`)

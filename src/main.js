@@ -32,21 +32,34 @@ function renderStatus() {
 /* ------------------------------------------------------------------ */
 function initSound() {
   const btn = document.querySelector("[data-sound]")
+  const prompt = document.querySelector("[data-sound-prompt]")
+  const hero = document.querySelector(".hero")
   if (!btn) return
   const label = btn.querySelector("[data-sound-label]")
-  const show = (on) => {
+  let on = false
+  const show = () => {
     btn.setAttribute("aria-pressed", String(on))
     if (label) label.textContent = on ? "sound on" : "sound off"
   }
-  // A stored "on" only arms the button; audio still waits for a tap (browser rule)
-  let on = false
-  show(on)
-  if (storedSound()) btn.classList.add("was-on")
-  btn.addEventListener("click", () => {
-    on = !on
+  const set = (value) => {
+    on = value
     setSound(on)
-    show(on)
+    show()
+    if (prompt) prompt.hidden = true
+  }
+  show()
+  btn.addEventListener("click", () => set(!on))
+
+  // After the first pull, offer the sound once, right where the visitor is playing
+  let offered = false
+  hero?.addEventListener("wcmw:pulled", () => {
+    if (on || offered || !prompt) return
+    offered = true
+    prompt.hidden = false
+    setTimeout(() => (prompt.hidden = true), 7000)
   })
+  prompt?.addEventListener("click", () => set(true))
+  if (storedSound()) btn.classList.add("was-on")
 }
 
 /* ------------------------------------------------------------------ */
@@ -115,6 +128,7 @@ function initMenu() {
 
   // Search: filters items as you type; empty sections and categories hide
   const input = document.querySelector("[data-menu-search]")
+  const countEl = document.querySelector("[data-menu-count]")
   const empty = document.querySelector(".menu-empty")
   const emptyText = empty?.querySelector(".menu-empty-text")
   const items = [...document.querySelectorAll(".menu-body .mi")].map((li) => ({
@@ -139,6 +153,7 @@ function initMenu() {
       const chip = links.find((a) => a.dataset.cat === cat.dataset.cat)
       chip?.parentElement.toggleAttribute("hidden", cat.hidden)
     })
+    if (countEl) countEl.textContent = q && shown ? `${shown} ${shown === 1 ? "drink matches" : "drinks match"}` : ""
     if (empty) {
       empty.hidden = shown > 0 || !q
       if (emptyText) emptyText.textContent = shown || !q ? "" : `Nothing on the menu matches "${input.value.trim()}". Try whisky, yuzu or matcha.`
@@ -282,11 +297,23 @@ function initLightbox() {
 function initLazyWidget() {
   const host = document.querySelector("[data-widget-src]")
   if (!host) return
+  const shell = host.closest(".feed-shell")
   const load = () => {
     const s = document.createElement("script")
     s.src = host.dataset.widgetSrc
     s.async = true
     document.body.appendChild(s)
+    // keep our own photos in place until the feed shows real posts
+    const done = () => shell?.classList.add("is-loaded")
+    const mo = new MutationObserver(() => {
+      const imgs = [...host.querySelectorAll("img")]
+      if (imgs.some((i) => i.complete && i.naturalWidth > 0)) {
+        mo.disconnect()
+        done()
+      } else imgs.forEach((i) => i.addEventListener("load", () => (mo.disconnect(), done()), { once: true }))
+    })
+    mo.observe(host, { childList: true, subtree: true })
+    setTimeout(done, 12000)
   }
   if (!("IntersectionObserver" in window)) return load()
   const io = new IntersectionObserver(

@@ -105,8 +105,10 @@ export function renderMenuBody(data) {
     .map((c) => {
       const body = c.sections.map(section).join("")
       const deal = c.id === "specials" ? dealCard(data.deal) : ""
-      const icon = c.id === "coffee" ? `<span class="menu-icon menu-icon--cup" aria-hidden="true"><!-- SVG:icon-cup.svg --></span>` : ""
-      return `<section class="menu-cat" id="menu-${c.id}" data-cat="${c.id}" aria-label="${esc(c.label)}">${icon}${body}${deal}</section>`
+      const [file] = VISUALS[c.id] || VISUALS.cocktails
+      const sticker = `<img class="menu-sticker" src="./pics/opt/${file}-640.webp" alt="" aria-hidden="true" loading="lazy" decoding="async">`
+      const label = `<p class="menu-cat-label" aria-hidden="true">${esc(c.label)}</p>`
+      return `<section class="menu-cat" id="menu-${c.id}" data-cat="${c.id}" aria-label="${esc(c.label)}">${label}${sticker}${body}${deal}</section>`
     })
     .join("\n")
   return `<div class="menu-body">

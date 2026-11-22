@@ -17,8 +17,10 @@
   <meta property="og:title" content="WCMW - When Coffee Meets Whisky">
   <meta property="og:description"
     content="WHEN COFFEE MEETS WHISKY ☕️ Specialty Coffee 🥃 Japanese Whisky 📻 Listening Bar Run by @tstudiolv">
-  <meta property="og:image"
-    content="https://opengraph.b-cdn.net/production/documents/152f14e3-d016-4a56-8f34-838274b69e12.jpg?token=zt8LzwEuH_tmnFVU6AT83PPqgMbcFMbAebMQ3lWTXrk&height=312&width=820&expires=33243308366">
+  <meta property="og:image" content="https://wcmw.bar/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The WCMW listening bar poster: a spring of letters running into a record held by the bowler-hat listener">
 
   <!-- Twitter Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
@@ -27,10 +29,11 @@
   <meta name="twitter:title" content="WCMW - When Coffee Meets Whisky">
   <meta name="twitter:description"
     content="WHEN COFFEE MEETS WHISKY ☕️ Specialty Coffee 🥃 Japanese Whisky 📻 Listening Bar Run by @tstudiolv">
-  <meta name="twitter:image"
-    content="https://opengraph.b-cdn.net/production/documents/152f14e3-d016-4a56-8f34-838274b69e12.jpg?token=zt8LzwEuH_tmnFVU6AT83PPqgMbcFMbAebMQ3lWTXrk&height=312&width=820&expires=33243308366">
+  <meta name="twitter:image" content="https://wcmw.bar/og.jpg">
 
   <link rel="icon" href="./img/favicon.svg" sizes="any" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BarOrPub", "name": "WCMW - When Coffee Meets Whisky", "description": "Baltics' first listening bar: specialty coffee and Japanese whisky on a Reflector Audio sound system.", "url": "https://wcmw.bar/", "image": "https://wcmw.bar/og.jpg", "telephone": "+37123009200", "email": "hi@wcmw.bar", "address": {"@type": "PostalAddress", "streetAddress": "Baznīcas iela 20/22", "addressLocality": "Rīga", "addressCountry": "LV"}, "hasMenu": "https://wcmw.bar/#drinks", "sameAs": ["https://instagr.am/wcmw.bar", "https://fb.com/wcmw.bar", "https://ra.co/promoters/187972"], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "12:00", "closes": "22:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "12:00", "closes": "23:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "12:00", "closes": "02:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "12:00", "closes": "02:00"}]}</script>
   <link rel="preload" href="./fonts/boldbold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./fonts/sequel-light.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="./src/styles.css">
@@ -62,7 +65,7 @@
       <h1 class="hero-title" id="hero-title">
         <span class="sr-only">WCMW, When Coffee Meets Whisky</span>
         <span class="hero-wcm" aria-hidden="true">WC<span class="hero-branch">OFEEEEEE</span>M</span>
-        <span class="hero-tail" aria-hidden="true"><span class="hero-tail-w">WWW</span>HISKYYYYYY</span>
+        <span class="hero-tail" aria-hidden="true"><span class="hero-burst"><!-- BURST --></span><span class="hero-tail-word">W<span class="hero-tail-rest">HISKYYYYY</span></span></span>
       </h1>
 
       <div class="coil coil--l" aria-hidden="true"><!-- COIL_L --></div>
@@ -71,7 +74,8 @@
       <div class="hero-listener" data-pull aria-hidden="true">
         <!-- SVG:WCMW_listener.svg -->
       </div>
-      <p class="pull-hint" aria-hidden="true">pull the record</p>
+      <p class="pull-hint" aria-hidden="true">pull the record <svg viewBox="0 0 24 12"><path d="M1 6h20m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
+      <button class="sound-prompt" type="button" data-sound-prompt hidden>turn the sound on</button>
 
       <button class="boom" type="button" id="boom" aria-label="Spin the WCMW sticker">
         <img src="./img/WCMW_BOOM.svg" alt="" id="spinner">
@@ -141,6 +145,7 @@
 
     <!-- Menu: rendered from src/menu.data.mjs at build time -->
     <section class="menu" id="drinks" aria-labelledby="drinks-title">
+      <!-- RULE -->
       <h2 class="kin" id="drinks-title" style="--len:14"><span class="kin-track">Driiiiinnnksss</span></h2>
       <div class="menu-head">
         <p class="menu-intro">Prices in euros. Spirits come as a 50ml pour or by the bottle.</p>
@@ -149,6 +154,7 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
           <input type="search" placeholder="Search: hibiki, yuzu, matcha" autocomplete="off" enterkeyhint="search" data-menu-search>
         </label>
+        <p class="menu-count" data-menu-count aria-live="polite"></p>
       </div>
       <!-- MENU_RAIL -->
       <div class="menu-layout">
@@ -175,22 +181,35 @@
     </section>
 
     <section class="feed" id="instagram" aria-labelledby="instagram-title">
+      <!-- RULE -->
       <h2 class="kin" id="instagram-title" style="--len:16"><span class="kin-track">Instagrrrraaaaam</span></h2>
       <!-- Instagram feed widget: its script is injected by src/main.js when this section gets close -->
-      <div data-key="Wcmw Feed " class="ft feed-widget" id="ft1r0p18l" data-widget-src="https://wdg.fouita.com/widgets/0x3602c4.js"></div>
+      <div class="feed-shell">
+        <ul class="feed-placeholder" aria-hidden="true">
+          <li><img src="./pics/opt/inside_3-640.webp" alt="" loading="lazy" decoding="async"></li>
+          <li><img src="./pics/opt/dj_1-640.webp" alt="" loading="lazy" decoding="async"></li>
+          <li><img src="./pics/opt/drink_3-640.webp" alt="" loading="lazy" decoding="async"></li>
+        </ul>
+        <div data-key="Wcmw Feed " class="ft feed-widget" id="ft1r0p18l" data-widget-src="https://wdg.fouita.com/widgets/0x3602c4.js"></div>
+      </div>
       <a class="pill" href="https://instagr.am/wcmw.bar">Follow @wcmw.bar</a>
     </section>
 
     <section class="events" id="events" aria-labelledby="events-title">
-      <h2 class="kin" id="events-title" style="--len:14"><span class="kin-track">Eeeeeeeeevents</span></h2>
+      <!-- RULE -->
+      <h2 class="kin" data-rest="end" id="events-title" style="--len:14"><span class="kin-track">Eeeeeeeeevents</span></h2>
       <p class="events-intro">Line-ups and tickets are on Resident Advisor.</p>
+      <div class="events-shell">
+      <p class="events-loading" aria-hidden="true">loading line-ups from Resident Advisor.</p>
       <iframe class="events-frame" src="https://ra.co/promoters/187972/widget/events?theme=light&transparentBackground=true&customTextColor=%23000000"
         title="WCMW events on Resident Advisor" loading="lazy"
-        height="650" width="100%"></iframe>
+        height="650" width="100%" onload="this.parentNode.classList.add('is-loaded')"></iframe>
+      </div>
       <a class="pill" href="https://ra.co/promoters/187972">See WCMW on Resident Advisor</a>
     </section>
 
     <section class="visit" id="contacts" aria-labelledby="visit-title">
+      <!-- RULE -->
       <h2 class="kin" id="visit-title" style="--len:12"><span class="kin-track">Viiiiiiiisit</span></h2>
 
       <div class="visit-grid">
@@ -248,6 +267,7 @@
     <a href="#events" data-dock="events">Events</a>
     <a href="#contacts" data-dock="contacts"><span class="status-dot" aria-hidden="true"></span>Visit</a>
   </nav>
+  <div class="dock-fade" aria-hidden="true"></div>
 
   <div id="lightboxOverlay" class="lightbox" role="dialog" aria-modal="true" aria-label="Photos from the bar" aria-hidden="true">
     <img id="lightboxImage" alt="">

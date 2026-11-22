@@ -97,6 +97,7 @@ export function initHero(hero, { reduceMotion }) {
     if (Math.abs(pull) > 2) {
       hero.classList.add("has-pulled")
       boing(Math.min(1, Math.abs(pull) / MAX_PULL))
+      hero.dispatchEvent(new CustomEvent("wcmw:pulled"))
     }
     springBack()
   }

@@ -147,11 +147,12 @@ a { color: inherit; }
    scroll and from pulling the record.
    ========================================================================== */
 .hero {
-  --u: min(1vw, calc((100svh - 12.4rem) / 143));
-  --t: max(calc(3.4rem + var(--u) * 11), calc(3.4rem + var(--u) * 11 + (100svh - 3.4rem - 9rem - var(--u) * 143) / 2));
+  --u: min(1vw, calc((100svh - 15.3rem) / 143));
+  --t: max(calc(3.4rem + var(--u) * 11), calc(3.4rem + var(--u) * 11 + (100svh - 2.9rem - 3.4rem - 9rem - var(--u) * 143) / 2));
+  --ox: max(0px, (100vw - var(--u) * 104) / 2);
   --reveal: 0;
   position: relative;
-  min-height: 100svh;
+  min-height: calc(100svh - 2.9rem);
   display: grid;
   grid-template-rows: auto 1fr auto;
   padding: max(env(safe-area-inset-top), 1.25rem) var(--g) calc(5.25rem + env(safe-area-inset-bottom));
@@ -183,7 +184,7 @@ a { color: inherit; }
   border: 0;
   background: none;
   color: inherit;
-  font: 300 var(--t-xs) / 1 var(--f-text);
+  font: 300 var(--t-s) / 1 var(--f-text);
   cursor: pointer;
 }
 .sound-bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 0.8rem; }
@@ -205,7 +206,7 @@ a { color: inherit; }
 
 .hero-wcm {
   position: absolute;
-  left: var(--g);
+  left: calc(var(--ox) + var(--g));
   top: calc(var(--t) - var(--u) * 2.4);
   font-size: calc(var(--u) * 25);
   letter-spacing: -0.02em;
@@ -224,12 +225,16 @@ a { color: inherit; }
 
 .hero-tail {
   position: absolute;
-  left: var(--g);
+  left: calc(var(--ox) + var(--g));
   top: calc(var(--t) + var(--u) * 96);
-  font-size: calc(var(--u) * 7.5);
+  display: flex;
+  align-items: flex-end;
+  font-size: calc(var(--u) * 6.6);
   white-space: nowrap;
 }
-.hero-tail-w { letter-spacing: -0.2em; margin-right: 0.18em; }
+.hero-burst { display: block; width: 3.3em; margin-right: -0.25em; }
+.hero-burst svg { width: 100%; height: auto; overflow: visible; }
+.hero-tail-word { display: block; line-height: 0.8; }
 
 .coil {
   position: absolute;
@@ -240,7 +245,7 @@ a { color: inherit; }
 
 /* phones: L-shaped spring, clipped at the record's rim (37u) until revealed */
 .coil--l {
-  left: 0;
+  left: var(--ox);
   top: calc(var(--t) + var(--u) * 18);
   width: calc(var(--u) * 100);
   clip-path: inset(-5% calc(63% - var(--reveal) * 1%) -5% -5%);
@@ -251,7 +256,7 @@ a { color: inherit; }
 .hero-listener {
   position: absolute;
   z-index: 2;
-  left: calc(var(--u) * 35);
+  left: calc(var(--ox) + var(--u) * 35);
   top: calc(var(--t) + var(--u) * 19);
   height: calc(var(--u) * 112);
   aspect-ratio: 1428 / 2319;
@@ -268,21 +273,42 @@ a { color: inherit; }
 
 .pull-hint {
   position: absolute;
-  left: var(--g);
-  top: calc(var(--t) + var(--u) * 62);
+  z-index: 3;
+  left: calc(var(--ox) + var(--g));
+  top: calc(var(--t) + var(--u) * 64);
   margin: 0;
+  max-width: calc(var(--u) * 34 - var(--g));
   font-weight: 300;
-  font-size: var(--t-xs);
+  font-size: clamp(0.75rem, 3.5vw, var(--t-s));
+  line-height: 1.2;
   transition: opacity 0.4s;
 }
+.pull-hint svg { display: inline-block; width: 1.3rem; margin-left: 0.2rem; vertical-align: middle; }
 .hero.has-pulled .pull-hint { opacity: 0; }
+
+.sound-prompt {
+  position: absolute;
+  z-index: 4;
+  left: calc(var(--ox) + var(--g));
+  top: calc(var(--t) + var(--u) * 62);
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--sulfur);
+  color: var(--ink);
+  font: 400 var(--t-s) / 1 var(--f-text);
+  cursor: pointer;
+  animation: prompt-in 0.5s var(--spring) both;
+}
+@keyframes prompt-in { from { opacity: 0; transform: translateY(0.5rem) scale(0.9); } }
 
 .boom {
   position: absolute;
   z-index: 3;
-  left: calc(var(--g) + var(--u) * 1);
-  top: calc(var(--t) + var(--u) * 68);
-  width: calc(var(--u) * 24);
+  left: calc(var(--ox) + var(--u) * 73);
+  top: calc(var(--t) - var(--u) * 8);
+  width: calc(var(--u) * 21);
   aspect-ratio: 1588 / 1471;
   padding: 0;
   border: 0;
@@ -323,6 +349,7 @@ a { color: inherit; }
 
 /* One orchestrated entrance: the spring is drawn out of the "W" and the listener catches it */
 .hero.is-ready .coil path { stroke-dasharray: 1; animation: coil-draw 1.2s 0.1s var(--ease-out) both; }
+.hero.is-ready .hero-burst path { stroke-dasharray: 1; animation: coil-draw 0.6s 0.9s var(--ease-out) both; }
 .hero.is-ready .hero-listener { animation: listener-catch 1.25s var(--spring) both; }
 .hero.is-ready .hero-branch { animation: branch-in 0.7s 0.55s var(--ease-out) both; }
 
@@ -363,25 +390,32 @@ a { color: inherit; }
     display: block;
     overflow: hidden;
     left: calc(var(--g) + var(--u) * 42);
-    top: calc(var(--c) - var(--u) * 6);
+    top: calc(var(--c) - var(--u) * 6.5);
     width: calc(var(--coil-w) + var(--reveal) * var(--u));
-    height: calc(var(--u) * 12);
-    font-size: calc(var(--u) * 12);
+    height: calc(var(--u) * 13);
+    font-size: calc(var(--u) * 13);
   }
+  .coil--line svg { max-width: none; }
   .hero-tail {
-    top: calc(var(--c) + var(--u) * 30);
-    left: calc(var(--g) + var(--u) * 22);
+    top: calc(var(--c) + var(--u) * 16);
+    left: calc(var(--g) + var(--u) * 20);
     font-size: calc(var(--u) * 6.5);
   }
-  .pull-hint { top: calc(var(--c) + var(--u) * 8); left: calc(var(--g) + var(--u) * 27); }
+  .pull-hint,
+  .sound-prompt { top: calc(var(--c) + var(--u) * 9); left: calc(var(--g) + var(--u) * 62); max-width: none; }
   .boom {
-    left: calc(var(--g) + var(--u) * 6);
+    left: calc(var(--g) + var(--u) * 4);
     top: calc(var(--c) + var(--u) * 8);
-    width: calc(var(--u) * 16);
+    width: calc(var(--u) * 15);
   }
   .hero-status { justify-content: flex-start; }
   .slide-card p { font-size: var(--t-l); }
   .slide-card--3 p { font-size: calc(var(--t-l) * 0.8); }
+}
+
+@media (min-width: 600px) and (min-aspect-ratio: 1/1) and (max-height: 520px) {
+  /* phones on their side: the status moves up so the poster keeps the floor */
+  .hero-status { position: absolute; grid-row: auto; top: max(env(safe-area-inset-top), 1.2rem); left: var(--g); font-size: var(--t-s); }
 }
 
 @media (min-width: 1024px) {
@@ -466,9 +500,35 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .kin { font-size: min(var(--t-kin), calc(100cqw / (var(--len) * 0.86))); }
 }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .kin[data-rest="end"] .kin-track { animation-name: kin-pan-end; }
+  }
+}
+@keyframes kin-pan-end {
+  from { transform: translateX(0); }
+  to { transform: translateX(min(0px, calc(100cqw - 100%))); }
+}
 @keyframes kin-pan {
   from { transform: translateX(min(0px, calc(100cqw - 100%))); }
   to { transform: translateX(0); }
+}
+
+/* Coil rule above each section heading: the spring draws itself as it scrolls in */
+.coil-rule {
+  height: 1.4rem;
+  margin: 0 0 1.75rem;
+}
+.coil-rule svg { width: 100%; height: 100%; overflow: visible; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .coil-rule path {
+      stroke-dasharray: 1;
+      animation: coil-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 45%;
+    }
+  }
 }
 
 /* ==========================================================================
@@ -660,7 +720,37 @@ a { color: inherit; }
 }
 .menu-rail a[aria-current="true"] { background: var(--ink); color: var(--sulfur); }
 
-.menu-cat { padding-top: 2.75rem; }
+.menu-cat { position: relative; padding-top: 2.75rem; }
+.menu-cat-label {
+  display: flex;
+  align-items: center;
+  min-height: 4.75rem;
+  margin: 0 0 1.25rem;
+  padding-right: 6rem;
+  border-top: 2px solid var(--ink);
+  font-weight: 300;
+  font-size: var(--t-xl);
+  line-height: 1;
+  text-transform: lowercase;
+  letter-spacing: -0.02em;
+}
+.menu-sticker {
+  position: absolute;
+  right: 0;
+  top: calc(2.75rem + 0.5rem);
+  width: 4.75rem;
+  height: 4.75rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--ink);
+  transform: rotate(-8deg);
+}
+.menu-cat:nth-child(even) .menu-sticker { transform: rotate(7deg); }
+@media (min-width: 1024px) {
+  .menu-sticker { display: none; }
+  .menu-cat-label { padding-right: 0; font-size: var(--t-l); min-height: 3.5rem; }
+}
+.menu-count { margin: 0; min-height: 1.2em; font-weight: 300; font-size: var(--t-s); color: var(--ink-soft); }
 
 .menu-sec { container-type: inline-size; }
 .menu-sec + .menu-sec { margin-top: 2.5rem; }
@@ -860,12 +950,39 @@ a { color: inherit; }
    ========================================================================== */
 .feed,
 .events { padding: clamp(3rem, 8vw, 6rem) var(--g) 1rem; }
+.feed-shell { position: relative; margin-top: 2rem; }
 .feed-widget {
-  margin-top: 2rem;
   min-height: 20rem;
   border-radius: var(--radius-photo);
   overflow: hidden;
 }
+/* our own photos hold the space until the Instagram widget has rendered */
+.feed-placeholder {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--sulfur);
+  transition: opacity 0.5s;
+}
+.feed-placeholder li { aspect-ratio: 4 / 5; border-radius: 0.75rem; overflow: hidden; }
+.feed-placeholder img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.2); }
+.feed-shell.is-loaded .feed-placeholder { opacity: 0; pointer-events: none; }
+.events-shell { position: relative; }
+.events-loading {
+  position: absolute;
+  top: 1.25rem;
+  left: 0;
+  margin: 0;
+  font-weight: 300;
+  font-size: var(--t-s);
+}
+.events-shell.is-loaded .events-loading { display: none; }
 /* third-party carousel dots: give them a 24px hit area without changing the look */
 .feed-widget .splide__pagination__page { box-sizing: content-box; padding: 8px; background-clip: content-box; }
 .events-intro { margin: 1.5rem 0 1rem; font-weight: 300; max-width: 34ch; }
@@ -1038,6 +1155,17 @@ a { color: inherit; }
 }
 .dock.is-visible { transform: translate(-50%, 0); }
 .dock.is-visible.is-tucked { transform: translate(-50%, calc(100% + 2rem)); }
+.dock-fade {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 45;
+  height: calc(5.5rem + env(safe-area-inset-bottom));
+  pointer-events: none;
+  background: linear-gradient(rgb(255 255 62 / 0), var(--sulfur) 70%);
+  transition: opacity 0.3s;
+}
+.dock.is-tucked ~ .dock-fade { opacity: 0; }
+@media (min-width: 1024px) { .dock-fade { display: none; } }
 .dock a {
   display: inline-flex;
   align-items: center;

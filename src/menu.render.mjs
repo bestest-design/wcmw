@@ -72,12 +72,12 @@ const dealCard = (deal) => `
 
 // Photo shown beside the menu on wide screens while a category is in view
 const VISUALS = {
-  cocktails: ["drink_1", "A cocktail in yellow light"],
+  cocktails: ["drink_6", "A sour on a cobalt blue table"],
   specials: ["drink_2", "A coffee cocktail in a coupe"],
   whisky: ["inside_5", "Records and a lamp on a bar table"],
   spirits: ["drink_4", "A highball with olives"],
   coffee: ["drink_5", "Coffee poured over a dessert"],
-  "no-alcohol": ["drink_6", "A drink on a cobalt blue table"],
+  "no-alcohol": ["drink_3", "A red drink over ice on a steel table"],
   beer: ["dj_2", "Records spinning on the turntable"],
   wine: ["drink_7", "Red wine on a steel table"],
   snacks: ["film_1", "The printed WCMW menu"],
@@ -107,8 +107,11 @@ export function renderMenuBody(data) {
       const deal = c.id === "specials" ? dealCard(data.deal) : ""
       const [file] = VISUALS[c.id] || VISUALS.cocktails
       const sticker = `<img class="menu-sticker" src="./pics/opt/${file}-640.webp" alt="" aria-hidden="true" loading="lazy" decoding="async">`
-      const label = `<p class="menu-cat-label" aria-hidden="true">${esc(c.label)}</p>`
-      return `<section class="menu-cat" id="menu-${c.id}" data-cat="${c.id}" aria-label="${esc(c.label)}">${label}${sticker}${body}${deal}</section>`
+      // a category label only where it groups several titled lists (Spirits, Wine, No alcohol)
+      const titled = c.sections.filter((s) => s.title).length
+      const label = titled > 1 ? `<p class="menu-cat-label" aria-hidden="true">${esc(c.label)}</p>` : ""
+      const cls = titled > 1 ? "menu-cat" : "menu-cat menu-cat--single"
+      return `<section class="${cls}" id="menu-${c.id}" data-cat="${c.id}" aria-label="${esc(c.label)}">${label}${sticker}${body}${deal}</section>`
     })
     .join("\n")
   return `<div class="menu-body">

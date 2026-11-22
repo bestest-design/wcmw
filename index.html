@@ -182,7 +182,7 @@
 
     <section class="feed" id="instagram" aria-labelledby="instagram-title">
       <!-- RULE -->
-      <h2 class="kin" id="instagram-title" style="--len:16"><span class="kin-track">Instagrrrraaaaam</span></h2>
+      <h2 class="kin" data-fit-phone id="instagram-title" style="--len:16"><span class="kin-track">Instagrrrraaaaam</span></h2>
       <!-- Instagram feed widget: its script is injected by src/main.js when this section gets close -->
       <div class="feed-shell">
         <ul class="feed-placeholder" aria-hidden="true">
@@ -199,13 +199,13 @@
       <!-- RULE -->
       <h2 class="kin" data-rest="end" id="events-title" style="--len:14"><span class="kin-track">Eeeeeeeeevents</span></h2>
       <p class="events-intro">Line-ups and tickets are on Resident Advisor.</p>
+      <a class="pill pill--top" href="https://ra.co/promoters/187972">See WCMW on Resident Advisor</a>
       <div class="events-shell">
       <p class="events-loading" aria-hidden="true">loading line-ups from Resident Advisor.</p>
       <iframe class="events-frame" src="https://ra.co/promoters/187972/widget/events?theme=light&transparentBackground=true&customTextColor=%23000000"
         title="WCMW events on Resident Advisor" loading="lazy"
         height="650" width="100%" onload="this.parentNode.classList.add('is-loaded')"></iframe>
       </div>
-      <a class="pill" href="https://ra.co/promoters/187972">See WCMW on Resident Advisor</a>
     </section>
 
     <section class="visit" id="contacts" aria-labelledby="visit-title">
@@ -236,6 +236,7 @@
             <span>Baznīcas iela 20/22, Rīga</span>
             <span class="visit-cta">Get directions</span>
           </a>
+          <a class="pill visit-call" href="tel:+37123009200">Call the bar</a>
           <ul class="visit-links">
             <li><span class="visit-key" aria-hidden="true">tteeellll</span><a href="tel:+37123009200"><span class="sr-only">Phone </span>+371 23009200</a></li>
             <li><span class="visit-key" aria-hidden="true">eemaiilll</span><a href="mailto:hi@wcmw.bar"><span class="sr-only">Email </span>hi@wcmw.bar</a></li>

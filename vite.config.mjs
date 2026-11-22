@@ -59,17 +59,18 @@ const coilL = () => {
   return `<svg class="coil-l-svg" viewBox="0 -2 100 46" aria-hidden="true" focusable="false"><path d="${d}" pathLength="1" fill="none" stroke="currentColor" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 };
 
-// The poster's second motif: the W bursts into a jagged zigzag that lands on "HISKYYYY".
+// The poster's second motif: the W bursts into a bold jagged zigzag that lands on "HISKYYYY".
 const burst = () => {
-  const pts = [[2, 4], [16, 30], [10, 10], [30, 40], [22, 18], [44, 48], [36, 28], [60, 58], [52, 40], [74, 64]];
+  const pts = [[4, 8], [22, 44], [14, 18], [40, 56], [30, 30], [58, 66], [50, 46], [72, 70]];
   const d = pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x} ${y}`).join('');
-  return `<svg class="burst-svg" viewBox="0 0 76 66" aria-hidden="true" focusable="false"><path d="${d}" pathLength="1" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  return `<svg class="burst-svg" viewBox="0 0 76 76" aria-hidden="true" focusable="false"><path d="${d}" pathLength="1" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 };
 
-// Section rule: a long coil that draws itself as the section scrolls in.
+// Section rule: a coil with a fixed period (the box is sliced, never stretched),
+// same stroke-to-amplitude ratio as the hero spring. It draws itself on scroll.
 const rule = () => {
-  const d = springAlong([['line', 0, 10, 400, 10]], { half: 3.2, amp: 6 });
-  return `<div class="coil-rule" aria-hidden="true"><svg viewBox="0 -2 400 24" preserveAspectRatio="none" focusable="false"><path d="${d}" pathLength="1" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg></div>`;
+  const d = springAlong([['line', 0, 12, 2600, 12]], { half: 7, amp: 8 });
+  return `<div class="coil-rule" aria-hidden="true"><svg viewBox="0 0 2600 24" preserveAspectRatio="xMinYMid slice" focusable="false"><path d="${d}" pathLength="1" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
 };
 
 const wcmwHtml = () => ({

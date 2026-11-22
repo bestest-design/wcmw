@@ -5,7 +5,7 @@
 
 import { computeStatus, readHours, rigaNow } from "./status.mjs"
 import { initHero } from "./hero.mjs"
-import { setSound, storedSound, scratch, needleDrop } from "./sound.mjs"
+import { setSound, storedSound, scratch, needleDrop, glug } from "./sound.mjs"
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
@@ -179,6 +179,12 @@ function initDock() {
   const dock = document.querySelector(".dock")
   if (!dock) return
   requestAnimationFrame(() => dock.classList.add("is-visible"))
+  // the fade under the dock only matters once content scrolls beneath it
+  const hero = document.querySelector(".hero")
+  if (hero)
+    new IntersectionObserver(([e]) => document.body.classList.toggle("past-hero", !e.isIntersecting), {
+      rootMargin: "0px 0px -40% 0px",
+    }).observe(hero)
   const links = [...dock.querySelectorAll("a[data-dock]")]
   const sections = links.map((a) => document.getElementById(a.dataset.dock)).filter(Boolean)
   const seen = new Map()
@@ -303,16 +309,21 @@ function initLazyWidget() {
     s.src = host.dataset.widgetSrc
     s.async = true
     document.body.appendChild(s)
-    // keep our own photos in place until the feed shows real posts
+    // keep our own photos in place until the feed paints real posts (it uses background images)
     const done = () => shell?.classList.add("is-loaded")
+    const painted = () =>
+      [...host.querySelectorAll("div, a, span")].some((el) => getComputedStyle(el).backgroundImage.includes("url("))
+    let pending = 0
     const mo = new MutationObserver(() => {
-      const imgs = [...host.querySelectorAll("img")]
-      if (imgs.some((i) => i.complete && i.naturalWidth > 0)) {
-        mo.disconnect()
-        done()
-      } else imgs.forEach((i) => i.addEventListener("load", () => (mo.disconnect(), done()), { once: true }))
+      cancelAnimationFrame(pending)
+      pending = requestAnimationFrame(() => {
+        if (painted()) {
+          mo.disconnect()
+          done()
+        }
+      })
     })
-    mo.observe(host, { childList: true, subtree: true })
+    mo.observe(host, { childList: true, subtree: true, attributes: true, attributeFilter: ["style", "class"] })
     setTimeout(done, 12000)
   }
   if (!("IntersectionObserver" in window)) return load()
@@ -329,6 +340,29 @@ function initLazyWidget() {
 }
 
 /* ------------------------------------------------------------------ */
+/* The Deal puddle: tap the bottle and it tips, the puddle wobbles      */
+/* ------------------------------------------------------------------ */
+function initDeal() {
+  const deal = document.querySelector(".menu-deal")
+  if (!deal) return
+  deal.tabIndex = 0
+  deal.setAttribute("role", "button")
+  const pour = () => {
+    if (deal.classList.contains("is-pouring")) return
+    deal.classList.add("is-pouring")
+    glug()
+    setTimeout(() => deal.classList.remove("is-pouring"), reduceMotion ? 50 : 1400)
+  }
+  deal.addEventListener("click", pour)
+  deal.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault()
+      pour()
+    }
+  })
+}
+
+/* ------------------------------------------------------------------ */
 renderStatus()
 setInterval(renderStatus, 60 * 1000)
 initSound()
@@ -337,6 +371,7 @@ initDock()
 initBoom()
 initLightbox()
 initLazyWidget()
+initDeal()
 
 const hero = document.querySelector(".hero")
 if (hero) {

@@ -116,3 +116,24 @@ export function scratch() {
   src.connect(bp).connect(g).connect(c.destination)
   src.start(t)
 }
+
+/** Bottle glug for the Deal puddle: three falling bubbles. */
+export function glug() {
+  if (!enabled) return
+  const c = audio()
+  if (!c) return
+  const t = c.currentTime
+  ;[0, 0.16, 0.3].forEach((d, i) => {
+    const o = c.createOscillator()
+    const g = c.createGain()
+    o.type = "sine"
+    o.frequency.setValueAtTime(520 - i * 90, t + d)
+    o.frequency.exponentialRampToValueAtTime(180 - i * 30, t + d + 0.12)
+    g.gain.setValueAtTime(0.0001, t + d)
+    g.gain.exponentialRampToValueAtTime(0.22, t + d + 0.015)
+    g.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.14)
+    o.connect(g).connect(c.destination)
+    o.start(t + d)
+    o.stop(t + d + 0.16)
+  })
+}

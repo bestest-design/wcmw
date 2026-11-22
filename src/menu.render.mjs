@@ -63,28 +63,60 @@ const section = (sec) => {
 
 const dealCard = (deal) => `
 <aside class="menu-deal" aria-label="${esc(deal.name)}">
-  <svg class="menu-deal-blob" viewBox="0 0 400 200" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M38 52C70 14 150 8 214 12c66 4 140 10 164 52 22 38-4 86-44 108-46 24-126 22-190 18C86 186 22 172 10 128 2 98 16 76 38 52Z" />
-  </svg>
-  <h3 class="menu-deal-title">${esc(deal.name)}</h3>
-  <p class="menu-deal-text">${esc(deal.desc)}</p>
+  <span class="menu-deal-art" aria-hidden="true"><!-- SVG:icon-bottle.svg --></span>
+  <div class="menu-deal-copy">
+    <h3 class="menu-deal-title">${esc(deal.name)}</h3>
+    <p class="menu-deal-text">${esc(deal.desc)}</p>
+  </div>
 </aside>`
 
-export function renderMenu(data) {
-  const rail = data.categories
+// Photo shown beside the menu on wide screens while a category is in view
+const VISUALS = {
+  cocktails: ["drink_1", "A cocktail in yellow light"],
+  specials: ["drink_2", "A coffee cocktail in a coupe"],
+  whisky: ["inside_5", "Records and a lamp on a bar table"],
+  spirits: ["drink_4", "A highball with olives"],
+  coffee: ["drink_5", "Coffee poured over a dessert"],
+  "no-alcohol": ["drink_6", "A drink on a cobalt blue table"],
+  beer: ["dj_2", "Records spinning on the turntable"],
+  wine: ["drink_7", "Red wine on a steel table"],
+  snacks: ["film_1", "The printed WCMW menu"],
+}
+
+export function renderMenuRail(data) {
+  const links = data.categories
     .map((c) => `<li><a href="#menu-${c.id}" data-cat="${c.id}">${esc(c.label)}</a></li>`)
     .join("")
+  return `<nav class="menu-rail" aria-label="Menu categories"><ul>${links}</ul></nav>`
+}
+
+export function renderMenuVisual(data) {
+  const imgs = data.categories
+    .map((c, i) => {
+      const [file, alt] = VISUALS[c.id] || VISUALS.cocktails
+      return `<img src="./pics/opt/${file}-1280.webp" alt="${esc(alt)}" data-cat="${c.id}" loading="lazy" decoding="async"${i === 0 ? ' class="is-active"' : ""}>`
+    })
+    .join("")
+  return `<figure class="menu-visual" aria-hidden="true">${imgs}</figure>`
+}
+
+export function renderMenuBody(data) {
   const cats = data.categories
     .map((c) => {
       const body = c.sections.map(section).join("")
       const deal = c.id === "specials" ? dealCard(data.deal) : ""
-      return `<section class="menu-cat" id="menu-${c.id}" data-cat="${c.id}" aria-label="${esc(c.label)}">${body}${deal}</section>`
+      const icon = c.id === "coffee" ? `<span class="menu-icon menu-icon--cup" aria-hidden="true"><!-- SVG:icon-cup.svg --></span>` : ""
+      return `<section class="menu-cat" id="menu-${c.id}" data-cat="${c.id}" aria-label="${esc(c.label)}">${icon}${body}${deal}</section>`
     })
     .join("\n")
-  return `<nav class="menu-rail" aria-label="Menu categories"><ul>${rail}</ul></nav>
-<div class="menu-body">
+  return `<div class="menu-body">
 ${cats}
+<div class="menu-empty" hidden><span class="menu-empty-guy" aria-hidden="true"><!-- SVG:icon-burstguy.svg --></span><p class="menu-empty-text" role="status"></p><button type="button" class="pill" data-search-clear>Show the whole menu</button></div>
 </div>`
+}
+
+export function renderMenu(data) {
+  return renderMenuRail(data) + renderMenuBody(data)
 }
 
 export function countMenuItems(data) {

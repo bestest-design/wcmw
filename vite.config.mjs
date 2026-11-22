@@ -5,7 +5,7 @@ import dns from 'dns';
 import fs from 'fs';
 import path from 'path';
 import { pathToFileURL } from 'url';
-import { renderMenu } from './src/menu.render.mjs';
+import { renderMenuRail, renderMenuBody, renderMenuVisual } from './src/menu.render.mjs';
 
 // Inlines the bar menu (src/menu.data.mjs) and SVG partials into index.html at build/dev time.
 // Zigzag "spring" from the brandbook (WCM + coil): round-capped, BoldBold stroke weight.
@@ -18,6 +18,16 @@ const zigzag = (periods = 70) => {
   return `<svg class="coil-svg" viewBox="0 0 ${w} 100" width="${w / 100}em" height="1em" aria-hidden="true" focusable="false"><path d="${d}" fill="none" stroke="currentColor" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 };
 
+// Mobile hero spring: drops out of the "W" of WCM in a vertical zigzag, then
+// bends and runs right into the record. viewBox units = hero --u units.
+const coilL = () => {
+  const pts = [[12, 0]];
+  for (let i = 1; i <= 10; i++) pts.push([i % 2 ? 7 : 17, i * 3]);
+  for (let x = 20, i = 0; x <= 103; x += 3, i++) pts.push([x, i % 2 ? 31 : 41]);
+  const d = pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x} ${y}`).join('');
+  return `<svg class="coil-l-svg" viewBox="0 -2 100 46" aria-hidden="true" focusable="false"><path d="${d}" pathLength="1" fill="none" stroke="currentColor" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+};
+
 const wcmwHtml = () => ({
   name: 'wcmw-html',
   async transformIndexHtml(html) {
@@ -25,8 +35,11 @@ const wcmwHtml = () => ({
     const { default: menu } = await import(/* @vite-ignore */ `${dataUrl}?t=${Date.now()}`);
     const svg = (file) => fs.readFileSync(path.resolve('public/img', file), 'utf8').trim();
     return html
-      .replace('<!-- MENU -->', renderMenu(menu))
+      .replace('<!-- MENU_RAIL -->', renderMenuRail(menu))
+      .replace('<!-- MENU_VISUAL -->', renderMenuVisual(menu))
+      .replace('<!-- MENU_BODY -->', renderMenuBody(menu))
       .replace('<!-- ZIGZAG -->', zigzag())
+      .replace('<!-- COIL_L -->', coilL())
       .replace(/<!-- SVG:([\w.-]+) -->/g, (_, file) => svg(file));
   },
 });

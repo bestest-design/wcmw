@@ -55,6 +55,10 @@ check(iframeSrc.startsWith("https://ra.co/promoters/187972/widget/events"), "RA 
 check(iframeSrc.includes("transparentBackground=true"), "RA widget must have a transparent background")
 check(iframeSrc.includes("theme=light"), "RA widget must use the light theme (dark text on yellow)")
 
+// Instagram widget script is lazy-loaded by src/main.js, never parser-blocking.
+check(html.includes('data-widget-src="https://wdg.fouita.com/widgets/0x3602c4.js"'), "Instagram widget source missing")
+check(!/<script src="https:\/\/wdg\.fouita\.com/.test(html), "Instagram widget must not be a blocking <script>")
+
 // Accessibility basics.
 check(!/user-scalable=no|maximum-scale=1/.test(html), "viewport must allow pinch zoom")
 check(html.includes('class="skip"'), "skip link missing")

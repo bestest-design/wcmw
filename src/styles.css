@@ -99,21 +99,10 @@ a { color: inherit; }
 .grain {
   position: fixed;
   inset: 0;
-  z-index: 90;
+  z-index: -1;
   pointer-events: none;
   background: url("/img/bg_noise.png");
   opacity: 0.16;
-}
-
-/* Faint dancing mascot that has always lived behind the site */
-.ghost {
-  position: fixed;
-  inset: 10svh 0 auto;
-  margin-inline: auto;
-  height: 80svh;
-  z-index: -1;
-  opacity: 0.045;
-  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -122,6 +111,8 @@ a { color: inherit; }
 .topbar { display: none; }
 
 @media (min-width: 1024px) {
+  .hero { padding-bottom: 1.5rem; }
+  .hero-status { justify-content: center; }
   .topbar {
     position: absolute;
     inset: 0 0 auto;
@@ -150,21 +141,26 @@ a { color: inherit; }
 
 /* ==========================================================================
    Hero: the "WCMWWWW" spring runs into the record the listener holds.
-   Everything inside is sized in --u so the poster keeps its proportions
-   on any phone height.
+   Phones: a vertical poster. All geometry hangs off --t (cap top of "WCM")
+   in --u units; the spring leaves the "W", drops, bends and enters the
+   record exactly at its centre (--t + 56u). JS drives --reveal (in u) from
+   scroll and from pulling the record.
    ========================================================================== */
 .hero {
-  /* --u: poster unit, limited so the whole poster fits short phones */
-  --u: min(1vw, calc((100svh - 9.5rem) / 133));
-  /* --y0: listener top; composition centred, never closer to the kicker than the branch needs */
-  --y0: max(calc(var(--u) * 21 + 6.75rem), calc((100svh - var(--u) * 140) / 2 + var(--u) * 22));
+  --u: min(1vw, calc((100svh - 12.4rem) / 143));
+  --t: max(calc(3.4rem + var(--u) * 11), calc(3.4rem + var(--u) * 11 + (100svh - 3.4rem - 9rem - var(--u) * 143) / 2));
+  --reveal: 0;
   position: relative;
   min-height: 100svh;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  padding: max(env(safe-area-inset-top), 1.25rem) var(--g) 1.5rem;
+  padding: max(env(safe-area-inset-top), 1.25rem) var(--g) calc(5.25rem + env(safe-area-inset-bottom));
   overflow: clip;
+  user-select: none;
+  -webkit-user-select: none;
 }
+
+.hero-probe { position: absolute; width: calc(var(--u) * 100); height: 0; visibility: hidden; }
 
 .hero-kicker {
   margin: 0;
@@ -173,6 +169,29 @@ a { color: inherit; }
   font-size: var(--t-s);
   letter-spacing: 0.01em;
 }
+
+.sound-toggle {
+  position: absolute;
+  z-index: 5;
+  top: max(env(safe-area-inset-top), 0.75rem);
+  right: calc(var(--g) - 0.6rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  padding: 0 0.6rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: 300 var(--t-xs) / 1 var(--f-text);
+  cursor: pointer;
+}
+.sound-bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 0.8rem; }
+.sound-bars i { width: 2px; height: 30%; background: currentColor; border-radius: 1px; }
+.sound-toggle[aria-pressed="true"] .sound-bars i { animation: eq 0.9s ease-in-out infinite alternate; }
+.sound-toggle[aria-pressed="true"] .sound-bars i:nth-child(2) { animation-delay: -0.3s; }
+.sound-toggle[aria-pressed="true"] .sound-bars i:nth-child(3) { animation-delay: -0.6s; }
+@keyframes eq { from { height: 25%; } to { height: 100%; } }
 
 .hero-title {
   position: absolute;
@@ -184,73 +203,86 @@ a { color: inherit; }
   pointer-events: none;
 }
 
-/* Vertical poster on phones (units in --u, measured from the top of the hero):
-   row 1 "WC(OFEEEE)M", row 2 the coil running into the vinyl at 37u,
-   listener 42u..154u, tail "WWHISKYYYY" behind the leg. */
-.spring { display: contents; }
-
-.spring-head {
+.hero-wcm {
   position: absolute;
   left: var(--g);
-  top: calc(var(--y0) - var(--u) * 21);
+  top: calc(var(--t) - var(--u) * 2.4);
   font-size: calc(var(--u) * 25);
   letter-spacing: -0.02em;
 }
 
-.spring-branch {
+.hero-branch {
   position: absolute;
+  left: 0.86em;
+  top: -0.84em;
   font-size: 0.26em;
   letter-spacing: 0.01em;
   white-space: nowrap;
-}
-.spring-branch--coffee {
-  left: 0.86em;
-  top: -0.86em;
   transform: rotate(-9deg);
   transform-origin: 0 100%;
 }
 
-.spring-coil {
-  --coil-w: calc(var(--u) * 41);
-  position: absolute;
-  left: 0;
-  top: calc(var(--y0) + var(--u) * 30);
-  width: var(--coil-w);
-  height: calc(var(--u) * 15);
-  font-size: calc(var(--u) * 15);
-  overflow: hidden;
-}
-.coil-svg {
-  display: block;
-  max-width: none;
-  margin-left: calc(var(--u) * -3);
-}
-
-.spring-tail {
+.hero-tail {
   position: absolute;
   left: var(--g);
-  top: calc(var(--y0) + var(--u) * 92);
-  font-size: calc(var(--u) * 8.5);
+  top: calc(var(--t) + var(--u) * 96);
+  font-size: calc(var(--u) * 7.5);
   white-space: nowrap;
 }
-.spring-tail-w { letter-spacing: -0.2em; margin-right: 0.18em; }
+.hero-tail-w { letter-spacing: -0.2em; margin-right: 0.18em; }
+
+.coil {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+.coil svg { display: block; overflow: visible; }
+
+/* phones: L-shaped spring, clipped at the record's rim (37u) until revealed */
+.coil--l {
+  left: 0;
+  top: calc(var(--t) + var(--u) * 18);
+  width: calc(var(--u) * 100);
+  clip-path: inset(-5% calc(63% - var(--reveal) * 1%) -5% -5%);
+}
+.coil-l-svg { width: 100%; height: auto; }
+.coil--line { display: none; }
 
 .hero-listener {
   position: absolute;
   z-index: 2;
   left: calc(var(--u) * 35);
-  top: var(--y0);
+  top: calc(var(--t) + var(--u) * 19);
   height: calc(var(--u) * 112);
   aspect-ratio: 1428 / 2319;
+  touch-action: pan-y;
+  cursor: grab;
 }
-.hero-listener svg { width: 100%; height: 100%; }
+.hero-listener:active { cursor: grabbing; }
+.hero-listener svg {
+  width: 100%;
+  height: 100%;
+  transform: translateX(calc(var(--reveal) * var(--u))) rotate(calc(var(--reveal) * 0.14deg));
+  transform-origin: 70% 95%;
+}
+
+.pull-hint {
+  position: absolute;
+  left: var(--g);
+  top: calc(var(--t) + var(--u) * 62);
+  margin: 0;
+  font-weight: 300;
+  font-size: var(--t-xs);
+  transition: opacity 0.4s;
+}
+.hero.has-pulled .pull-hint { opacity: 0; }
 
 .boom {
   position: absolute;
   z-index: 3;
   left: calc(var(--g) + var(--u) * 1);
-  top: calc(var(--y0) + var(--u) * 58);
-  width: calc(var(--u) * 25);
+  top: calc(var(--t) + var(--u) * 68);
+  width: calc(var(--u) * 24);
   aspect-ratio: 1588 / 1471;
   padding: 0;
   border: 0;
@@ -269,7 +301,7 @@ a { color: inherit; }
   align-items: center;
   gap: 0.6rem;
   font-weight: 300;
-  font-size: var(--t-m);
+  font-size: clamp(var(--t-s), 3.6vw, var(--t-m));
   position: relative;
   z-index: 4;
 }
@@ -289,17 +321,17 @@ a { color: inherit; }
   animation: pulse 2.4s ease-out infinite;
 }
 
-/* One orchestrated entrance: the spring shoots out of row one and the listener catches it */
-.hero.is-ready .coil-svg { animation: coil-in 1.1s var(--spring) both; }
-.hero.is-ready .hero-listener { animation: listener-catch 1.1s var(--spring) both; }
-.hero.is-ready .spring-branch--coffee { animation: branch-in 0.7s 0.5s var(--ease-out) both; }
+/* One orchestrated entrance: the spring is drawn out of the "W" and the listener catches it */
+.hero.is-ready .coil path { stroke-dasharray: 1; animation: coil-draw 1.2s 0.1s var(--ease-out) both; }
+.hero.is-ready .hero-listener { animation: listener-catch 1.25s var(--spring) both; }
+.hero.is-ready .hero-branch { animation: branch-in 0.7s 0.55s var(--ease-out) both; }
 
-@keyframes coil-in {
-  from { clip-path: inset(0 100% 0 0); }
-  to { clip-path: inset(0 0 0 0); }
+@keyframes coil-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
 }
 @keyframes listener-catch {
-  0%, 45% { translate: calc(var(--u) * 26) 0; }
+  0%, 42% { translate: calc(var(--u) * 24) 0; }
   100% { translate: 0 0; }
 }
 @keyframes branch-in {
@@ -307,34 +339,12 @@ a { color: inherit; }
   to { opacity: 1; translate: 0 0; }
 }
 
-/* Scrolling pulls the listener away and the spring reveals more coils */
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .spring-coil {
-      animation: coil-stretch linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 75svh;
-    }
-    .hero-listener > svg {
-      animation: listener-push linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 75svh;
-    }
-  }
-}
-@keyframes coil-stretch {
-  to { width: calc(var(--coil-w) + var(--u) * 38); }
-}
-@keyframes listener-push {
-  to { transform: translateX(calc(var(--u) * 38)) rotate(5deg); }
-}
-
-@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
-  /* Landscape: the original wide poster. Everything hangs off the record's
-     centre line (--c) so "WCM", the coil and the vinyl stay aligned. */
+/* Landscape (desktop, tablets, phones on their side): the original wide poster,
+   one line from "WCM" through the coil into the record. --c = record centre. */
+@media (min-width: 600px) and (min-aspect-ratio: 1/1) {
   .hero {
-    --u: min(0.55vw, 0.88svh);
-    --c: calc(50% - var(--u) * 11);
+    --u: min(0.55vw, calc((100svh - 6rem) / 100));
+    --c: calc(50% - var(--u) * 8);
   }
   .hero-listener {
     left: auto;
@@ -342,32 +352,41 @@ a { color: inherit; }
     top: calc(var(--c) - var(--u) * 29);
     height: calc(var(--u) * 88);
   }
-  .spring-head {
+  .hero-wcm {
     top: calc(var(--c) - var(--u) * 7);
     left: calc(var(--g) + var(--u) * 6);
     font-size: calc(var(--u) * 17);
   }
-  .spring-coil {
+  .coil--l { display: none; }
+  .coil--line {
     --coil-w: calc(100vw - 2 * var(--g) - var(--u) * 99);
+    display: block;
+    overflow: hidden;
     left: calc(var(--g) + var(--u) * 42);
     top: calc(var(--c) - var(--u) * 6);
+    width: calc(var(--coil-w) + var(--reveal) * var(--u));
     height: calc(var(--u) * 12);
     font-size: calc(var(--u) * 12);
   }
-  .coil-svg { margin-left: 0; }
-  .spring-tail {
+  .hero-tail {
     top: calc(var(--c) + var(--u) * 30);
     left: calc(var(--g) + var(--u) * 22);
     font-size: calc(var(--u) * 6.5);
   }
+  .pull-hint { top: calc(var(--c) + var(--u) * 8); left: calc(var(--g) + var(--u) * 27); }
   .boom {
-    left: calc(var(--g) + var(--u) * 9);
-    top: calc(var(--c) + var(--u) * 10);
+    left: calc(var(--g) + var(--u) * 6);
+    top: calc(var(--c) + var(--u) * 8);
     width: calc(var(--u) * 16);
   }
-  .hero-status { justify-content: center; }
+  .hero-status { justify-content: flex-start; }
   .slide-card p { font-size: var(--t-l); }
   .slide-card--3 p { font-size: calc(var(--t-l) * 0.8); }
+}
+
+@media (min-width: 1024px) {
+  /* below the desktop nav */
+  .sound-toggle { top: 4.25rem; }
 }
 
 /* ==========================================================================
@@ -435,13 +454,21 @@ a { color: inherit; }
     .kin-track {
       animation: kin-pan linear both;
       animation-timeline: --kin;
-      animation-range: cover 12% cover 62%;
+      animation-range: cover 0% cover 55%;
     }
   }
 }
+/* Enters showing the end of the word and settles on its first letters,
+   so a jump from the dock lands on a readable "DRIIII..." */
+@supports not (animation-timeline: view()) {
+  .kin { font-size: min(var(--t-kin), calc(100cqw / (var(--len) * 0.86))); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kin { font-size: min(var(--t-kin), calc(100cqw / (var(--len) * 0.86))); }
+}
 @keyframes kin-pan {
-  from { transform: translateX(0); }
-  to { transform: translateX(min(0px, calc(100cqw - 100%))); }
+  from { transform: translateX(min(0px, calc(100cqw - 100%))); }
+  to { transform: translateX(0); }
 }
 
 /* ==========================================================================
@@ -481,6 +508,11 @@ a { color: inherit; }
 
 .about-slider { display: none; }
 
+@media (min-width: 600px) {
+  .about-stack { grid-template-columns: 1fr 1fr; column-gap: 6vw; align-items: center; }
+  .about-photo--left, .about-photo--right { width: 100%; margin: 0; border-radius: var(--radius-photo); }
+}
+@supports (animation-timeline: view()) {
 @media (min-width: 1024px) {
   .about { padding: 0; }
   .about-stack { display: none; }
@@ -531,6 +563,7 @@ a { color: inherit; }
     animation-range: entry exit;
   }
 }
+}
 
 @keyframes slider {
   from { transform: translateX(10vw); }
@@ -546,11 +579,44 @@ a { color: inherit; }
    ========================================================================== */
 .menu { padding: clamp(3rem, 8vw, 6rem) var(--g) 2rem; }
 
+.menu-head {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
 .menu-intro {
-  margin: 1.5rem 0 0;
+  margin: 0;
   max-width: 34ch;
   font-weight: 300;
   font-size: var(--t-m);
+}
+.menu-search {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 3rem;
+  padding: 0 1rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--sulfur);
+  cursor: text;
+}
+.menu-search svg { width: 1.15rem; height: 1.15rem; flex: none; }
+.menu-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: 400 var(--t-m) / 1.2 var(--f-text);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.menu-search input::placeholder { color: var(--ink-soft); font-weight: 300; }
+.menu-search:focus-within { outline: 3px solid var(--blue); outline-offset: 3px; }
+@media (min-width: 900px) {
+  .menu-head { grid-template-columns: 1fr minmax(18rem, 26rem); align-items: end; }
 }
 
 .menu-rail {
@@ -580,8 +646,8 @@ a { color: inherit; }
 .menu-rail a {
   display: inline-flex;
   align-items: center;
-  min-height: 2.5rem;
-  padding: 0 1rem;
+  min-height: 2.75rem;
+  padding: 0 1.05rem;
   border: 2px solid var(--ink);
   border-radius: 999px;
   font-family: var(--f-display);
@@ -606,7 +672,11 @@ a { color: inherit; }
   text-transform: uppercase;
   white-space: nowrap;
   line-height: 1;
-  font-size: min(1.375rem, calc(100cqi / (var(--len) * 0.74)));
+  font-size: max(1rem, min(1.375rem, calc(100cqi / (var(--len) * 0.74))));
+  overflow: hidden;
+  /* the stretched letters may run off the edge, like the headings */
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 1.5rem), transparent);
+          mask-image: linear-gradient(90deg, #000 calc(100% - 1.5rem), transparent);
 }
 
 .menu-cols,
@@ -663,23 +733,21 @@ a { color: inherit; }
 
 .menu-deal {
   position: relative;
-  margin: 2.5rem auto 0;
-  max-width: 26rem;
-  padding: 2.75rem 2.25rem 2.5rem;
+  margin: 2.25rem auto 0;
+  width: min(100%, 24rem);
+  aspect-ratio: 641 / 508;
   text-align: center;
 }
-.menu-deal-blob {
+.menu-deal-art { position: absolute; inset: 0; }
+.menu-deal-art svg { width: 100%; height: 100%; }
+/* copy sits inside the spilled puddle, like the printed menu */
+.menu-deal-copy {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-.menu-deal-blob path {
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 3.5;
-  vector-effect: non-scaling-stroke;
+  left: 12%; right: 14%;
+  top: 42%; bottom: 10%;
+  display: grid;
+  align-content: center;
+  padding: 0 0.5rem;
 }
 .menu-deal-title {
   position: relative;
@@ -687,7 +755,8 @@ a { color: inherit; }
   font-family: var(--f-display);
   font-weight: normal;
   text-transform: uppercase;
-  font-size: 1.0625rem;
+  font-size: clamp(0.875rem, 3.6vw, 1.0625rem);
+  line-height: 1.1;
 }
 .menu-deal-text {
   position: relative;
@@ -696,13 +765,60 @@ a { color: inherit; }
   font-size: var(--t-s);
 }
 
+.menu-icon {
+  display: block;
+  width: 3.25rem;
+  margin: 0 0 1rem;
+}
+.menu-icon svg { width: 100%; height: auto; }
+
+.menu-empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: 3rem 0 1rem;
+  text-align: center;
+}
+.menu-empty[hidden] { display: none; }
+.menu-empty-guy { width: 6rem; }
+.menu-empty-guy svg { width: 100%; height: auto; }
+.menu-empty-text { margin: 0; max-width: 28ch; font-weight: 300; font-size: var(--t-l); line-height: 1.2; }
+[hidden] { display: none !important; }
+
+.menu-visual { display: none; }
+.menu-main { max-width: 40rem; margin-inline: auto; }
+
 @media (min-width: 1024px) {
-  .menu-body {
-    columns: 2;
-    column-gap: 7vw;
-  }
-  .menu-cat { break-inside: avoid; }
   .menu-rail ul { justify-content: center; -webkit-mask-image: none; mask-image: none; }
+  .menu-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 6vw;
+    align-items: start;
+  }
+  .menu-main { max-width: 38rem; margin: 0; }
+  /* the photo beside the list follows the category you are reading */
+  .menu-visual {
+    display: block;
+    position: sticky;
+    top: calc(var(--rail-h) + 1.75rem);
+    height: calc(100vh - var(--rail-h) - 3.5rem);
+    margin: 2.75rem 0 0;
+    border-radius: var(--radius-photo);
+    overflow: hidden;
+    background: rgb(0 0 0 / 0.06);
+  }
+  .menu-visual img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 0.6s var(--ease-out), transform 1.2s var(--ease-out);
+  }
+  .menu-visual img.is-active { opacity: 1; transform: none; }
 }
 
 /* ==========================================================================
@@ -744,9 +860,23 @@ a { color: inherit; }
    ========================================================================== */
 .feed,
 .events { padding: clamp(3rem, 8vw, 6rem) var(--g) 1rem; }
-.feed-widget { margin-top: 2rem; }
+.feed-widget {
+  margin-top: 2rem;
+  min-height: 20rem;
+  border-radius: var(--radius-photo);
+  overflow: hidden;
+}
+/* third-party carousel dots: give them a 24px hit area without changing the look */
+.feed-widget .splide__pagination__page { box-sizing: content-box; padding: 8px; background-clip: content-box; }
 .events-intro { margin: 1.5rem 0 1rem; font-weight: 300; max-width: 34ch; }
-.events-frame { display: block; width: 100%; border: 0; }
+.events-frame {
+  display: block;
+  width: 100%;
+  height: min(650px, 78svh);
+  border: 0;
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+}
 
 .pill {
   display: inline-flex;
@@ -907,6 +1037,7 @@ a { color: inherit; }
   transition: transform 0.45s var(--ease-out);
 }
 .dock.is-visible { transform: translate(-50%, 0); }
+.dock.is-visible.is-tucked { transform: translate(-50%, calc(100% + 2rem)); }
 .dock a {
   display: inline-flex;
   align-items: center;
@@ -947,6 +1078,29 @@ a { color: inherit; }
   border-radius: var(--radius-photo);
   object-fit: contain;
 }
+.lightbox-bar {
+  position: absolute;
+  left: 50%;
+  bottom: max(env(safe-area-inset-bottom), 1rem);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transform: translateX(-50%);
+  color: var(--sulfur);
+}
+.lightbox-btn {
+  width: 3rem;
+  height: 3rem;
+  border: 2px solid var(--sulfur);
+  border-radius: 50%;
+  background: none;
+  color: var(--sulfur);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.lightbox-count { min-width: 4ch; text-align: center; font-variant-numeric: tabular-nums; font-size: var(--t-s); }
+.lightbox img { max-height: 78svh; }
 .lightbox-close {
   position: absolute;
   top: max(env(safe-area-inset-top), 1rem);
@@ -976,6 +1130,7 @@ a { color: inherit; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

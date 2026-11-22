@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'BoldBold';
-  src: url('/fonts/boldbold.woff2') format('woff2'), url('/bold_bold.ttf') format('truetype');
+  src: url('/fonts/boldbold.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: 'Sequel';
-  src: url('/fonts/sequel-light.woff2') format('woff2'), url('/sequel_sans.ttf') format('truetype');
+  src: url('/fonts/sequel-light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
   font-display: swap;

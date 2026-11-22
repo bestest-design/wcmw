@@ -30,7 +30,10 @@ for (const target of ["#drinks", "#events", "#contacts"]) {
 }
 
 // Branded stretched headings: intentional spellings, never "corrected".
-const headingTexts = [...html.matchAll(/<h[23][^>]*>([\s\S]*?)<\/h[23]>/g)].map((m) => m[1].replace(/<[^>]+>/g, "").trim())
+// (the drawn word only: plain names for screen readers sit in .sr-only spans)
+const headingTexts = [...html.matchAll(/<h[23][^>]*>([\s\S]*?)<\/h[23]>/g)].map((m) =>
+  m[1].replace(/<span class="sr-only">[\s\S]*?<\/span>/g, "").replace(/<[^>]+>/g, "").trim()
+)
 for (const word of ["Driiiiinnnksss", "Instagrrrraaaaam", "Eeeeeeeeevents", "Signature Cocktailssssssssssssss", "Red wineeeeeeeeeeeeeeeeeeeeeeeeeeeeee"]) {
   check(headingTexts.includes(word), `branded heading "${word}" missing or respelled`)
 }
@@ -49,12 +52,17 @@ for (const cat of menu.categories) {
 check(text.includes("Hibiki Japanese Harmony") && /<span>15<\/span><span>130<\/span>/.test(html), "two-column spirit prices not rendered (Hibiki 15/130)")
 check(text.includes(menu.deal.name), "When Coffee Meets Whisky Deal card missing")
 
-// Events: RA widget for promoter 187972, transparent on the yellow page.
+// Events: imported from RA (promoter 187972) at build time, or RA's own widget as the fallback.
 const eventsHtml = html.slice(at("events"), at("contacts"))
-const iframeSrc = decode((eventsHtml.match(/<iframe[^>]*\ssrc="([^"]+)"/) || [])[1] || "")
-check(iframeSrc.startsWith("https://ra.co/promoters/187972/widget/events"), "RA widget must use promoter 187972")
-check(iframeSrc.includes("transparentBackground=true"), "RA widget must have a transparent background")
-check(iframeSrc.includes("theme=light"), "RA widget must use the light theme (dark text on yellow)")
+check(eventsHtml.includes('href="https://ra.co/promoters/187972"'), "Follow on RA link missing")
+if (eventsHtml.includes('data-source="ra"')) {
+  check(/class="ev-list|class="ev-empty"/.test(eventsHtml), "imported RA events render no list and no empty note")
+} else {
+  const iframeSrc = decode((eventsHtml.match(/<iframe[^>]*\ssrc="([^"]+)"/) || [])[1] || "")
+  check(iframeSrc.startsWith("https://ra.co/promoters/187972/widget/events"), "RA widget must use promoter 187972")
+  check(iframeSrc.includes("transparentBackground=true"), "RA widget must have a transparent background")
+  check(iframeSrc.includes("theme=light"), "RA widget must use the light theme (dark text on yellow)")
+}
 
 // Instagram widget script is lazy-loaded by src/main.js, never parser-blocking.
 check(html.includes('data-widget-src="https://wdg.fouita.com/widgets/0x3602c4.js"'), "Instagram widget source missing")

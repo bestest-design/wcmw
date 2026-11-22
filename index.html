@@ -186,9 +186,9 @@
       <!-- Instagram feed widget: its script is injected by src/main.js when this section gets close -->
       <div class="feed-shell">
         <ul class="feed-placeholder" aria-hidden="true">
-          <li><img src="./pics/opt/inside_3-640.webp" alt="" loading="lazy" decoding="async"></li>
-          <li><img src="./pics/opt/dj_1-640.webp" alt="" loading="lazy" decoding="async"></li>
-          <li><img src="./pics/opt/drink_3-640.webp" alt="" loading="lazy" decoding="async"></li>
+          <li><img src="./pics/opt/inside_3-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li><img src="./pics/opt/dj_1-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li><img src="./pics/opt/drink_3-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
         </ul>
         <div data-key="Wcmw Feed " class="ft feed-widget" id="ft1r0p18l" data-widget-src="https://wdg.fouita.com/widgets/0x3602c4.js"></div>
       </div>
@@ -200,6 +200,7 @@
       <h2 class="kin" data-rest="end" id="events-title" style="--len:14"><span class="kin-track">Eeeeeeeeevents</span></h2>
       <p class="events-intro">Line-ups and tickets are on Resident Advisor.</p>
       <a class="pill pill--top" href="https://ra.co/promoters/187972">See WCMW on Resident Advisor</a>
+      <p class="events-note">Dates, line-ups and tickets show up below as soon as they are announced.</p>
       <div class="events-shell">
       <p class="events-loading" aria-hidden="true">loading line-ups from Resident Advisor.</p>
       <iframe class="events-frame" src="https://ra.co/promoters/187972/widget/events?theme=light&transparentBackground=true&customTextColor=%23000000"
@@ -245,22 +246,22 @@
           </ul>
         </div>
 
-        <img class="visit-walkers" src="./img/WCMW_LOGO_8.svg" alt="" aria-hidden="true" loading="lazy">
       </div>
+      <div class="visit-walkers" aria-hidden="true"><!-- SVG:WCMW_walkers.svg --></div>
     </section>
   </main>
 
   <footer class="footer">
-    <p class="thanks">thaaaanks to
-      <a href="https://www.instagram.com/binskistudio/">Binski Studio</a>,
-      <a href="https://reflectoraudio.com/">Reflector Audio</a> and
-      <a href="https://www.instagram.com/tstudiolv/">T Studio</a></p>
     <div class="marquee marquee--reverse" aria-hidden="true">
       <div class="marquee-track">
         <span>When coffee meets whisky</span><span>Baltics' first listening bar</span><span>Baznicas iela 20/22, Riga</span>
         <span>When coffee meets whisky</span><span>Baltics' first listening bar</span><span>Baznicas iela 20/22, Riga</span>
       </div>
     </div>
+    <p class="thanks">thaaaanks to
+      <a href="https://www.instagram.com/binskistudio/">Binski Studio</a>,
+      <a href="https://reflectoraudio.com/">Reflector Audio</a> and
+      <a href="https://www.instagram.com/tstudiolv/">T Studio</a></p>
   </footer>
 
   <nav class="dock" aria-label="Quick links">

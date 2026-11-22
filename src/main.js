@@ -189,6 +189,18 @@ function initDock() {
     new IntersectionObserver(([e]) => document.body.classList.toggle("past-hero", !e.isIntersecting), {
       rootMargin: "0px 0px -40% 0px",
     }).observe(hero)
+  const short = window.matchMedia("(max-height: 480px)")
+  let lastY = window.scrollY
+  window.addEventListener(
+    "scroll",
+    () => {
+      const y = window.scrollY
+      if (short.matches) dock.classList.toggle("is-away", y > lastY + 4 && y > 200)
+      if (y < lastY - 4 || !short.matches) dock.classList.remove("is-away")
+      lastY = y
+    },
+    { passive: true }
+  )
   const links = [...dock.querySelectorAll("a[data-dock]")]
   const sections = links.map((a) => document.getElementById(a.dataset.dock)).filter(Boolean)
   const seen = new Map()
@@ -380,16 +392,48 @@ function initRuleTicks() {
 }
 
 /* ------------------------------------------------------------------ */
+/* In-page links: if lazy content shifted the page mid-scroll, settle   */
+/* on the target once the scroll ends                                   */
+/* ------------------------------------------------------------------ */
+function initAnchorSettle() {
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href^="#"]')
+    const target = a && document.getElementById(a.getAttribute("href").slice(1))
+    if (!target) return
+    const pad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0
+    let tries = 0
+    const settle = () => {
+      const off = target.getBoundingClientRect().top - pad
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
+      if (Math.abs(off) > 8 && !atBottom && tries++ < 2) {
+        window.scrollBy({ top: off, behavior: reduceMotion ? "auto" : "smooth" })
+        wait()
+      }
+    }
+    const wait = () => {
+      if ("onscrollend" in window) window.addEventListener("scrollend", settle, { once: true })
+      else setTimeout(settle, 900)
+    }
+    wait()
+  })
+}
+
+/* ------------------------------------------------------------------ */
 renderStatus()
 setInterval(renderStatus, 60 * 1000)
 initSound()
-initMenu()
 initDock()
 initBoom()
-initLightbox()
-initLazyWidget()
-initDeal()
-initRuleTicks()
+initAnchorSettle()
+// Everything below the first screen waits for an idle moment so the poster paints first
+const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 200))
+idle(() => {
+  initMenu()
+  initLightbox()
+  initLazyWidget()
+  initDeal()
+  initRuleTicks()
+}, { timeout: 1200 })
 
 const hero = document.querySelector(".hero")
 if (hero) {

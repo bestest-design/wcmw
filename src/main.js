@@ -41,6 +41,9 @@ function initMenu() {
   const visual = [...document.querySelectorAll(".menu-visual img")]
   const dock = document.querySelector(".dock")
   const menu = document.getElementById("drinks")
+  const layout = document.querySelector(".menu-layout")
+  // phones and tablets: the rail sticks to the bottom of the screen, within thumb reach
+  const atBottom = window.matchMedia("(max-width: 1023px)")
 
   const setActive = (id) => {
     links.forEach((a) => {
@@ -59,18 +62,24 @@ function initMenu() {
   const update = () => {
     ticking = false
     const railBox = rail.getBoundingClientRect()
-    const line = railBox.bottom + 24
+    const bottom = atBottom.matches
+    const line = bottom ? 120 : railBox.bottom + 24
     let current = null
     for (const cat of cats) {
       if (cat.hidden) continue
       if (!current) current = cat
       if (cat.getBoundingClientRect().top <= line) current = cat
     }
+    // once the end of the list is on screen, the last category is the one being read
+    if (layout.getBoundingClientRect().bottom <= window.innerHeight + 2) current = cats.filter((c) => !c.hidden).at(-1) || current
     if (current && current.dataset.cat !== rail.dataset.active) {
       rail.dataset.active = current.dataset.cat
       setActive(current.dataset.cat)
     }
-    const stuck = railBox.top <= 0.5 && menu.getBoundingClientRect().bottom > railBox.bottom + 80
+    // stuck = floating over the list (its resting place is above the list on desktop, after it on phones)
+    const stuck = bottom
+      ? railBox.top < window.innerHeight && layout.getBoundingClientRect().bottom > railBox.top + 1
+      : railBox.top <= 0.5 && menu.getBoundingClientRect().bottom > railBox.bottom + 80
     rail.classList.toggle("is-stuck", stuck)
     // The rail takes over navigation inside the menu, so the dock steps aside
     if (dock) dock.classList.toggle("is-tucked", stuck)

@@ -48,9 +48,12 @@ const item = (it, cols) => {
 const section = (sec) => {
   const cols = columnsFor(sec.unit)
   const len = sec.title ? [...sec.title].length : 0
-  const title = sec.title
-    ? `<h3 class="menu-sec-title" style="--len:${len}">${esc(sec.title)}</h3>`
-    : ""
+  // a stretched title is drawn as is; screen readers and search get its plain name
+  const title = !sec.title
+    ? ""
+    : sec.plain
+      ? `<h3 class="menu-sec-title" style="--len:${len}"><span aria-hidden="true">${esc(sec.title)}</span><span class="sr-only">${esc(sec.plain)}</span></h3>`
+      : `<h3 class="menu-sec-title" style="--len:${len}">${esc(sec.title)}</h3>`
   let unit = ""
   if (cols) {
     unit = `<p class="menu-cols" aria-hidden="true"><span>${esc(cols[0])}</span><span>${esc(cols[1])}</span></p>`
@@ -128,4 +131,56 @@ export function renderMenu(data) {
 
 export function countMenuItems(data) {
   return data.categories.reduce((n, c) => n + c.sections.reduce((m, s) => m + s.items.length, 0), 0)
+}
+
+/* ------------------------------------------------------------------ */
+/* schema.org Menu: every drink with its price(s), so search engines   */
+/* and AI assistants can answer "where can I drink Hibiki in Riga"     */
+/* ------------------------------------------------------------------ */
+const ml = (label) => {
+  const m = /^(\d+)\s*ml$/i.exec(label.trim())
+  return m ? { "@type": "QuantitativeValue", value: Number(m[1]), unitCode: "MLT" } : null
+}
+
+const offersFor = (price, unit) => {
+  if (!price) return undefined
+  const cols = columnsFor(unit)
+  const range = /^(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)$/.exec(price)
+  if (range) return { "@type": "AggregateOffer", lowPrice: range[1], highPrice: range[2], priceCurrency: "EUR" }
+  const parts = splitPrice(price, cols)
+  const offers = parts
+    .map((p, i) => {
+      if (p === null) return null
+      const offer = { "@type": "Offer", price: p, priceCurrency: "EUR" }
+      const label = cols ? cols[i] : unit
+      if (label) {
+        const q = ml(label)
+        if (q) offer.eligibleQuantity = q
+        offer.name = label
+      }
+      return offer
+    })
+    .filter(Boolean)
+  return offers.length === 1 ? offers[0] : offers
+}
+
+export function menuJsonLd(data, url) {
+  const sections = []
+  for (const c of data.categories) {
+    for (const sec of c.sections) {
+      const name = sec.plain || sec.title || c.label
+      const items = sec.items.map((it) => {
+        const item = { "@type": "MenuItem", name: it.name }
+        const description = [it.desc, it.sub, it.note].filter(Boolean).join(". ")
+        if (description) item.description = description
+        const offers = offersFor(it.price, sec.unit)
+        if (offers) item.offers = offers
+        return item
+      })
+      sections.push({ "@type": "MenuSection", name, hasMenuItem: items })
+    }
+  }
+  const deal = data.deal && { "@type": "MenuItem", name: data.deal.name, description: data.deal.desc }
+  if (deal) sections.find((s) => s.name === "WCMW specials")?.hasMenuItem.push(deal)
+  return { "@type": "Menu", name: "WCMW drinks menu", url, inLanguage: "en", hasMenuSection: sections }
 }

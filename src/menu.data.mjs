@@ -1,6 +1,7 @@
 // Bar menu: single source of truth, rendered into index.html at build time
 // (vite.config.mjs -> src/menu.render.mjs). Edit names and prices here.
 // Stretched headings ("Driiiinnnksss", "sakeeee") are branding, not typos.
+// Stretched titles carry a "plain" name for screen readers, search and the structured data.
 // unit "50ml/700ml" or "glass/bottle" adds two price columns; "a/b" prices split into them.
 
 export default {
@@ -201,7 +202,8 @@ export default {
               "price": "14",
               "desc": "Coffee bean infused negroni (Gin, Vermouth, Campari)"
             }
-          ]
+          ],
+          "plain": "WCMW specials"
         }
       ]
     },
@@ -258,7 +260,8 @@ export default {
               "price": "12",
               "desc": "Shinobu Whisky, jalapeno, lemon, sugar, pineapple juice, foam"
             }
-          ]
+          ],
+          "plain": "Signature cocktails"
         }
       ]
     },
@@ -326,7 +329,8 @@ export default {
               "name": "Sakari Shukugawa Japanese Craft Gin",
               "price": "12/75"
             }
-          ]
+          ],
+          "plain": "Japanese gin"
         },
         {
           "title": "Japanese Whisky",
@@ -374,7 +378,8 @@ export default {
               "name": "Ile Four Yuzu Sake",
               "price": "6/35"
             }
-          ]
+          ],
+          "plain": "Sake"
         },
         {
           "title": "Shochu",
@@ -483,7 +488,8 @@ export default {
               "price": "6/30",
               "sub": "di Manduria DOC"
             }
-          ]
+          ],
+          "plain": "Red wine"
         },
         {
           "title": "Rose Wine",
@@ -517,7 +523,8 @@ export default {
               "name": "Kirin Ichiban 5%",
               "price": "5.5"
             }
-          ]
+          ],
+          "plain": "Beer"
         }
       ]
     },

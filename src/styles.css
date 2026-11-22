@@ -64,6 +64,7 @@ b {
 }
 
 img, svg { display: block; max-width: 100%; }
+img { height: auto; } /* width/height attributes reserve space; CSS sizes win */
 a { color: inherit; }
 
 :focus-visible {
@@ -74,6 +75,7 @@ a { color: inherit; }
 
 .sr-only {
   position: absolute !important;
+  top: 0; left: 0; /* never at the end of a long stretched word, past the screen edge */
   width: 1px; height: 1px;
   padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0, 0, 0, 0);
@@ -862,6 +864,55 @@ a { color: inherit; }
 .events-shell.is-loaded .events-loading { display: none; }
 /* third-party carousel dots: give them a 24px hit area without changing the look */
 .feed-widget .splide__pagination__page { box-sizing: content-box; padding: 8px; background-clip: content-box; }
+/* Events imported from Resident Advisor (src/events.mjs): one row per night */
+.ev { margin-top: 0.5rem; }
+.ev-head {
+  margin: 2rem 0 0.75rem;
+  font-family: var(--f-display);
+  font-weight: normal;
+  text-transform: uppercase;
+  font-size: 1.125rem;
+}
+.ev-list { margin: 0; padding: 0; list-style: none; border-top: 2px solid var(--ink); }
+.ev-item { border-bottom: 2px solid var(--ink); }
+.ev-link {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0.25rem 1rem;
+  align-items: baseline;
+  padding: 1rem 0;
+  text-decoration: none;
+}
+.ev-date {
+  font-family: var(--f-display);
+  text-transform: uppercase;
+  font-size: 0.9375rem;
+  line-height: 1.2;
+}
+.ev-body { display: grid; gap: 0.3rem; }
+.ev-title { font-weight: 300; font-size: var(--t-l); line-height: 1.15; text-wrap: pretty; }
+.ev-meta { display: flex; flex-wrap: wrap; gap: 0.15rem 1rem; font-weight: 300; font-size: var(--t-s); color: var(--ink-soft); }
+.ev-cta {
+  grid-column: 2;
+  justify-self: start;
+  margin-top: 0.4rem;
+  font-family: var(--f-display);
+  text-transform: uppercase;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+.ev-list--past .ev-title { font-size: var(--t-m); font-weight: 400; }
+.ev-list--past .ev-link { padding: 0.8rem 0; }
+@media (hover: hover) {
+  .ev-link:hover .ev-title { text-decoration: underline; text-underline-offset: 0.15em; text-decoration-thickness: 1px; }
+}
+.ev-empty { margin: 1.5rem 0 0; font-weight: 300; font-size: var(--t-l); line-height: 1.2; max-width: 30ch; }
+@media (min-width: 900px) {
+  .ev-link { grid-template-columns: 9rem minmax(0, 1fr) auto; }
+  .ev-cta { grid-column: 3; grid-row: 1; margin: 0; }
+}
+
 /* one line and the button beside it */
 .events-head {
   display: flex;
@@ -963,6 +1014,17 @@ a { color: inherit; }
 .visit-actions .pill { margin: 0; padding: 0 1.1rem; }
 @media (max-width: 359px) { .visit-actions .pill { padding: 0 0.85rem; font-size: 0.8125rem; } }
 .pill--solid { background: var(--ink); color: var(--sulfur); }
+
+/* Good to know: short answers under hours and contacts */
+.visit-know { grid-column: 1 / -1; }
+.know { margin: 0; display: grid; gap: 0; border-top: 2px solid var(--ink); }
+.know > div { display: grid; gap: 0.35rem; padding: 1rem 0; border-bottom: 2px solid var(--ink); }
+.know dt { font-family: var(--f-display); text-transform: uppercase; font-size: 0.9375rem; }
+.know dd { margin: 0; font-weight: 300; font-size: var(--t-m); line-height: 1.4; max-width: 48ch; }
+@media (min-width: 900px) {
+  .know { grid-template-columns: 1fr 1fr; column-gap: 3rem; }
+  .know > div { grid-template-columns: 9rem minmax(0, 1fr); gap: 1rem; }
+}
 
 .visit-links { margin: 0; padding: 0; list-style: none; }
 .visit-links li {

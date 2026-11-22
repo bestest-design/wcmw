@@ -25,7 +25,7 @@
 
   --g: clamp(1rem, 0.4rem + 3.2vw, 4rem);
   --rail-h: 3.5rem;
-  --mq-h: 3rem;
+  --mq-h: clamp(3.25rem, 3rem + 1vw, 4rem); /* marquee bar height; the hero leaves room for it */
   --radius-photo: 1.25rem;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --spring: linear(0, 0.36 6%, 0.86 14%, 1.08 21%, 1.13 26%, 1.08 32%, 0.99 41%, 0.97 47%, 1 60%, 1.005 72%, 1);
@@ -224,7 +224,7 @@ a { color: inherit; }
   align-items: center;
   font-family: var(--f-display);
   text-transform: uppercase;
-  font-size: var(--t-s);
+  font-size: clamp(0.9375rem, 0.85rem + 0.35vw, 1.1875rem);
   letter-spacing: 0.32em;
   white-space: nowrap;
 }

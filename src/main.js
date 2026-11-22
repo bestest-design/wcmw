@@ -181,17 +181,23 @@ function initDock() {
 }
 
 /* ------------------------------------------------------------------ */
-/* BOOM sticker: tap to backspin                                        */
+/* BOOM sticker: backspins on hover, press, tap or keyboard (as on the  */
+/* first site); a touch also buzzes the phone                           */
 /* ------------------------------------------------------------------ */
 function initBoom() {
   const boom = document.getElementById("boom")
   if (!boom) return
-  boom.addEventListener("click", () => {
+  const spin = () => {
     if (boom.classList.contains("is-spinning")) return
     boom.classList.add("is-spinning")
-    if (navigator.vibrate) navigator.vibrate(120)
     setTimeout(() => boom.classList.remove("is-spinning"), reduceMotion ? 50 : 3100)
+  }
+  boom.addEventListener("pointerenter", (e) => e.pointerType !== "touch" && spin())
+  boom.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "touch" && navigator.vibrate) navigator.vibrate(200)
+    spin()
   })
+  boom.addEventListener("click", spin) // Enter / Space
 }
 
 /* ------------------------------------------------------------------ */

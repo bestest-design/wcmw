@@ -1,11 +1,9 @@
-// WCMW site behaviour: live open/closed status, pullable hero spring with
-// optional sound, menu search + rail scroll-spy, thumb dock, BOOM sticker,
-// photo lightbox and the lazily loaded Instagram widget.
+// WCMW site behaviour: live open/closed status, menu search + rail scroll-spy,
+// thumb dock, BOOM sticker, photo strip with dots, lightbox and the lazily
+// loaded Instagram widget.
 // Without JavaScript the page is still complete: static menu, links, hours.
 
 import { computeStatus, readHours, rigaNow } from "./status.mjs"
-import { initHero } from "./hero.mjs"
-import { setSound, storedSound, scratch, needleDrop, glug, tick } from "./sound.mjs"
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
@@ -20,50 +18,9 @@ function renderStatus() {
     const text = el.querySelector("[data-status-text]")
     if (text) text.textContent = status.text
   })
-  const dock = document.querySelector(".dock")
-  if (dock) dock.dataset.open = String(status.open)
   document.querySelectorAll("[data-hours] li").forEach((li) => {
     li.classList.toggle("is-today", Number(li.dataset.day) === now.day)
   })
-}
-
-/* ------------------------------------------------------------------ */
-/* Sound toggle (off by default, remembered on this device)            */
-/* ------------------------------------------------------------------ */
-function initSound() {
-  const btn = document.querySelector("[data-sound]")
-  const prompt = document.querySelector("[data-sound-prompt]")
-  const hero = document.querySelector(".hero")
-  if (!btn) return
-  const label = btn.querySelector("[data-sound-label]")
-  let on = false
-  const show = () => {
-    btn.setAttribute("aria-pressed", String(on))
-    if (label) label.textContent = on ? "sound on" : "sound off"
-  }
-  const set = (value) => {
-    on = value
-    setSound(on)
-    show()
-    if (prompt) prompt.hidden = true
-  }
-  show()
-  btn.addEventListener("click", () => set(!on))
-
-  // After the first pull, offer the sound once, right where the visitor is playing
-  let offered = false
-  hero?.addEventListener("wcmw:pulled", () => {
-    if (on || offered || !prompt) return
-    offered = true
-    prompt.hidden = false
-    btn.classList.add("is-calling")
-    setTimeout(() => {
-      prompt.hidden = true
-      btn.classList.remove("is-calling")
-    }, 7000)
-  })
-  prompt?.addEventListener("click", () => set(true))
-  if (storedSound()) btn.classList.add("was-on")
 }
 
 /* ------------------------------------------------------------------ */
@@ -182,13 +139,19 @@ function initMenu() {
 function initDock() {
   const dock = document.querySelector(".dock")
   if (!dock) return
-  requestAnimationFrame(() => dock.classList.add("is-visible"))
-  // the fade under the dock only matters once content scrolls beneath it
-  const hero = document.querySelector(".hero")
-  if (hero)
-    new IntersectionObserver(([e]) => document.body.classList.toggle("past-hero", !e.isIntersecting), {
-      rootMargin: "0px 0px -40% 0px",
-    }).observe(hero)
+  // On the first screen the big hero links do this job; the dock takes over once they scroll away
+  const nav = document.querySelector(".hero-nav")
+  const show = (on) => {
+    dock.classList.toggle("is-visible", on)
+    dock.inert = !on
+    document.body.classList.toggle("past-hero", on)
+  }
+  if (nav && "IntersectionObserver" in window) {
+    show(false)
+    new IntersectionObserver(([e]) => show(!e.isIntersecting && e.boundingClientRect.top < 0)).observe(nav)
+  } else {
+    show(true)
+  }
   const short = window.matchMedia("(max-height: 480px)")
   let lastY = window.scrollY
   window.addEventListener(
@@ -218,7 +181,7 @@ function initDock() {
 }
 
 /* ------------------------------------------------------------------ */
-/* BOOM sticker: tap to backspin (with a scratch if sound is on)        */
+/* BOOM sticker: tap to backspin                                        */
 /* ------------------------------------------------------------------ */
 function initBoom() {
   const boom = document.getElementById("boom")
@@ -226,7 +189,6 @@ function initBoom() {
   boom.addEventListener("click", () => {
     if (boom.classList.contains("is-spinning")) return
     boom.classList.add("is-spinning")
-    scratch()
     if (navigator.vibrate) navigator.vibrate(120)
     setTimeout(() => boom.classList.remove("is-spinning"), reduceMotion ? 50 : 3100)
   })
@@ -366,7 +328,6 @@ function initDeal() {
   const pour = () => {
     if (deal.classList.contains("is-pouring")) return
     deal.classList.add("is-pouring")
-    glug()
     setTimeout(() => deal.classList.remove("is-pouring"), reduceMotion ? 50 : 1400)
   }
   deal.addEventListener("click", pour)
@@ -379,16 +340,120 @@ function initDeal() {
 }
 
 /* ------------------------------------------------------------------ */
-/* With sound on, each section's coil rule ticks like a needle drop     */
+/* Photo strip: drifts sideways while the page scrolls past (a hint     */
+/* that it scrolls), with one dot per stop underneath                   */
 /* ------------------------------------------------------------------ */
-function initRuleTicks() {
-  const rules = document.querySelectorAll(".coil-rule")
-  if (!rules.length || !("IntersectionObserver" in window)) return
-  const io = new IntersectionObserver(
-    (entries) => entries.forEach((e) => e.isIntersecting && (tick(), io.unobserve(e.target))),
-    { rootMargin: "0px 0px -35% 0px" }
+function initGallery() {
+  const track = document.querySelector(".gallery-track")
+  if (!track) return
+  const items = [...track.children]
+  const dots = document.createElement("div")
+  dots.className = "gallery-dots"
+  dots.setAttribute("aria-hidden", "true") // keyboard users tab through the photos themselves
+  track.after(dots)
+
+  let stops = []
+  let current = -1
+  let userTook = false
+  const max = () => track.scrollWidth - track.clientWidth
+  const build = () => {
+    const m = max()
+    const at = items.map((li) => Math.min(m, li.offsetLeft - items[0].offsetLeft))
+    stops = at.filter((x, i) => i === 0 || x - at[i - 1] > 4)
+    dots.replaceChildren(
+      ...stops.map((x, i) => {
+        const b = document.createElement("button")
+        b.type = "button"
+        b.tabIndex = -1
+        b.addEventListener("click", () => {
+          take()
+          track.scrollTo({ left: x, behavior: reduceMotion ? "auto" : "smooth" })
+        })
+        return b
+      })
+    )
+    current = -1
+    mark()
+  }
+  const mark = () => {
+    const x = track.scrollLeft
+    let best = 0
+    stops.forEach((s, i) => Math.abs(s - x) < Math.abs(stops[best] - x) && (best = i))
+    if (best === current) return
+    current = best
+    ;[...dots.children].forEach((d, i) => d.classList.toggle("is-on", i === best))
+  }
+  track.addEventListener("scroll", () => requestAnimationFrame(mark), { passive: true })
+  window.addEventListener("resize", build, { passive: true })
+  build()
+
+  // Drift: the page's vertical scroll pans the strip by up to about two photos,
+  // until the visitor swipes or taps it; then it is all theirs.
+  const take = () => {
+    if (userTook) return
+    userTook = true
+    track.classList.remove("is-drifting")
+  }
+  ;["pointerdown", "touchstart", "wheel", "keydown"].forEach((t) => track.addEventListener(t, take, { passive: true }))
+  if (reduceMotion || !("IntersectionObserver" in window)) return
+  let near = false
+  let ticking = false
+  const drift = () => {
+    ticking = false
+    if (userTook || !near) return
+    const r = track.getBoundingClientRect()
+    const p = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height)))
+    const reach = Math.min(max(), (stops[2] ?? stops.at(-1)) || 0)
+    track.scrollLeft = p * reach
+  }
+  new IntersectionObserver(([e]) => {
+    near = e.isIntersecting
+    track.classList.toggle("is-drifting", near && !userTook)
+    drift()
+  }).observe(track)
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking && near && !userTook) {
+        ticking = true
+        requestAnimationFrame(drift)
+      }
+    },
+    { passive: true }
   )
-  rules.forEach((r) => io.observe(r))
+}
+
+/* ------------------------------------------------------------------ */
+/* Walkers: cross the screen from the left edge while the page scrolls  */
+/* to its end, so they arrive on the marquee floor at the last scroll   */
+/* ------------------------------------------------------------------ */
+function initWalkers() {
+  const walkers = document.querySelector(".visit-walkers")
+  if (!walkers || reduceMotion) return
+  const docTop = (el) => {
+    let y = 0
+    for (let e = el; e; e = e.offsetParent) y += e.offsetTop
+    return y
+  }
+  let ticking = false
+  const update = () => {
+    ticking = false
+    const top = docTop(walkers) // layout position, unaffected by the walk itself
+    const vh = window.innerHeight
+    const end = document.documentElement.scrollHeight - vh
+    const span = end + vh - top
+    const p = span > 0 ? Math.min(1, Math.max(0, (window.scrollY + vh - top) / span)) : 1
+    walkers.style.setProperty("--walk", p.toFixed(4))
+  }
+  const queue = () => {
+    if (!ticking) {
+      ticking = true
+      requestAnimationFrame(update)
+    }
+  }
+  window.addEventListener("scroll", queue, { passive: true })
+  window.addEventListener("resize", queue, { passive: true })
+  update()
 }
 
 /* ------------------------------------------------------------------ */
@@ -421,9 +486,9 @@ function initAnchorSettle() {
 /* ------------------------------------------------------------------ */
 renderStatus()
 setInterval(renderStatus, 60 * 1000)
-initSound()
 initDock()
 initBoom()
+initWalkers()
 initAnchorSettle()
 // Everything below the first screen waits for an idle moment so the poster paints first
 const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 200))
@@ -432,13 +497,5 @@ idle(() => {
   initLightbox()
   initLazyWidget()
   initDeal()
-  initRuleTicks()
+  initGallery()
 }, { timeout: 1200 })
-
-const hero = document.querySelector(".hero")
-if (hero) {
-  initHero(hero, { reduceMotion })
-  // The entrance plays once, after fonts load so the spring lands on real glyphs
-  if (!reduceMotion) (document.fonts?.ready ?? Promise.resolve()).then(() => hero.classList.add("is-ready"))
-  hero.querySelector("[data-pull]")?.addEventListener("pointerdown", () => needleDrop(), { once: true })
-}

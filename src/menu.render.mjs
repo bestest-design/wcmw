@@ -72,14 +72,14 @@ const dealCard = (deal) => `
 
 // Photo shown beside the menu on wide screens while a category is in view
 const VISUALS = {
-  cocktails: ["drink_6", "A sour on a cobalt blue table"],
-  specials: ["drink_2", "A coffee cocktail in a coupe"],
-  whisky: ["inside_5", "Records and a lamp on a bar table"],
-  spirits: ["drink_4", "A highball with olives"],
   coffee: ["drink_5", "Coffee poured over a dessert"],
-  "no-alcohol": ["drink_3", "A red drink over ice on a steel table"],
-  beer: ["dj_2", "Records spinning on the turntable"],
+  whisky: ["inside_5", "A whisky and a coffee cocktail at a bar table"],
+  specials: ["drink_2", "An espresso martini"],
+  cocktails: ["drink_6", "A sour on a cobalt blue table"],
+  spirits: ["drink_4", "A highball with olives"],
   wine: ["drink_7", "Red wine on a steel table"],
+  beer: ["slide_3", "The bar counter and the drinks fridge", "88% 45%"],
+  "no-alcohol": ["drink_1", "A homemade lemonade in yellow light"],
   snacks: ["film_1", "The printed WCMW menu"],
 }
 
@@ -93,8 +93,9 @@ export function renderMenuRail(data) {
 export function renderMenuVisual(data) {
   const imgs = data.categories
     .map((c, i) => {
-      const [file, alt] = VISUALS[c.id] || VISUALS.cocktails
-      return `<img src="./pics/opt/${file}-1280.webp" alt="${esc(alt)}" data-cat="${c.id}" loading="lazy" decoding="async"${i === 0 ? ' class="is-active"' : ""}>`
+      const [file, alt, pos] = VISUALS[c.id] || VISUALS.cocktails
+      const style = pos ? ` style="object-position:${pos}"` : ""
+      return `<img src="./pics/opt/${file}-1280.webp" alt="${esc(alt)}" data-cat="${c.id}" loading="lazy" decoding="async"${style}${i === 0 ? ' class="is-active"' : ""}>`
     })
     .join("")
   return `<figure class="menu-visual" aria-hidden="true">${imgs}</figure>`
@@ -105,8 +106,9 @@ export function renderMenuBody(data) {
     .map((c) => {
       const body = c.sections.map(section).join("")
       const deal = c.id === "specials" ? dealCard(data.deal) : ""
-      const [file] = VISUALS[c.id] || VISUALS.cocktails
-      const sticker = `<img class="menu-sticker" src="./pics/opt/${file}-640.webp" alt="" aria-hidden="true" loading="lazy" decoding="async">`
+      const [file, , pos] = VISUALS[c.id] || VISUALS.cocktails
+      const style = pos ? ` style="object-position:${pos}"` : ""
+      const sticker = `<img class="menu-sticker" src="./pics/opt/${file}-640.webp" alt="" aria-hidden="true" loading="lazy" decoding="async"${style}>`
       // a category label only where it groups several titled lists (Spirits, Wine, No alcohol)
       const titled = c.sections.filter((s) => s.title).length
       const label = titled > 1 ? `<p class="menu-cat-label" aria-hidden="true">${esc(c.label)}</p>` : ""

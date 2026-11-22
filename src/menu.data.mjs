@@ -10,74 +10,80 @@ export default {
   },
   "categories": [
     {
-      "id": "cocktails",
-      "label": "Cocktails",
+      "id": "coffee",
+      "label": "Coffee",
       "sections": [
         {
-          "title": "Signature Cocktailssssssssssssss",
+          "title": "Coffee",
           "unit": null,
           "items": [
             {
-              "name": "Liquid Love",
-              "price": "15",
-              "desc": "Nikka Coffey Vodka, passion, Sakura cherry, lemon, foam, prosecco"
+              "name": "Espresso",
+              "price": "2"
             },
             {
-              "name": "Jazz Kissa",
-              "price": "14",
-              "desc": "Shinobu Whisky, lemon, plum, yuzu, red wine, foam"
+              "name": "Double Espresso",
+              "price": "3"
             },
             {
-              "name": "Inner City Blues",
-              "price": "14",
-              "desc": "Shinobu Whisky, Kahlua, sugar, espresso, foam"
+              "name": "Americano",
+              "price": "3"
             },
             {
-              "name": "Japanese Yuzu Night",
-              "price": "14",
-              "desc": "Yuzu gin, lemon, yuzu syrup, yuzu bitters, foam"
+              "name": "Espresso Macchiato",
+              "price": "2.5"
             },
             {
-              "name": "Yuzu Martini",
-              "price": "15",
-              "desc": "Floral gin, Yuzu sake, pineapple, sugar"
+              "name": "Double Espresso Macchiato",
+              "price": "3.5"
             },
             {
-              "name": "All That's Nice",
-              "price": "12",
-              "desc": "Spiced Roselle Vietnamese Gin, lemon, ginger"
+              "name": "Cappuccino",
+              "price": "3.5"
             },
             {
-              "name": "Black Widow",
-              "price": "14",
-              "desc": "Gin, Creme de Cassis, Kahlua, lime, bitters"
+              "name": "Double Cappuccino",
+              "price": "4"
             },
             {
-              "name": "Matcha Symphony",
-              "price": "14",
-              "desc": "Moba matcha, Roku Gin, lemon, sugar, foam"
+              "name": "Caffe Latte",
+              "price": "4.5"
             },
             {
-              "name": "Jalapeno Sour",
-              "price": "12",
-              "desc": "Shinobu Whisky, jalapeno, lemon, sugar, pineapple juice, foam"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "specials",
-      "label": "Specials",
-      "sections": [
-        {
-          "title": "WCMW Specialssssssssssssss",
-          "unit": null,
-          "items": [
+              "name": "Flat White",
+              "price": "4"
+            },
             {
-              "name": "When Coffee Meets Negroni",
-              "price": "14",
-              "desc": "Coffee bean infused negroni (Gin, Vermouth, Campari)"
+              "name": "Iced Latte",
+              "price": "4.5"
+            },
+            {
+              "name": "Espresso Tonic",
+              "price": "5"
+            },
+            {
+              "name": "Moba Ceremonial Matcha",
+              "price": "6"
+            },
+            {
+              "name": "Boba Matcha",
+              "price": "7"
+            },
+            {
+              "name": "Hot Chocolate",
+              "price": "3.5"
+            },
+            {
+              "name": "Tea",
+              "price": "3"
+            },
+            {
+              "name": "Tea Pot",
+              "price": "5"
+            },
+            {
+              "name": "Moba Ceremonial Matcha (30g)",
+              "price": "35"
             }
           ]
         }
@@ -177,6 +183,80 @@ export default {
               "name": "Old Fashioned or Whisky Sour",
               "price": "11-23",
               "desc": "Ask our bartender for the best selection"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "specials",
+      "label": "Specials",
+      "sections": [
+        {
+          "title": "WCMW Specialssssssssssssss",
+          "unit": null,
+          "items": [
+            {
+              "name": "When Coffee Meets Negroni",
+              "price": "14",
+              "desc": "Coffee bean infused negroni (Gin, Vermouth, Campari)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cocktails",
+      "label": "Cocktails",
+      "sections": [
+        {
+          "title": "Signature Cocktailssssssssssssss",
+          "unit": null,
+          "items": [
+            {
+              "name": "Liquid Love",
+              "price": "15",
+              "desc": "Nikka Coffey Vodka, passion, Sakura cherry, lemon, foam, prosecco"
+            },
+            {
+              "name": "Jazz Kissa",
+              "price": "14",
+              "desc": "Shinobu Whisky, lemon, plum, yuzu, red wine, foam"
+            },
+            {
+              "name": "Inner City Blues",
+              "price": "14",
+              "desc": "Shinobu Whisky, Kahlua, sugar, espresso, foam"
+            },
+            {
+              "name": "Japanese Yuzu Night",
+              "price": "14",
+              "desc": "Yuzu gin, lemon, yuzu syrup, yuzu bitters, foam"
+            },
+            {
+              "name": "Yuzu Martini",
+              "price": "15",
+              "desc": "Floral gin, Yuzu sake, pineapple, sugar"
+            },
+            {
+              "name": "All That's Nice",
+              "price": "12",
+              "desc": "Spiced Roselle Vietnamese Gin, lemon, ginger"
+            },
+            {
+              "name": "Black Widow",
+              "price": "14",
+              "desc": "Gin, Creme de Cassis, Kahlua, lime, bitters"
+            },
+            {
+              "name": "Matcha Symphony",
+              "price": "14",
+              "desc": "Moba matcha, Roku Gin, lemon, sugar, foam"
+            },
+            {
+              "name": "Jalapeno Sour",
+              "price": "12",
+              "desc": "Shinobu Whisky, jalapeno, lemon, sugar, pineapple juice, foam"
             }
           ]
         }
@@ -320,169 +400,6 @@ export default {
       ]
     },
     {
-      "id": "coffee",
-      "label": "Coffee",
-      "sections": [
-        {
-          "title": "Coffee",
-          "unit": null,
-          "items": [
-            {
-              "name": "Espresso",
-              "price": "2"
-            },
-            {
-              "name": "Double Espresso",
-              "price": "3"
-            },
-            {
-              "name": "Americano",
-              "price": "3"
-            },
-            {
-              "name": "Espresso Macchiato",
-              "price": "2.5"
-            },
-            {
-              "name": "Double Espresso Macchiato",
-              "price": "3.5"
-            },
-            {
-              "name": "Cappuccino",
-              "price": "3.5"
-            },
-            {
-              "name": "Double Cappuccino",
-              "price": "4"
-            },
-            {
-              "name": "Caffe Latte",
-              "price": "4.5"
-            },
-            {
-              "name": "Flat White",
-              "price": "4"
-            },
-            {
-              "name": "Iced Latte",
-              "price": "4.5"
-            },
-            {
-              "name": "Espresso Tonic",
-              "price": "5"
-            },
-            {
-              "name": "Moba Ceremonial Matcha",
-              "price": "6"
-            },
-            {
-              "name": "Boba Matcha",
-              "price": "7"
-            },
-            {
-              "name": "Hot Chocolate",
-              "price": "3.5"
-            },
-            {
-              "name": "Tea",
-              "price": "3"
-            },
-            {
-              "name": "Tea Pot",
-              "price": "5"
-            },
-            {
-              "name": "Moba Ceremonial Matcha (30g)",
-              "price": "35"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "no-alcohol",
-      "label": "No alcohol",
-      "sections": [
-        {
-          "title": "Non Alcoholic Cocktails",
-          "unit": null,
-          "items": [
-            {
-              "name": "Homemade Lemonade",
-              "price": "7",
-              "note": "(Options: Lychee, Sakura, Melon, Yuzu, Passion)"
-            },
-            {
-              "name": "Boba Lemonade (Passion or Yuzu or Mango)",
-              "price": "7"
-            }
-          ]
-        },
-        {
-          "title": "Juices & Soft Drinks",
-          "unit": null,
-          "items": [
-            {
-              "name": "Fresh Orange Juice",
-              "price": "5"
-            },
-            {
-              "name": "Fresh Grapefruit Juice",
-              "price": "5"
-            },
-            {
-              "name": "OnLemon Lemonades",
-              "price": "4"
-            },
-            {
-              "name": "Rudys Kombucha",
-              "price": "4"
-            },
-            {
-              "name": "Ginger Beer",
-              "price": "4"
-            },
-            {
-              "name": "Tonic",
-              "price": "3"
-            },
-            {
-              "name": "0.2L Water (Still/Sparkling)",
-              "price": "2.5"
-            },
-            {
-              "name": "0.75L Water (Still/Sparkling)",
-              "price": "4"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "beer",
-      "label": "Beer",
-      "sections": [
-        {
-          "title": "Beeeeeeeeeeeeeeeer",
-          "unit": null,
-          "items": [
-            {
-              "name": "Asahi 5.2%",
-              "price": "6"
-            },
-            {
-              "name": "Sapporo 4.7%",
-              "price": "5.5"
-            },
-            {
-              "name": "Kirin Ichiban 5%",
-              "price": "5.5"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": "wine",
       "label": "Wine",
       "sections": [
@@ -575,6 +492,89 @@ export default {
             {
               "name": "Gaia 4-6 H Agiorgitiko Rose",
               "price": "6/30"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beer",
+      "label": "Beer",
+      "sections": [
+        {
+          "title": "Beeeeeeeeeeeeeeeer",
+          "unit": null,
+          "items": [
+            {
+              "name": "Asahi 5.2%",
+              "price": "6"
+            },
+            {
+              "name": "Sapporo 4.7%",
+              "price": "5.5"
+            },
+            {
+              "name": "Kirin Ichiban 5%",
+              "price": "5.5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "no-alcohol",
+      "label": "No alcohol",
+      "sections": [
+        {
+          "title": "Non Alcoholic Cocktails",
+          "unit": null,
+          "items": [
+            {
+              "name": "Homemade Lemonade",
+              "price": "7",
+              "note": "(Options: Lychee, Sakura, Melon, Yuzu, Passion)"
+            },
+            {
+              "name": "Boba Lemonade (Passion or Yuzu or Mango)",
+              "price": "7"
+            }
+          ]
+        },
+        {
+          "title": "Juices & Soft Drinks",
+          "unit": null,
+          "items": [
+            {
+              "name": "Fresh Orange Juice",
+              "price": "5"
+            },
+            {
+              "name": "Fresh Grapefruit Juice",
+              "price": "5"
+            },
+            {
+              "name": "OnLemon Lemonades",
+              "price": "4"
+            },
+            {
+              "name": "Rudys Kombucha",
+              "price": "4"
+            },
+            {
+              "name": "Ginger Beer",
+              "price": "4"
+            },
+            {
+              "name": "Tonic",
+              "price": "3"
+            },
+            {
+              "name": "0.2L Water (Still/Sparkling)",
+              "price": "2.5"
+            },
+            {
+              "name": "0.75L Water (Still/Sparkling)",
+              "price": "4"
             }
           ]
         }

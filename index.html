@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="./src/styles.css">
 </head>
 
-<body class="text-lightBlack flex flex-col justify-between align-top h-auto items-center self-center mx-auto max-w-[2560px]">
+<body class="text-lightBlack flex flex-col justify-between align-top h-auto items-center self-center mx-auto max-w-[2560px] overflow-x-clip">
   <background class="fixed w-full h-full overflow-hidden -z-10 -m-4 opacity-5">
     <img src="./img/WCMW_logo_12.svg" alt="WCMW Background dancing guy" class="w-full h-full object-contain">
   </background>
@@ -45,7 +45,7 @@
   <section class="section-shell flex flex-col justify-start min-h-[100dvh] lg:min-h-[100dvh] h-auto w-full gap-8 pb-0">
 
     <top class="flex flex-col lg:flex-row flex-wrap justify-between gap-8">
-      <img src="./img/WCMW_16.svg" alt="WCMW Logo" class="h-fit max-w-xs lg:max-w-none lg:h-[10rem]" loading="lazy">
+      <img src="./img/WCMW_16.svg" alt="WCMW Logo" class="h-fit max-w-full sm:max-w-xs lg:max-w-none lg:h-[10rem]" loading="lazy">
       <nav class="flex flex-col items-start lg:items-end font-BoldBold space-y-2">
         <a class="text-3xl lg:text-4xl uppercase hover:italic hover:tracking-wide hover-silver-underline transition-all duration-200 animate-letter-reveal" href="#about">About</a>
         <a class="text-3xl lg:text-4xl uppercase hover:italic hover:tracking-wide hover-silver-underline transition-all duration-200 animate-letter-reveal" style="animation-delay: 0.05s" href="#drinks">Drinks</a>
@@ -60,7 +60,7 @@
     </hero>
 
     <!-- Infinite Marquee Strip -->
-    <div class="marquee-shell w-screen -mx-4 lg:-mx-16 overflow-hidden py-4 bg-lightBlack">
+    <div class="marquee-shell w-screen -mx-4 sm:-mx-6 lg:-mx-16 overflow-hidden py-4 bg-lightBlack">
       <div class="marquee-track animate-marquee text-sm">
         <span class="font-BoldBold uppercase tracking-[0.4em] text-yellow">SPECIALTY COFFEE</span>
         <span class="font-SequelSans text-silver">-</span>
@@ -453,12 +453,21 @@
     </div>
   </section>
 
-  <section id="events"
+  <section id="instagram"
     class="section-shell flex flex-col justify-between align-center w-full min-h-[40dvh] lg:min-h-[60dvh] pt-0">
     <h2 class="uppercase font-BoldBold text-nowrap mb-8">Instagrrrraaaaam</h2>
-    
+
     <div data-key="Wcmw Feed " class="ft w-full" id="ft1r0p18l"></div>
     <script src="https://wdg.fouita.com/widgets/0x3602c4.js"></script>
+  </section>
+
+  <section id="events"
+    class="section-shell flex flex-col justify-between align-center w-full pt-0">
+    <h2 class="uppercase font-BoldBold text-nowrap mb-8">Eeeeeeeeevents</h2>
+
+    <iframe src="https://ra.co/promoters/187972/widget/events?theme=light&transparentBackground=true&customTextColor=%23181716"
+      title="WCMW events on Resident Advisor" loading="lazy"
+      height="650px" width="100%" style="border:none"></iframe>
   </section>
 
   <div id="lightboxOverlay" class="lightbox-overlay" role="dialog" aria-modal="true" aria-label="Enlarged photo" aria-hidden="true">

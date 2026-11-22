@@ -462,17 +462,17 @@ a { color: inherit; }
 .menu-search input::placeholder { color: var(--ink-soft); font-weight: 300; }
 .menu-search:focus-within { outline: 3px solid var(--blue); outline-offset: 3px; }
 @media (min-width: 900px) {
-  /* search first, the match count under it, the price note across from it */
+  /* price note left, search right on the same middle line, match count under the search */
   .menu-head {
-    grid-template-columns: minmax(18rem, 26rem) 1fr;
-    grid-template-areas: "search intro" "count .";
+    grid-template-columns: 1fr minmax(18rem, 26rem);
+    grid-template-areas: "intro search" ". count";
     align-items: center;
     column-gap: 2.5rem;
     row-gap: 0.5rem;
   }
+  .menu-intro { grid-area: intro; }
   .menu-search { grid-area: search; }
   .menu-count { grid-area: count; }
-  .menu-intro { grid-area: intro; justify-self: end; text-align: right; }
 }
 
 .menu-rail {
@@ -570,9 +570,6 @@ a { color: inherit; }
   .menu-cat-label { padding-right: 0; font-size: var(--t-l); min-height: 3.5rem; }
 }
 .menu-count { margin: 0; min-height: 1.2em; font-weight: 300; font-size: var(--t-s); color: var(--ink-soft); }
-@media (max-width: 899px) {
-  .menu-count:empty { min-height: 0; margin-bottom: -1rem; } /* no gap between search and note until there is a count */
-}
 
 .menu-sec { container-type: inline-size; }
 .menu-sec + .menu-sec { margin-top: 2.5rem; }

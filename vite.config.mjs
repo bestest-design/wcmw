@@ -102,7 +102,6 @@ const wcmwHtml = () => ({
       .replace('<!-- MENU_BODY -->', renderMenuBody(menu))
       .replace(/<!-- EVENTS:[^>]*-->/, renderEvents(events))
       .replace(/<!-- ABOUT:(\d) -->/g, (_, n) => about[n - 1])
-      .replace('<!-- GOOD_TO_KNOW -->', `<dl class="know">${goodToKnow.map(({ q, a }) => `<div><dt>${q}</dt><dd>${a}</dd></div>`).join('')}</dl>`)
       .replaceAll('<!-- RULE -->', rule())
       .replace(/<!-- SVG:([\w.-]+) -->/g, (_, file) => svg(file));
 
@@ -159,11 +158,12 @@ const llmsText = (menu, ld, events) => {
     `- Phone: ${ld.telephone}; email: ${ld.email}`,
     `- Website: ${SITE}; drinks menu: ${SITE}#drinks`,
     `- Instagram: https://instagr.am/wcmw.bar; events: https://ra.co/promoters/187972`,
+    ...(ld.founder ? [`- Founder and owner: ${ld.founder.name}`] : []),
     `- Prices in euros. Spirits by the 50ml pour or by the bottle.`,
     ``,
     `## About`,
     ``,
-    ...about.map((p) => p.replace(/<[^>]+>/g, '') + '\n'),
+    ...about.map((p) => p.replace(/<[^>]+>/g, '').replace(/\u00a0/g, ' ') + '\n'),
     `## Good to know`,
     ``,
     ...goodToKnow.map(({ q, a }) => `- ${q}: ${a}`),

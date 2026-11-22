@@ -1015,17 +1015,6 @@ a { color: inherit; }
 @media (max-width: 359px) { .visit-actions .pill { padding: 0 0.85rem; font-size: 0.8125rem; } }
 .pill--solid { background: var(--ink); color: var(--sulfur); }
 
-/* Good to know: short answers under hours and contacts */
-.visit-know { grid-column: 1 / -1; }
-.know { margin: 0; display: grid; gap: 0; border-top: 2px solid var(--ink); }
-.know > div { display: grid; gap: 0.35rem; padding: 1rem 0; border-bottom: 2px solid var(--ink); }
-.know dt { font-family: var(--f-display); text-transform: uppercase; font-size: 0.9375rem; }
-.know dd { margin: 0; font-weight: 300; font-size: var(--t-m); line-height: 1.4; max-width: 48ch; }
-@media (min-width: 900px) {
-  .know { grid-template-columns: 1fr 1fr; column-gap: 3rem; }
-  .know > div { grid-template-columns: 9rem minmax(0, 1fr); gap: 1rem; }
-}
-
 .visit-links { margin: 0; padding: 0; list-style: none; }
 .visit-links li {
   display: flex;

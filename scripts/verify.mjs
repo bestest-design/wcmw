@@ -34,7 +34,7 @@ for (const target of ["#drinks", "#events", "#contacts"]) {
 const headingTexts = [...html.matchAll(/<h[23][^>]*>([\s\S]*?)<\/h[23]>/g)].map((m) =>
   m[1].replace(/<span class="sr-only">[\s\S]*?<\/span>/g, "").replace(/<[^>]+>/g, "").trim()
 )
-for (const word of ["Driiiiinnnksss", "The feeed", "Eeeeeeeeevents", "Signature Cocktailssssssssssssss", "Red wineeeeeeeeeeeeeeeeeeeeeeeeeeeeee"]) {
+for (const word of ["Driiiiinnnksss", "iinsttttaaaa feeeeed", "Eeeeeeeeevents", "Signature Cocktailssssssssssssss", "Red wineeeeeeeeeeeeeeeeeeeeeeeeeeeeee"]) {
   check(headingTexts.includes(word), `branded heading "${word}" missing or respelled`)
 }
 

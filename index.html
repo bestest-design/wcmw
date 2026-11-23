@@ -53,7 +53,7 @@
     <!-- Hero: the WCMW listening bar lockup, the big section links and the BOOM sticker -->
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="hero-head">
-        <h1 class="hero-logo" id="hero-title"><span class="sr-only">WCMW, When Coffee Meets Whisky: listening bar in Riga</span><img src="./img/WCMW_16.svg" alt="" width="4022" height="1286" fetchpriority="high"></h1>
+        <div class="hero-logo" id="hero-title"><span class="sr-only">WCMW, When Coffee Meets Whisky: listening bar in Riga</span><img src="./img/WCMW_16.svg" alt="" width="4022" height="1286" fetchpriority="high"></div>
         <nav class="hero-nav" aria-label="Sections">
           <a href="#about" style="--i:0">About</a><span class="hero-dot" aria-hidden="true" style="--i:0"></span>
           <a href="#drinks" style="--i:1">Drinks</a><span class="hero-dot" aria-hidden="true" style="--i:1"></span>
@@ -71,67 +71,77 @@
       <div class="marquee-track">
         <span>Specialty coffee</span><span>Japanese whisky</span><span>Listening bar</span><span>Reflector Audio</span>
         <span>Specialty coffee</span><span>Japanese whisky</span><span>Listening bar</span><span>Reflector Audio</span>
+        <span>Specialty coffee</span><span>Japanese whisky</span><span>Listening bar</span><span>Reflector Audio</span>
+        <span>Specialty coffee</span><span>Japanese whisky</span><span>Listening bar</span><span>Reflector Audio</span>
       </div>
     </div>
 
     <!-- About: editorial stack on phones, horizontal scroll story on desktop -->
     <section class="about" id="about" aria-labelledby="about-title">
       <h2 class="sr-only" id="about-title">About WCMW</h2>
+      <!-- phones: one stack. Tablets: three rows, photo and text side by side, alternating sides -->
       <div class="about-stack">
-        <figure class="about-photo about-photo--left">
-          <img src="./pics/opt/slide_2-1280.webp" srcset="./pics/opt/slide_2-640.webp 640w, ./pics/opt/slide_2-1280.webp 1280w"
-            sizes="92vw" alt="The WCMW bar counter and black chairs" loading="lazy" decoding="async">
-        </figure>
-        <p class="about-text"><!-- ABOUT:1 --></p>
-
-        <figure class="about-photo about-photo--right">
-          <img src="./pics/opt/slide_1-1280.webp" srcset="./pics/opt/slide_1-640.webp 640w, ./pics/opt/slide_1-1280.webp 1280w"
-            sizes="92vw" alt="The T Studio record and audio shelf in yellow" loading="lazy" decoding="async">
-        </figure>
-        <p class="about-text"><!-- ABOUT:2 --></p>
-
-        <figure class="about-photo about-photo--left">
-          <img src="./pics/opt/slide_3-1280.webp" srcset="./pics/opt/slide_3-640.webp 640w, ./pics/opt/slide_3-1280.webp 1280w"
-            sizes="92vw" alt="Tables and speakers inside WCMW" loading="lazy" decoding="async">
-        </figure>
-        <p class="about-text"><!-- ABOUT:3 --></p>
+        <div class="about-row">
+          <figure class="about-photo about-photo--left">
+            <img src="./pics/opt/slide_2-1280.webp" srcset="./pics/opt/slide_2-640.webp 640w, ./pics/opt/slide_2-1280.webp 1280w"
+              sizes="92vw" alt="The WCMW bar counter and black chairs" loading="lazy" decoding="async">
+          </figure>
+          <div class="about-copy">
+            <h1 class="about-title"><!-- ABOUT:TITLE --></h1>
+            <p class="about-text"><!-- ABOUT:1 --></p>
+          </div>
+        </div>
+        <div class="about-row">
+          <figure class="about-photo about-photo--right">
+            <img src="./pics/opt/slide_1-1280.webp" srcset="./pics/opt/slide_1-640.webp 640w, ./pics/opt/slide_1-1280.webp 1280w"
+              sizes="92vw" alt="The T Studio record and audio shelf in yellow" loading="lazy" decoding="async">
+          </figure>
+          <div class="about-copy"><p class="about-text"><!-- ABOUT:2 --></p></div>
+        </div>
+        <div class="about-row">
+          <figure class="about-photo about-photo--left">
+            <img src="./pics/opt/slide_3-1280.webp" srcset="./pics/opt/slide_3-640.webp 640w, ./pics/opt/slide_3-1280.webp 1280w"
+              sizes="92vw" alt="Tables and speakers inside WCMW" loading="lazy" decoding="async">
+          </figure>
+          <div class="about-copy"><p class="about-text"><!-- ABOUT:3 --></p></div>
+        </div>
       </div>
 
-      <div class="about-slider" style="view-timeline-name: --slider-scroll; view-timeline-axis: block;">
+      <!-- desktop story (src/main.js adds .has-story once the animation library is in):
+           the copy stands on bare yellow at the left, one paragraph at a time, its words
+           inking in with the scroll; the photos travel a diagonal inside a frame that
+           bleeds off the right edge. Without script or with reduced motion the stacked
+           layout above is shown instead. -->
+      <div class="about-slider">
         <div class="about-slider-stage">
-          <div class="about-slider-track" style="animation-timeline: --slider-scroll; animation-range: contain 0% contain 100%;">
-            <article class="slide-card slide-card--1">
-              <p><!-- ABOUT:1 --></p>
-            </article>
-            <figure class="slide-photo">
-              <img src="./pics/opt/slide_2-1280.webp" alt="The WCMW bar counter" loading="lazy" decoding="async">
-            </figure>
-            <article class="slide-card slide-card--2">
-              <p><!-- ABOUT:2 --></p>
-            </article>
-            <figure class="slide-photo slide-photo--low">
-              <img src="./pics/opt/slide_1-1280.webp" alt="The T Studio record and audio shelf" loading="lazy" decoding="async">
-            </figure>
-            <article class="slide-card slide-card--3">
-              <p><!-- ABOUT:3 --></p>
-            </article>
-            <figure class="slide-photo slide-photo--lower">
-              <img src="./pics/opt/slide_3-1280.webp" alt="Tables and speakers inside WCMW" loading="lazy" decoding="async">
-            </figure>
+          <div class="story-photos">
+            <div class="story-track">
+              <figure class="slide-photo"><img src="./pics/opt/slide_2-1280.webp" alt="The WCMW bar counter" loading="lazy" decoding="async"></figure>
+              <figure class="slide-photo"><img src="./pics/opt/slide_1-1280.webp" alt="The T Studio record and audio shelf" loading="lazy" decoding="async"></figure>
+              <figure class="slide-photo"><img src="./pics/opt/slide_3-1280.webp" alt="Tables and speakers inside WCMW" loading="lazy" decoding="async"></figure>
+            </div>
+          </div>
+          <div class="story-text">
+            <article class="chapter"><h1 class="about-title"><!-- ABOUT:TITLE --></h1><p><!-- ABOUT:1 --></p></article>
+            <article class="chapter chapter--lead"><p><!-- ABOUT:2 --></p><span class="slide-guy" aria-hidden="true"><!-- SVG:icon-burstguy.svg --></span></article>
+            <article class="chapter chapter--lead"><p><!-- ABOUT:3 --></p><span class="slide-guy slide-guy--flip" aria-hidden="true"><!-- SVG:icon-recordguy.svg --></span></article>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- The feeed: the bar's Instagram, part of About (the dock keeps About lit here).
+    <!-- Iinsttttaaaa feeeeed: the bar's Instagram, part of About (the dock keeps About lit here).
          On desktop the drinks push it out to the right as you scroll on (src/main.js). -->
     <!-- desktop curtain (src/main.js): the panel in .swap-out holds still for a screen of
          scroll (.swap-run) while the next one (.swap-in) slides over it -->
     <div class="swap-out" data-from="left" data-align="top">
     <section class="feed" id="instagram" aria-labelledby="instagram-title" data-dock-part="about">
       <div class="feed-head">
-        <!-- RULE -->
-        <h2 class="kin" id="instagram-title" style="--len:9"><span class="kin-track" aria-hidden="true">The feeed</span><span class="sr-only">The feed: WCMW on Instagram</span></h2>
+        <!-- RULE:FILL -->
+        <div class="feed-title">
+          <h2 class="kin" id="instagram-title" style="--len:20"><span class="kin-track" aria-hidden="true">iinsttttaaaa feeeeed</span><span class="sr-only">Instagram feed</span></h2>
+          <a class="pill" href="https://instagr.am/wcmw.bar">Follow <span class="at">@</span>wcmw.bar</a>
+        </div>
         <div class="feed-foot"><!-- RULE --></div>
       </div>
       <!-- Instagram feed widget: its script is injected by src/main.js when this section gets close -->
@@ -155,7 +165,8 @@
         </ul>
         <div data-key="Wcmw Feed " class="ft feed-widget" id="ft1r0p18l" data-widget-src="https://wdg.fouita.com/widgets/0x3602c4.js"></div>
       </div>
-      <a class="pill" href="https://instagr.am/wcmw.bar">Follow @wcmw.bar</a>
+      <!-- phones and tablets: the follow button sits under the grid, at the right -->
+      <a class="pill feed-follow" href="https://instagr.am/wcmw.bar">Follow <span class="at">@</span>wcmw.bar</a>
     </section>
     <div class="swap-run" aria-hidden="true"></div>
     </div>
@@ -240,10 +251,12 @@
 
         <div class="visit-contacts">
           <h3 class="visit-label">Location</h3>
-          <p class="visit-address">Baznīcas iela 20/22, Rīga</p>
-          <div class="visit-actions">
-            <a class="pill pill--solid" href="https://www.google.com/maps/dir/?api=1&destination=Bazn%C4%ABcas+iela+20%2F22%2C+R%C4%ABga">Get directions</a>
-            <a class="pill" href="tel:+37123009200">Call the bar</a>
+          <div class="visit-where">
+            <p class="visit-address">Baznīcas iela 20/22, Rīga</p>
+            <div class="visit-actions">
+              <a class="pill pill--solid" href="https://www.google.com/maps/dir/?api=1&destination=Bazn%C4%ABcas+iela+20%2F22%2C+R%C4%ABga">Get directions</a>
+              <a class="pill" href="tel:+37123009200">Call the bar</a>
+            </div>
           </div>
           <ul class="visit-links">
             <li><span class="visit-key" aria-hidden="true">tteeellll</span><a href="tel:+37123009200"><span class="sr-only">Phone </span>+371 23009200</a></li>
@@ -258,9 +271,11 @@
     <footer class="footer" role="contentinfo">
       <div class="marquee marquee--reverse" aria-hidden="true">
         <div class="marquee-track">
-          <span>When coffee meets whisky</span><span>Baltics' first listening bar</span><span>Baznicas iela 20/22, Riga</span>
-          <span>When coffee meets whisky</span><span>Baltics' first listening bar</span><span>Baznicas iela 20/22, Riga</span>
-        </div>
+        <span>When coffee meets whisky</span><span>Baltics' first listening bar</span><span>Baznicas iela 20/22, Riga</span>
+        <span>When coffee meets whisky</span><span>Baltics' first listening bar</span><span>Baznicas iela 20/22, Riga</span>
+        <span>When coffee meets whisky</span><span>Baltics' first listening bar</span><span>Baznicas iela 20/22, Riga</span>
+        <span>When coffee meets whisky</span><span>Baltics' first listening bar</span><span>Baznicas iela 20/22, Riga</span>
+      </div>
       </div>
       <p class="thanks">thaaaanks to
         <a href="https://www.instagram.com/binskistudio/">Binski Studio</a>,

@@ -112,11 +112,9 @@ export function renderMenuBody(data) {
       const [file, , pos] = VISUALS[c.id] || VISUALS.cocktails
       const style = pos ? ` style="object-position:${pos}"` : ""
       const sticker = `<img class="menu-sticker" src="./pics/opt/${file}-640.webp" alt="" aria-hidden="true" loading="lazy" decoding="async"${style}>`
-      // a category label only where it groups several titled lists (Spirits, Wine, No alcohol)
-      const titled = c.sections.filter((s) => s.title).length
-      const label = titled > 1 ? `<p class="menu-cat-label" aria-hidden="true">${esc(c.label)}</p>` : ""
-      const cls = titled > 1 ? "menu-cat" : "menu-cat menu-cat--single"
-      return `<section class="${cls}" id="menu-${c.id}" data-cat="${c.id}" aria-label="${esc(c.label)}">${label}${sticker}${body}${deal}</section>`
+      // no visible category label: the first stretched title sits beside the sticker, and
+      // screen readers get the category name from the section's aria-label
+      return `<section class="menu-cat" id="menu-${c.id}" data-cat="${c.id}" aria-label="${esc(c.label)}">${sticker}${body}${deal}</section>`
     })
     .join("\n")
   return `<div class="menu-body">

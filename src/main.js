@@ -39,7 +39,6 @@ function initMenu() {
   const links = [...rail.querySelectorAll("a[data-cat]")]
   const cats = [...document.querySelectorAll(".menu-cat")]
   const visual = [...document.querySelectorAll(".menu-visual img")]
-  const dock = document.querySelector(".dock")
   const menu = document.getElementById("drinks")
   const layout = document.querySelector(".menu-layout")
   // phones and tablets: the rail sticks to the bottom of the screen, within thumb reach
@@ -81,8 +80,6 @@ function initMenu() {
       ? railBox.top < window.innerHeight && layout.getBoundingClientRect().bottom > railBox.top + 1
       : railBox.top <= 0.5 && menu.getBoundingClientRect().bottom > railBox.bottom + 80
     rail.classList.toggle("is-stuck", stuck)
-    // The rail takes over navigation inside the menu, so the dock steps aside
-    if (dock) dock.classList.toggle("is-tucked", stuck)
   }
   window.addEventListener(
     "scroll",
@@ -143,12 +140,12 @@ function initMenu() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Dock: Menu / Events / Visit within thumb reach, marks where you are */
+/* Dock: phones and tablets, within thumb reach; marks where you are  */
 /* ------------------------------------------------------------------ */
 function initDock() {
   const dock = document.querySelector(".dock")
   if (!dock) return
-  // On the first screen the big hero links do this job; the dock takes over once they scroll away
+  // On the first screen the hero links do this job; the dock takes over once they scroll away
   const nav = document.querySelector(".hero-nav")
   const show = (on) => {
     dock.classList.toggle("is-visible", on)
@@ -161,6 +158,7 @@ function initDock() {
   } else {
     show(true)
   }
+  // short screens: it hides while you scroll down and comes back when you scroll up
   const short = window.matchMedia("(max-height: 480px)")
   let lastY = window.scrollY
   window.addEventListener(
@@ -174,19 +172,165 @@ function initDock() {
     { passive: true }
   )
   const links = [...dock.querySelectorAll("a[data-dock]")]
-  const sections = links.map((a) => document.getElementById(a.dataset.dock)).filter(Boolean)
-  const seen = new Map()
-  const spy = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => seen.set(e.target.id, e.isIntersecting))
-      const active = sections.find((s) => seen.get(s.id))
-      links.forEach((a) =>
-        active && a.dataset.dock === active.id ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")
-      )
-    },
-    { rootMargin: "-45% 0px -45% 0px" }
-  )
-  sections.forEach((s) => spy.observe(s))
+  // a section without a link of its own lights up the one it belongs to (data-dock-part)
+  const sections = [
+    ...links.map((a) => document.getElementById(a.dataset.dock)),
+    ...document.querySelectorAll("[data-dock-part]"),
+  ].filter(Boolean)
+  // lit = the section sitting at the centre of the screen, measured as drawn, so a panel
+  // that is still off to the side during a curtain does not count yet
+  let spying = false
+  const spy = () => {
+    spying = false
+    // hit-testing sees what is really drawn there: it skips the part of a panel a curtain has wiped
+    let active = null
+    for (const el of document.elementsFromPoint(window.innerWidth / 2, window.innerHeight / 2)) {
+      active = sections.find((sec) => sec.contains(el))
+      if (active) break
+    }
+    if (!active) return // between sections: keep the last one lit
+    const id = active.dataset.dockPart || active.id
+    links.forEach((a) => (a.dataset.dock === id ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")))
+  }
+  const queueSpy = () => {
+    if (!spying) {
+      spying = true
+      requestAnimationFrame(spy)
+    }
+  }
+  window.addEventListener("scroll", queueSpy, { passive: true })
+  window.addEventListener("resize", queueSpy)
+  setInterval(queueSpy, 400) // curtains keep gliding briefly after the scroll stops
+  spy()
+  initDockDrinks(dock)
+}
+
+/* In the drinks the dock changes shape: Drinks becomes a window on the
+   category you are reading, a drum of every name that turns with the scroll
+   (bottom to top, resting on each category while you read it); on phones
+   About, Events and Where? fold into symbols to make room. Tapping the
+   window opens every category as a card grown out of the dock. */
+function initDockDrinks(dock) {
+  const drinks = dock.querySelector(".dock-drinks")
+  const dial = dock.querySelector(".dock-dial")
+  const card = dock.querySelector(".dock-card")
+  const cardIn = dock.querySelector(".dock-card-in")
+  const layout = document.querySelector(".menu-layout")
+  const cats = [...document.querySelectorAll(".menu-rail a[data-cat]")]
+    .map((a) => ({ id: a.dataset.cat, name: a.textContent.trim(), el: document.getElementById(`menu-${a.dataset.cat}`) }))
+    .filter((c) => c.el)
+  if (!drinks || !dial || !card || !layout || !cats.length) return
+  document.documentElement.classList.add("has-dial")
+  const small = window.matchMedia("(max-width: 1023px)")
+
+  cats.forEach((c, i) => {
+    const a = document.createElement("a")
+    a.href = `#menu-${c.id}`
+    a.textContent = c.name
+    a.style.setProperty("--i", i)
+    cardIn.append(a)
+    c.chip = a
+  })
+  const tape = document.createElement("span")
+  tape.className = "dock-tape"
+  cats.forEach((c) => {
+    c.label = document.createElement("span")
+    c.label.textContent = c.name
+    tape.append(c.label)
+  })
+  dial.append(tape)
+
+  let inDrinks = false
+  let open = false
+  let openY = 0
+  const setOpen = (on) => {
+    open = on
+    dock.classList.toggle("is-open", on)
+    card.inert = !on
+    if (inDrinks) drinks.setAttribute("aria-expanded", String(on))
+  }
+  const setDrinks = (on) => {
+    if (on === inDrinks) return
+    inDrinks = on
+    dock.classList.toggle("is-drinks", on)
+    if (on) {
+      drinks.setAttribute("role", "button")
+      drinks.setAttribute("aria-controls", "dock-card")
+      drinks.setAttribute("aria-expanded", "false")
+    } else {
+      setOpen(false)
+      ;["role", "aria-controls", "aria-expanded", "aria-label"].forEach((n) => drinks.removeAttribute(n))
+    }
+  }
+  drinks.addEventListener("click", (e) => {
+    if (!inDrinks) return
+    e.preventDefault()
+    openY = window.scrollY
+    setOpen(!open)
+  })
+  cardIn.addEventListener("click", (e) => {
+    if (e.target.closest("a")) setOpen(false)
+  })
+  document.addEventListener("click", (e) => {
+    if (open && !dock.contains(e.target)) setOpen(false)
+  })
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && open) {
+      setOpen(false)
+      drinks.focus()
+    }
+  })
+
+  const LINE = 120 // where a category counts as being read, as for the rail
+  let ticking = false
+  const update = () => {
+    ticking = false
+    if (!small.matches) return setDrinks(false)
+    const h = window.innerHeight
+    const lb = layout.getBoundingClientRect()
+    setDrinks(lb.top < h * 0.55 && lb.bottom > h * 0.45)
+    if (open && Math.abs(window.scrollY - openY) > 80) setOpen(false)
+    const vis = cats.filter((c) => !c.el.hidden)
+    if (!inDrinks || !vis.length) return
+    const atEnd = lb.bottom <= h + 2
+    let i = 0
+    vis.forEach((c, k) => {
+      if (c.el.getBoundingClientRect().top <= LINE) i = k
+    })
+    if (atEnd) i = vis.length - 1
+    const next = atEnd ? null : vis[i + 1]
+    let f = 0
+    if (next) {
+      const t0 = vis[i].el.getBoundingClientRect().top
+      const t1 = next.el.getBoundingClientRect().top
+      const raw = Math.min(1, Math.max(0, (LINE - t0) / (t1 - t0)))
+      // a detent: the strip rests on a category while you read it and moves on in its last stretch
+      const k = Math.min(1, Math.max(0, (raw - 0.72) / 0.28))
+      f = reduceMotion ? Math.round(k) : k * k * (3 - 2 * k)
+    }
+    const cat = f > 0.5 ? next : vis[i]
+    cats.forEach((c) => (c === cat ? c.chip.setAttribute("aria-current", "true") : c.chip.removeAttribute("aria-current")))
+    drinks.setAttribute("aria-label", `Drinks: ${cat.name}. Show all categories`)
+    cats.forEach((c) => {
+      c.label.hidden = c.el.hidden
+      c.label.classList.toggle("is-on", c === cat)
+    })
+    const mid = (c) => c.label.offsetTop + c.label.offsetHeight / 2
+    const a = mid(vis[i])
+    const b = next ? mid(next) : a
+    tape.style.transform = `translateY(${(dial.clientHeight / 2 - (a + (b - a) * f)).toFixed(2)}px)`
+  }
+  const queue = () => {
+    if (!ticking) {
+      ticking = true
+      requestAnimationFrame(update)
+    }
+  }
+  window.addEventListener("scroll", queue, { passive: true })
+  window.addEventListener("resize", queue)
+  dock.addEventListener("transitionend", queue) // re-centre once the window has opened
+  document.querySelector("[data-menu-search]")?.addEventListener("input", queue)
+  update()
 }
 
 /* ------------------------------------------------------------------ */
@@ -303,7 +447,21 @@ function initLazyWidget() {
     s.async = true
     document.body.appendChild(s)
     // keep our own photos in place until the feed paints real posts (it uses background images)
-    const done = () => shell?.classList.add("is-loaded")
+    // desktop shows full rows only: a ragged last row is dropped
+    const trim = () => {
+      const cards = [...host.querySelectorAll(".splide__slide:not(.splide__slide--clone) .ft-card")]
+      // three full rows: five across when there are 15 posts, four across with 12 (Instagram
+      // only hands the latest 12 to a username feed), otherwise whole rows of five
+      const cols = cards.length >= 15 ? 5 : cards.length >= 12 ? 4 : 5
+      const keep = Math.min(cols * 3, Math.floor(cards.length / cols) * cols) || cards.length
+      shell?.style.setProperty("--feed-cols", cols)
+      cards.forEach((c, i) => c.classList.toggle("is-extra", i >= keep))
+    }
+    const done = () => {
+      shell?.classList.add("is-loaded")
+      trim()
+      setTimeout(trim, 1500)
+    }
     const painted = () =>
       [...host.querySelectorAll("div, a, span")].some((el) => getComputedStyle(el).backgroundImage.includes("url("))
     let pending = 0
@@ -450,11 +608,25 @@ function initWalkers() {
     for (let e = el; e; e = e.offsetParent) y += e.offsetTop
     return y
   }
+  // the page's end view (the section and the footer) holds still while they cross
+  // (see .visit-hold in the stylesheet); from there on the scroll walks them
+  const hold = walkers.closest(".visit-hold")
+  const pinned = walkers.closest(".visit-pin")
+  let stick = 0
+  const pin = () => {
+    if (!hold) return
+    document.documentElement.classList.add("has-walk")
+    stick = Math.min(0, window.innerHeight - pinned.offsetHeight)
+    hold.style.setProperty("--visit-stick", `${stick}px`)
+  }
+  pin()
+  if (hold) new ResizeObserver(pin).observe(pinned)
   let ticking = false
   const update = () => {
     ticking = false
-    const top = docTop(walkers) // layout position, unaffected by the walk itself
     const vh = window.innerHeight
+    // with the hold: from the moment the end view locks in place; without: from first sight
+    const top = hold ? docTop(hold) - stick + vh : docTop(walkers)
     const end = document.documentElement.scrollHeight - vh
     const span = end + vh - top
     const p = span > 0 ? Math.min(1, Math.max(0, (window.scrollY + vh - top) / span)) : 1
@@ -472,11 +644,133 @@ function initWalkers() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Desktop curtains: feed -> drinks from the left, photo strip ->      */
+/* events from the right. Sticky holds both panels still (CSS); GSAP   */
+/* moves them sideways, smoothed so a mouse wheel glides instead of    */
+/* stepping. The outgoing panel drifts a quarter of the way and is     */
+/* wiped at the seam; the incoming one slides over it.                 */
+/* ------------------------------------------------------------------ */
+async function initCurtains() {
+  const pairs = [...document.querySelectorAll(".swap-out")]
+    .map((wrap) => ({ wrap, out: wrap.querySelector("section"), into: wrap.nextElementSibling?.querySelector("section") }))
+    .filter((p) => p.out && p.into && p.wrap.nextElementSibling.classList.contains("swap-in"))
+  const query = "(min-width: 1024px) and (prefers-reduced-motion: no-preference)"
+  if (!pairs.length || !window.matchMedia(query).matches) {
+    // phones never load the animation library; a later resize to desktop does
+    if (pairs.length) window.matchMedia(query).addEventListener("change", () => initCurtains(), { once: true })
+    return
+  }
+  const [{ gsap }, { ScrollTrigger }] = await Promise.all([import("gsap"), import("gsap/ScrollTrigger")])
+  gsap.registerPlugin(ScrollTrigger)
+  const root = document.documentElement
+  const docTop = (el) => {
+    let y = 0
+    for (let n = el; n; n = n.offsetParent) y += n.offsetTop
+    return y
+  }
+  // where each outgoing panel holds (tall ones by their foot, short ones centred or by
+  // their top) and how far the incoming one is pulled up to be in place when it starts
+  // one curtain, in screens of scroll: the outgoing panel rests, the next one slides over, then it rests
+  const REST = 0.3
+  const SLIDE = 1
+  const SETTLE = 0.2 // REST + SLIDE + SETTLE = --swap-len in the stylesheet (150vh)
+  const LEN = REST + SLIDE + SETTLE
+  const measure = () => {
+    const h = window.innerHeight
+    pairs.forEach((p) => {
+      const oh = p.out.offsetHeight
+      p.stick = oh >= h ? h - oh : p.wrap.dataset.align === "center" ? (h - oh) / 2 : 0
+      p.wrap.style.setProperty("--stick", `${p.stick}px`)
+      p.wrap.nextElementSibling.style.setProperty("--pull", `${-(p.stick + oh + LEN * h)}px`)
+    })
+  }
+  gsap.matchMedia().add(query, () => {
+    root.classList.add("has-swap")
+    measure()
+    pairs.forEach((p) => {
+      const dir = p.wrap.dataset.from === "right" ? -1 : 1 // +1: the next panel comes from the left
+      const w = () => root.clientWidth
+      p.trigger = gsap
+        .timeline({
+          defaults: { ease: "power1.inOut", duration: SLIDE },
+          scrollTrigger: {
+            trigger: p.wrap,
+            start: () => docTop(p.wrap) - p.stick,
+            end: () => `+=${LEN * window.innerHeight}`,
+            scrub: 0.7,
+            invalidateOnRefresh: true,
+          },
+        })
+        .fromTo(p.into, { x: () => -dir * (w() + 6) }, { x: 0 }, REST) // 6px further out: its leading edge waits off screen
+        .fromTo(
+          p.out,
+          { x: 0, clipPath: "inset(0px 0px 0px 0px)" },
+          { x: () => dir * 0.25 * w(), clipPath: () => (dir > 0 ? `inset(0px 0px 0px ${0.75 * w()}px)` : `inset(0px ${0.75 * w()}px 0px 0px)`) },
+          REST
+        )
+        .to({}, { duration: SETTLE }).scrollTrigger
+    })
+    // the feed grid and its button slip away behind the spring under the pinned title:
+    // both are clipped at the middle of that spring, which hides the cut itself
+    const foot = document.querySelector(".feed-foot")
+    const under = [document.querySelector(".feed-shell"), document.querySelector(".feed > .pill")].filter(Boolean)
+    const cut = () => {
+      if (!foot) return
+      const line = foot.getBoundingClientRect().bottom - 10
+      under.forEach((el) => {
+        const d = line - el.getBoundingClientRect().top
+        el.style.clipPath = d > 0 ? `inset(${d.toFixed(1)}px 0px 0px 0px)` : ""
+      })
+    }
+    const cutter = ScrollTrigger.create({ trigger: "#instagram", start: "top bottom", end: "bottom top", onUpdate: cut, onRefresh: cut })
+    // the feed grows when Instagram loads, the strip when its photos do
+    let pending = 0
+    let landing = null // the panel a link is taking the visitor to, until they scroll themselves
+    const release = () => (landing = null)
+    window.addEventListener("wheel", release, { passive: true })
+    window.addEventListener("touchstart", release, { passive: true })
+    window.addEventListener("keydown", release)
+    const ro = new ResizeObserver(() => {
+      clearTimeout(pending)
+      pending = setTimeout(() => {
+        measure()
+        ScrollTrigger.refresh()
+        // a link jump that the resize knocked off target goes on to where it meant to land
+        if (landing) window.scrollTo({ top: landing.trigger.end, behavior: "smooth" })
+      }, 150)
+    })
+    pairs.forEach((p) => ro.observe(p.out))
+    // links to an incoming panel land where its curtain has closed, not where it opens
+    const jump = (e) => {
+      const a = e.target.closest('a[href^="#"]')
+      const p = a && pairs.find((q) => `#${q.into.id}` === a.getAttribute("href"))
+      if (!p || e.defaultPrevented) return
+      e.preventDefault()
+      history.pushState(null, "", a.getAttribute("href"))
+      // the page can change height on the way (the feed loads): the resize handler re-aims
+      landing = p
+      window.scrollTo({ top: p.trigger.end, behavior: "smooth" })
+    }
+    document.addEventListener("click", jump, true) // capture: before the in-page settle sees the click
+    return () => {
+      ro.disconnect()
+      cutter.kill()
+      under.forEach((el) => (el.style.clipPath = ""))
+      document.removeEventListener("click", jump, true)
+      ;["wheel", "touchstart", "keydown"].forEach((t) => window.removeEventListener(t, release))
+      root.classList.remove("has-swap")
+      pairs.forEach((p) => gsap.set([p.out, p.into], { clearProps: "transform,clipPath" }))
+    }
+  })
+}
+
+/* ------------------------------------------------------------------ */
 /* In-page links: if lazy content shifted the page mid-scroll, settle   */
 /* on the target once the scroll ends                                   */
 /* ------------------------------------------------------------------ */
 function initAnchorSettle() {
   document.addEventListener("click", (e) => {
+    if (e.defaultPrevented) return // handled elsewhere, e.g. the dock opening its card
     const a = e.target.closest('a[href^="#"]')
     const target = a && document.getElementById(a.getAttribute("href").slice(1))
     if (!target) return
@@ -505,6 +799,7 @@ initDock()
 initBoom()
 initWalkers()
 initAnchorSettle()
+initCurtains()
 // Everything below the first screen waits for an idle moment so the poster paints first
 const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 200))
 idle(() => {

@@ -55,9 +55,9 @@
       <div class="hero-head">
         <h1 class="hero-logo" id="hero-title"><span class="sr-only">WCMW, When Coffee Meets Whisky: listening bar in Riga</span><img src="./img/WCMW_16.svg" alt="" width="4022" height="1286" fetchpriority="high"></h1>
         <nav class="hero-nav" aria-label="Sections">
-          <a href="#about" style="--i:0">About</a>
-          <a href="#drinks" style="--i:1">Drinks</a>
-          <a href="#events" style="--i:2">Events</a>
+          <a href="#about" style="--i:0">About</a><span class="hero-dot" aria-hidden="true" style="--i:0"></span>
+          <a href="#drinks" style="--i:1">Drinks</a><span class="hero-dot" aria-hidden="true" style="--i:1"></span>
+          <a href="#events" style="--i:2">Events</a><span class="hero-dot" aria-hidden="true" style="--i:2"></span>
           <a href="#contacts" style="--i:3">Where?</a>
         </nav>
       </div>
@@ -123,7 +123,45 @@
       </div>
     </section>
 
+    <!-- The feeed: the bar's Instagram, part of About (the dock keeps About lit here).
+         On desktop the drinks push it out to the right as you scroll on (src/main.js). -->
+    <!-- desktop curtain (src/main.js): the panel in .swap-out holds still for a screen of
+         scroll (.swap-run) while the next one (.swap-in) slides over it -->
+    <div class="swap-out" data-from="left" data-align="top">
+    <section class="feed" id="instagram" aria-labelledby="instagram-title" data-dock-part="about">
+      <div class="feed-head">
+        <!-- RULE -->
+        <h2 class="kin" id="instagram-title" style="--len:9"><span class="kin-track" aria-hidden="true">The feeed</span><span class="sr-only">The feed: WCMW on Instagram</span></h2>
+        <div class="feed-foot"><!-- RULE --></div>
+      </div>
+      <!-- Instagram feed widget: its script is injected by src/main.js when this section gets close -->
+      <div class="feed-shell">
+        <ul class="feed-placeholder" aria-hidden="true">
+          <li><img src="./pics/opt/inside_3-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li><img src="./pics/opt/dj_1-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li><img src="./pics/opt/drink_3-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li><img src="./pics/opt/inside_7-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li><img src="./pics/opt/film_2-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li><img src="./pics/opt/drink_4-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li class="feed-wide"><img src="./pics/opt/inside_1-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li class="feed-wide"><img src="./pics/opt/drink_1-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li class="feed-wide"><img src="./pics/opt/dj_2-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li class="feed-wide"><img src="./pics/opt/inside_5-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li class="feed-wide"><img src="./pics/opt/drink_6-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li class="feed-wide"><img src="./pics/opt/film_1-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li class="feed-wide"><img src="./pics/opt/inside_2-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li class="feed-wide"><img src="./pics/opt/drink_7-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+          <li class="feed-wide"><img src="./pics/opt/outside_1-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
+        </ul>
+        <div data-key="Wcmw Feed " class="ft feed-widget" id="ft1r0p18l" data-widget-src="https://wdg.fouita.com/widgets/0x3602c4.js"></div>
+      </div>
+      <a class="pill" href="https://instagr.am/wcmw.bar">Follow @wcmw.bar</a>
+    </section>
+    <div class="swap-run" aria-hidden="true"></div>
+    </div>
+
     <!-- Menu: rendered from src/menu.data.mjs at build time -->
+    <div class="swap-in">
     <section class="menu" id="drinks" aria-labelledby="drinks-title">
       <!-- RULE -->
       <h2 class="kin" id="drinks-title" style="--len:14"><span class="kin-track" aria-hidden="true">Driiiiinnnksss</span><span class="sr-only">Drinks menu</span></h2>
@@ -144,8 +182,10 @@
         </div>
       </div>
     </section>
+    </div>
 
-    <section class="gallery" aria-label="Photos from the bar">
+    <div class="swap-out" data-from="right" data-align="center">
+    <section class="gallery" aria-label="Photos from the bar" data-dock-part="drinks">
       <ul class="gallery-track">
         <li><img src="./pics/opt/drink_1-640.webp" data-full="./pics/opt/drink_1-1280.webp" alt="A cocktail in yellow light" loading="lazy" decoding="async" data-lightbox></li>
         <li><img src="./pics/opt/inside_4-640.webp" data-full="./pics/opt/inside_4-1280.webp" alt="Headphones hung on the wall" loading="lazy" decoding="async" data-lightbox></li>
@@ -159,25 +199,10 @@
         <li><img src="./pics/opt/outside_1-640.webp" data-full="./pics/opt/outside_1-1280.webp" alt="The WCMW sign outside at night" loading="lazy" decoding="async" data-lightbox></li>
       </ul>
     </section>
+    <div class="swap-run" aria-hidden="true"></div>
+    </div>
 
-    <section class="feed" id="instagram" aria-labelledby="instagram-title">
-      <!-- RULE -->
-      <h2 class="kin" data-fit-phone id="instagram-title" style="--len:16"><span class="kin-track" aria-hidden="true"><span class="kin-stack">Insta</span><span class="kin-stack">grrrr</span><span class="kin-stack">aaaaam</span></span><span class="sr-only">Instagram</span></h2>
-      <!-- Instagram feed widget: its script is injected by src/main.js when this section gets close -->
-      <div class="feed-shell">
-        <ul class="feed-placeholder" aria-hidden="true">
-          <li><img src="./pics/opt/inside_3-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
-          <li><img src="./pics/opt/dj_1-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
-          <li><img src="./pics/opt/drink_3-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
-          <li><img src="./pics/opt/inside_7-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
-          <li><img src="./pics/opt/film_2-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
-          <li><img src="./pics/opt/drink_4-640.webp" alt="" loading="lazy" decoding="async" onerror="this.remove()"></li>
-        </ul>
-        <div data-key="Wcmw Feed " class="ft feed-widget" id="ft1r0p18l" data-widget-src="https://wdg.fouita.com/widgets/0x3602c4.js"></div>
-      </div>
-      <a class="pill" href="https://instagr.am/wcmw.bar">Follow @wcmw.bar</a>
-    </section>
-
+    <div class="swap-in">
     <section class="events" id="events" aria-labelledby="events-title">
       <!-- RULE -->
       <h2 class="kin" data-rest="end" id="events-title" style="--len:14"><span class="kin-track" aria-hidden="true">Eeeeeeeeevents</span><span class="sr-only">Events and DJ nights</span></h2>
@@ -187,7 +212,11 @@
       </div>
       <!-- EVENTS: imported from Resident Advisor at build time (src/events.mjs) -->
     </section>
+    </div>
 
+    <!-- the page's last view (this section and the footer, the walkers' floor) holds still for a
+         couple of screens of scroll while the two walkers cross it (src/main.js) -->
+    <div class="visit-hold"><div class="visit-pin">
     <section class="visit" id="contacts" aria-labelledby="visit-title">
       <!-- RULE -->
       <h2 class="kin" id="visit-title" style="--len:15"><span class="kin-track" aria-hidden="true">Viiiiiiiisit us</span><span class="sr-only">Visit us: opening hours and address</span></h2>
@@ -226,25 +255,33 @@
       </div>
       <div class="visit-walkers" aria-hidden="true"><!-- SVG:WCMW_walkers.svg --></div>
     </section>
+    <footer class="footer" role="contentinfo">
+      <div class="marquee marquee--reverse" aria-hidden="true">
+        <div class="marquee-track">
+          <span>When coffee meets whisky</span><span>Baltics' first listening bar</span><span>Baznicas iela 20/22, Riga</span>
+          <span>When coffee meets whisky</span><span>Baltics' first listening bar</span><span>Baznicas iela 20/22, Riga</span>
+        </div>
+      </div>
+      <p class="thanks">thaaaanks to
+        <a href="https://www.instagram.com/binskistudio/">Binski Studio</a>,
+        <a href="https://reflectoraudio.com/">Reflector Audio</a> and
+        <a href="https://www.instagram.com/tstudiolv/">T&nbsp;Studio</a></p>
+    </footer>
+    </div></div>
   </main>
 
-  <footer class="footer">
-    <div class="marquee marquee--reverse" aria-hidden="true">
-      <div class="marquee-track">
-        <span>When coffee meets whisky</span><span>Baltics' first listening bar</span><span>Baznicas iela 20/22, Riga</span>
-        <span>When coffee meets whisky</span><span>Baltics' first listening bar</span><span>Baznicas iela 20/22, Riga</span>
-      </div>
-    </div>
-    <p class="thanks">thaaaanks to
-      <a href="https://www.instagram.com/binskistudio/">Binski Studio</a>,
-      <a href="https://reflectoraudio.com/">Reflector Audio</a> and
-      <a href="https://www.instagram.com/tstudiolv/">T&nbsp;Studio</a></p>
-  </footer>
 
-  <nav class="dock" aria-label="Quick links">
-    <a href="#drinks" data-dock="drinks">Menu</a>
-    <a href="#events" data-dock="events">Events</a>
-    <a href="#contacts" data-dock="contacts">Visit</a>
+
+  <!-- The one menu on phones and tablets. In the drinks its words fold into symbols and
+       Drinks turns into a dial of the categories; tapping it opens them all as a card. -->
+  <nav class="dock" aria-label="Sections">
+    <div class="dock-card" id="dock-card" inert><div class="dock-card-in"></div></div>
+    <div class="dock-row">
+      <a href="#about" data-dock="about"><span class="dock-word">About</span><span class="dock-icon" aria-hidden="true"><!-- SVG:icon-dancer.svg --></span></a>
+      <a href="#drinks" data-dock="drinks" class="dock-drinks"><span class="dock-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M3.5 4h17c0 4.4-3.4 8-7.5 8.4V19h3.5v1.5h-9V19H11v-6.6C6.9 12 3.5 8.4 3.5 4z"/></svg></span><span class="dock-word">Drinks</span><span class="dock-dial" aria-hidden="true"></span><span class="dock-chev" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.5 7.5 6 4l3.5 3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      <a href="#events" data-dock="events"><span class="dock-word">Events</span><span class="dock-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M8.2 4.6 20.6 2v3.2L9.9 7.4V17h-1.7z M18.9 2.4h1.7v12.8h-1.7z"/><ellipse cx="6.4" cy="17.2" rx="3.1" ry="2.4" transform="rotate(-20 6.4 17.2)"/><ellipse cx="17.2" cy="15.3" rx="3.1" ry="2.4" transform="rotate(-20 17.2 15.3)"/></svg></span></a>
+      <a href="#contacts" data-dock="contacts"><span class="dock-word">Where?</span><span class="dock-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path fill-rule="evenodd" d="M12 1.5c-4.4 0-8 3.4-8 7.8 0 5.6 8 13.2 8 13.2s8-7.6 8-13.2c0-4.4-3.6-7.8-8-7.8zM9 9.3a3 3 0 1 0 6 0a3 3 0 1 0-6 0z"/></svg></span></a>
+    </div>
   </nav>
   <div class="dock-fade" aria-hidden="true"></div>
 

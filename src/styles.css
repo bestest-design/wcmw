@@ -203,6 +203,39 @@ a { color: inherit; }
   .boom { width: 28svh; }
 }
 
+/* Phones (portrait): the links leave the lockup and sit under the sticker, just above
+   the marquee, spread to the lockup's edges: two pairs on phones, one line split by faint
+   dots where it fits. Hover only draws the underline, so no word pushes its neighbours. */
+.hero-dot { display: none; }
+@media (max-width: 599px), (max-width: 767px) and (min-height: 521px) {
+  .hero-head { display: contents; }
+  .boom { order: 1; }
+  .hero-nav {
+    order: 2;
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.75rem;
+  }
+  .hero-nav a { display: flex; align-items: center; justify-self: start; min-height: 2.75rem; }
+  .hero-nav a:nth-of-type(even) { justify-self: end; } /* two pairs: left column flush left, right column flush right */
+  .hero-nav a::after { bottom: calc((2.75rem - 1.12em) / 2); }
+  .hero-nav a:hover { letter-spacing: normal; }
+}
+@media (min-width: 600px) and (max-width: 767px) and (min-height: 521px) {
+  .hero-nav { grid-template-columns: auto 1fr auto 1fr auto 1fr auto; }
+  .hero-dot {
+    display: block;
+    justify-self: center;
+    width: 0.24em; height: 0.24em;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.35;
+    animation: link-in 0.7s calc(0.18s + var(--i) * 0.06s) var(--ease-out) both;
+  }
+}
+
 /* ==========================================================================
    Marquee
    ========================================================================== */
@@ -383,16 +416,17 @@ a { color: inherit; }
   .slide-card {
     position: relative;
     z-index: 2;
-    width: 44vw;
+    width: 31vw;
     height: fit-content;
-    margin: 6vh -44vw 0 0;
-    padding: 2.5rem 3rem;
+    margin: 6vh -31vw 0 0;
+    padding: 2rem 2.25rem;
     background: var(--sulfur);
     border-radius: 2rem;
   }
-  .slide-card p { margin: 0; font-weight: 300; font-size: var(--t-l); line-height: 1.2; } /* one size for all three cards */
+  /* one size for all three cards: a caption to the room (24px at 1440), not a poster */
+  .slide-card p { margin: 0; font-weight: 300; font-size: clamp(1.125rem, 0.825rem + 0.75vw, 1.5rem); line-height: 1.28; }
   .slide-card--2 { align-self: center; transform: translateX(-12vw); }
-  .slide-card--3 { align-self: flex-end; transform: translate(-20vw, -6vh); width: 52vw; }
+  .slide-card--3 { align-self: flex-end; transform: translate(-20vw, -6vh); width: 35vw; }
   .slide-photo {
     margin: 0 0 0 2.5rem;
     width: 70vw;
@@ -517,10 +551,11 @@ a { color: inherit; }
   transition: background-color 0.2s, color 0.2s;
 }
 .menu-rail a[aria-current="true"] { background: var(--ink); color: var(--sulfur); }
-/* Phones and tablets: the rail rests after the list and sticks to the bottom of the
-   screen while you read the menu (it stands in for the dock there) */
+/* Phones and tablets: the dock's dial takes the rail's job (src/main.js adds .has-dial).
+   Without the script the rail rests after the list and sticks to the bottom of the screen. */
 @media (max-width: 1023px) {
   html { scroll-padding-top: 1rem; }
+  .has-dial .menu-rail { display: none; }
   .menu { display: flex; flex-direction: column; }
   .menu-rail {
     order: 1;
@@ -802,11 +837,13 @@ a { color: inherit; }
    ========================================================================== */
 .feed,
 .events { padding: clamp(3rem, 8vw, 6rem) var(--g) 1rem; }
+/* the feed belongs to About, so its title speaks at half the volume of the three destinations */
+.feed .kin { font-size: calc(var(--t-kin) * 0.5); }
 .feed-shell { position: relative; margin-top: 2rem; min-height: 616px; } /* the widget renders 616px tall at every width */
 .feed-widget {
   min-height: 12rem;
   border-radius: var(--radius-photo);
-  overflow: hidden;
+  overflow: clip; /* clip, not hidden: hidden would make it a scroller and the posts' scroll fade would read it instead of the page */
 }
 /* our own photos hold the space until the Instagram widget has painted */
 .feed-shell:not(.is-loaded) .feed-widget {
@@ -831,8 +868,67 @@ a { color: inherit; }
 .feed-placeholder li { border-radius: 0.75rem; overflow: hidden; background: rgb(0 0 0 / 0.08); }
 @media (min-width: 600px) { .feed-placeholder { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); } }
 .feed-placeholder li { min-height: 0; }
-.feed-placeholder img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.2); }
+.feed-placeholder img { width: 100%; height: 100%; object-fit: cover; }
 .feed-shell.is-loaded .feed-placeholder { display: none; }
+.feed-wide { display: none; }
+
+/* Desktop curtains (src/main.js adds .has-swap and drives them with GSAP, smoothed):
+   feed -> drinks from the left, photo strip -> events from the right. The outgoing panel
+   (.swap-out > section) holds still with sticky for one screen of scroll (.swap-run) and
+   drifts away at a quarter speed; the incoming one (.swap-in > section), also held by
+   sticky, slides over it behind a black leading edge. The feed title pins first while
+   the grid wipes away under it. --stick and --pull are measured in src/main.js. */
+.swap-run, .feed-foot { display: none; }
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  main { --swap-len: 150vh; }
+  /* a second spring under the feed title: the posts slip away behind it, cut clean like a
+     record going into its sleeve (src/main.js clips the grid at that line) */
+  .feed-foot { display: block; padding-top: 1rem; }
+  .feed-foot .coil-rule { margin: 0; }
+  .feed-shell { margin-top: 2.5rem; }
+  .feed { padding-top: 0; margin-top: 45vh; } /* half a screen of quiet between About and the feed */
+  /* pinned, the title sits 3rem from the top of the screen (its roomy top padding scrolls away) */
+  .feed-head { position: sticky; top: calc(3rem - clamp(3rem, 8vw, 6rem)); z-index: 2; padding-top: clamp(3rem, 8vw, 6rem); }
+  .has-swap .swap-run { display: block; height: var(--swap-len); }
+  .has-swap .swap-out > section { position: sticky; top: var(--stick, 0px); }
+  .has-swap .swap-in { margin-top: var(--pull, 0px); }
+  .has-swap .swap-in::after { content: ""; display: block; height: var(--swap-len); } /* room to hold still: sticky only uses the content box */
+  .has-swap .swap-in > section { position: sticky; top: 0; padding-top: 3rem; } /* arrives at the same height as the pinned title before it */
+  /* the leading edge of the incoming panel */
+  .has-swap .swap-in > section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 3px;
+    height: 100vh;
+    background: var(--ink);
+  }
+  .has-swap .swap-out[data-from="right"] + .swap-in > section::before { left: auto; right: 100%; }
+}
+/* Desktop: the feed as a still grid, three rows of five. The widget's carousel is
+   flattened: its slides (two posts each) and their wrappers step aside so every post
+   becomes a grid cell; the loop's clones and the dots go. */
+@media (min-width: 1024px) {
+  .feed-shell { min-height: 0; }
+  .feed-placeholder { height: auto; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: none; }
+  .feed-placeholder li { aspect-ratio: 4 / 5; }
+  .feed-wide { display: block; }
+  .feed-widget .splide__track,
+  .feed-widget div:has(.ft-card) { overflow: clip !important; } /* no scrollers between the posts and the page */
+  .feed-widget .splide__list {
+    display: grid !important;
+    grid-template-columns: repeat(var(--feed-cols, 5), minmax(0, 1fr)); /* set in src/main.js from the post count */
+    gap: 0.5rem;
+    transform: none !important;
+  }
+  .feed-widget .splide__slide,
+  .feed-widget .splide__slide div:has(.ft-card) { display: contents; }
+  .feed-widget .splide__slide--clone { display: none !important; }
+  .feed-widget .ft-card.is-extra { display: none; } /* a ragged last row is dropped (src/main.js) */
+  .feed-widget .splide__pagination,
+  .feed-widget .splide__arrows { display: none; }
+}
 .events-shell {
   position: relative;
   border-radius: var(--radius-photo);
@@ -1042,6 +1138,12 @@ a { color: inherit; }
 }
 
 .visit { padding-bottom: 0; }
+/* The walk takes its time: once the page has reached its end view (this section with the
+   footer under it), that view stays put for about two more screens of scroll, and the
+   scroll walks the two figures across. src/main.js adds .has-walk and measures
+   --visit-stick; not with reduced motion. */
+.has-walk .visit-hold::after { content: ""; display: block; height: 200vh; }
+.has-walk .visit-pin { position: sticky; top: var(--visit-stick, 0px); }
 .visit-walkers {
   width: min(46vw, 13rem);
   margin: 2.5rem 0 -0.4rem auto;
@@ -1087,25 +1189,30 @@ a { color: inherit; }
 @media (min-width: 1024px) { .footer { padding-bottom: 0; } }
 
 /* ==========================================================================
-   Dock (phones): Menu, Events, Visit within thumb reach
+   Dock (phones and tablets): the one menu, About / Drinks / Events / Where?,
+   within thumb reach once the hero links scroll away. In the drinks it changes
+   shape: Drinks becomes a window on the categories, a drum of names that turns
+   with the scroll, and where words would not fit beside it (phones) the other
+   links fold into symbols. Tapping the window opens every category as a card.
    ========================================================================== */
 .dock {
+  --dock-t: 0.5s var(--ease-out);
+  --dial-w: 7.75rem;
   position: fixed;
   left: 50%;
   bottom: max(0.85rem, env(safe-area-inset-bottom));
   z-index: 50;
   display: flex;
-  gap: 0.25rem;
+  flex-direction: column;
   padding: 0.3rem;
   background: var(--ink);
   color: var(--sulfur);
-  border-radius: 999px;
+  border-radius: 1.75rem;
   box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 0.25);
   transform: translate(-50%, calc(100% + 2rem));
   transition: transform 0.45s var(--ease-out);
 }
 .dock.is-visible { transform: translate(-50%, 0); }
-.dock.is-visible.is-tucked,
 .dock.is-visible.is-away { transform: translate(-50%, calc(100% + 2rem)); }
 .dock-fade {
   position: fixed;
@@ -1118,24 +1225,183 @@ a { color: inherit; }
   transition: opacity 0.3s;
 }
 .past-hero .dock-fade { opacity: 1; }
-.past-hero .dock.is-tucked ~ .dock-fade { opacity: 0; }
 @media (min-width: 1024px) { .dock-fade { display: none; } }
-.dock a {
+@media (max-width: 1023px) { .dock-drinks .dock-icon { display: none; } }
+
+.dock-row { display: flex; gap: 0.2rem; }
+.dock-row > a {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  justify-content: center;
   min-height: 2.9rem;
-  padding: 0 1.15rem;
+  padding: 0 0.95rem;
   border-radius: 999px;
   font-family: var(--f-display);
   text-transform: uppercase;
   font-size: 0.8125rem;
   letter-spacing: 0.02em;
   text-decoration: none;
-  transition: background-color 0.2s, color 0.2s;
+  white-space: nowrap;
+  transition: background-color 0.2s, color 0.2s, padding var(--dock-t);
 }
-.dock a[aria-current="true"] { background: var(--sulfur); color: var(--ink); }
-@media (min-width: 1024px) { .dock { display: none; } }
+.dock-row > a[aria-current="true"] { background: var(--sulfur); color: var(--ink); }
+@media (max-width: 389px) { .dock-row > a { padding: 0 0.75rem; } }
+@media (max-width: 359px) { .dock { --dial-w: 6.5rem; } .dock-row > a { padding: 0 0.6rem; font-size: 0.75rem; } }
+
+/* each word and its symbol share one slot: one folds away as the other opens */
+.dock-word, .dock-icon, .dock-dial, .dock-chev {
+  display: block;
+  overflow: hidden;
+  transition: max-width var(--dock-t), opacity 0.3s, margin var(--dock-t);
+}
+.dock-word { max-width: 4.5rem; }
+.dock-dial, .dock-chev { max-width: 0; opacity: 0; }
+.dock-icon { flex: none; width: 0; opacity: 0; transition: width var(--dock-t), opacity 0.3s; }
+.dock-icon svg { display: block; width: 1.375rem; height: 1.375rem; max-width: none; fill: currentColor; }
+.dock-chev svg { display: block; width: 0.75rem; height: 0.75rem; max-width: none; transition: rotate var(--dock-t); }
+
+.dock.is-drinks .dock-row > a:not(.dock-drinks) { padding: 0 0.7rem; }
+.dock.is-drinks .dock-word { max-width: 0; opacity: 0; }
+.dock.is-drinks .dock-icon { width: 1.375rem; opacity: 1; }
+.dock.is-drinks .dock-dial { max-width: var(--dial-w); opacity: 1; }
+.dock.is-drinks .dock-chev { max-width: 0.75rem; opacity: 1; margin-left: 0.3rem; }
+.dock.is-open .dock-chev svg { rotate: 180deg; }
+/* from 480px the words fit beside the window, so they stay words */
+@media (min-width: 480px) {
+  .dock.is-drinks .dock-row > a:not(.dock-drinks) { padding: 0 0.95rem; }
+  .dock.is-drinks .dock-row > a:not(.dock-drinks) .dock-word { max-width: 4.5rem; opacity: 1; }
+  .dock.is-drinks .dock-icon { width: 0; opacity: 0; }
+}
+
+/* the window: a fixed width, so the dock only changes shape on the way in and out.
+   A drum of every category turns with the scroll, bottom to top: the next name waits
+   below, the last one above, spaced so they only peek in, faded, at the edges. */
+.dock-dial {
+  position: relative;
+  width: var(--dial-w);
+  height: 2.9rem;
+  -webkit-mask-image: linear-gradient(transparent, #000 32%, #000 68%, transparent);
+          mask-image: linear-gradient(transparent, #000 32%, #000 68%, transparent);
+}
+.dock-tape {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  flex-direction: column; /* later categories sit below, so they arrive from the bottom */
+  align-items: center;
+  gap: calc(0.5em - 2px);
+  line-height: 1.3;
+  will-change: transform;
+}
+.dock-tape span { opacity: 0.4; transition: opacity 0.25s; }
+.dock-tape span.is-on { opacity: 1; }
+
+/* the card: every category, grown out of the dock */
+.dock-card {
+  display: grid;
+  grid-template-rows: 0fr;
+  width: 0;
+  min-width: 100%; /* as wide as the dock, never wider */
+  transition: grid-template-rows var(--dock-t);
+}
+.dock.is-open .dock-card { grid-template-rows: 1fr; }
+.dock-card-in {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 0.35rem;
+  transition: padding var(--dock-t);
+}
+.dock.is-open .dock-card-in { padding: 0.6rem 0.35rem 0.55rem; }
+.dock-card a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.4rem;
+  padding: 0 0.85rem;
+  border: 1.5px solid rgb(255 255 62 / 0.4);
+  border-radius: 999px;
+  font-family: var(--f-display);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+  opacity: 0;
+  translate: 0 0.5rem;
+  transition: opacity 0.25s, translate 0.35s var(--ease-out), background-color 0.2s, color 0.2s;
+}
+.dock.is-open .dock-card a { opacity: 1; translate: 0 0; transition-delay: calc(0.08s + var(--i, 0) * 0.025s); }
+.dock-card a[aria-current="true"] { background: var(--sulfur); color: var(--ink); border-color: var(--sulfur); }
+/* Desktop: the same dock stands on the right edge, centred, each link a symbol over its
+   word; it slides in once the hero links scroll away. The drinks keep their own sticky
+   rail at the top here, so no drum and no card. */
+@media (min-width: 1024px) {
+  .dock {
+    left: auto;
+    right: 0.5rem; /* the same gap the drinks rail keeps from the top of the page */
+    top: 50%;
+    bottom: auto;
+    padding: 0.35rem;
+    border-radius: 2.25rem;
+    transform: translate(calc(100% + 2rem), -50%);
+  }
+  .dock.is-visible,
+  .dock.is-visible.is-away { transform: translate(0, -50%); }
+  .dock-card, .dock-dial, .dock-chev { display: none; }
+  .dock-row { flex-direction: column; gap: 0.25rem; }
+  /* symbols only; on hover or keyboard focus the button grows out of the dock to the left:
+     a yellow capsule with a black border widens from around the symbol, round end first,
+     and uncovers the word. Leaving, it closes back onto the symbol and only then lets go. */
+  .dock-row > a {
+    position: relative;
+    width: 2.9rem;
+    height: 2.9rem;
+    min-height: 0;
+    padding: 0;
+    transition: color 0.15s 0.4s, background-color 0.3s;
+  }
+  .dock-icon { position: relative; z-index: 1; width: 1.375rem; opacity: 1; }
+  .dock-word {
+    position: absolute;
+    top: -3px; right: -3px; bottom: -3px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* the word stays put by the symbol while the capsule opens over it */
+    overflow: hidden;
+    max-width: calc(2.9rem + 6px); /* closed: a ring exactly around the symbol */
+    padding: 0 2.9rem 0 0; /* closed there is no room for the word at all */
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    background: var(--sulfur);
+    color: var(--ink);
+    font-size: 0.8125rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: max-width 0.5s var(--ease-out), padding 0.5s var(--ease-out), opacity 0.12s 0.44s;
+  }
+  .dock-row > a:hover,
+  .dock-row > a:focus-visible { color: var(--ink); transition-delay: 0s; }
+  .dock-row > a:hover .dock-word,
+  .dock-row > a:focus-visible .dock-word {
+    max-width: 9rem;
+    padding: 0 3.35rem 0 1.3rem;
+    opacity: 1;
+    transition: max-width 0.55s var(--ease-out), padding 0.55s var(--ease-out), opacity 0.12s;
+  }
+  /* the page keeps a lane clear on the right for it: content stops short of the dock,
+     while full-width bands (stretched headings, the menu rail) still run to the edge */
+  :root { --gr: max(var(--g), 4.75rem); }
+  main > section:not(.hero, .about, .gallery), .swap-in > section, .swap-out > section:not(.gallery), .visit-pin > section { padding-right: var(--gr); }
+  main section .kin { margin-right: calc(var(--gr) * -1); padding-right: var(--gr); }
+  .menu-rail { margin-right: calc(var(--gr) * -1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dock, .dock * { transition-duration: 0.01ms !important; transition-delay: 0s !important; }
+}
 
 /* ==========================================================================
    Lightbox

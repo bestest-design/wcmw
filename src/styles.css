@@ -273,8 +273,10 @@ a { color: inherit; }
   background: currentColor;
 }
 
+/* the track holds four copies of the phrases and moves by one copy per loop, so even a very
+   wide screen never sees its end */
 @keyframes marquee {
-  to { transform: translateX(-50%); }
+  to { transform: translateX(-25%); }
 }
 
 /* ==========================================================================
@@ -342,6 +344,7 @@ a { color: inherit; }
   overflow: hidden;
 }
 .coil-rule svg { width: 100%; height: 100%; }
+.coil-fill { fill: none; }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .coil-rule path {
@@ -359,6 +362,7 @@ a { color: inherit; }
 .about { padding: clamp(3.5rem, 10vw, 8rem) var(--g) 2rem; }
 
 .about-stack { display: grid; gap: 1.75rem; }
+.about-row, .about-copy { display: contents; } /* phones: photo, heading and text are all items of the one stack */
 
 .about-photo {
   margin: 0;
@@ -378,6 +382,23 @@ a { color: inherit; }
   border-radius: var(--radius-photo) 0 0 var(--radius-photo);
 }
 
+/* the page's main heading opens the first paragraph: the same light text with the name in
+   the display face, a step larger; it may only break in the middle of the name */
+.about-title {
+  margin: 0 0 0.5em;
+  font-weight: 300;
+  font-size: calc(var(--t-l) * 1.15);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.about-title b { font-family: var(--f-display); font-weight: normal; text-transform: uppercase; letter-spacing: 0; }
+.slide-guy { display: none; }
+/* one sentence per line, with a little air between them. A sentence that needs two lines
+   is split as near the middle as it can be, the second line never the longer one */
+.sent { display: block; text-wrap: balance; }
+.sent br { display: none; }
+.sent + .sent { margin-top: 0.45em; }
 .about-text {
   margin: 0 0 2rem;
   max-width: 34ch;
@@ -390,70 +411,104 @@ a { color: inherit; }
 
 .about-slider { display: none; }
 
+/* Tablets (and desktop without the animated story): three rows, photo and text side by side: photo left, then right, then left. A heading
+   stays with its paragraph, and the text is set smaller than on phones. */
 @media (min-width: 600px) {
-  .about-stack { grid-template-columns: 1fr 1fr; column-gap: 6vw; align-items: center; }
-  .about-photo--left, .about-photo--right { width: 100%; margin: 0; border-radius: var(--radius-photo); }
+  .about-stack { display: block; }
+  .about-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 6vw;
+    align-items: center;
+  }
+  .about-row + .about-row { margin-top: clamp(2.5rem, 6vw, 4rem); } /* rows as tall as their photo, a steady gap between */
+  .about-row:nth-child(even) .about-photo { order: 2; }
+  .about-copy { display: block; }
+  .about-photo--left, .about-photo--right { width: 100%; max-height: 72vh; margin: 0; border-radius: var(--radius-photo); }
+  .about-stack .about-title { font-size: clamp(1.5rem, 3.4vw, 2.25rem); }
+  .about-stack .about-text { margin: 0; max-width: none; font-size: clamp(1.0625rem, 2.1vw, 1.375rem); line-height: 1.4; }
 }
-@supports (animation-timeline: view()) {
+/* Desktop story (.has-story comes from src/main.js with GSAP): pinned for a few screens.
+   Left, on bare yellow: one paragraph at a time, a lead line set large and the rest at
+   reading size, the words inking in as you scroll. Right: a tall frame that bleeds off
+   the top, right and bottom edges, in which the photos travel a diagonal, each next one
+   arriving from the upper right. Text never sits on a photo. */
 @media (min-width: 1024px) {
-  .about { padding: clamp(2.5rem, 6vh, 4rem) 0 0; } /* breathing room under the marquee */
-  .about-stack { display: none; }
-  .about-slider { display: block; height: 300vh; }
-  .about-slider-stage {
-    position: sticky;
-    top: 0;
-    height: 100vh;
+  .has-story .about { padding: 0; } /* the stage starts right under the marquee, so the waiting photo is cut by the black band, not in mid-air */
+  .has-story .about-stack { display: none; }
+  .has-story .about-slider { display: block; height: 380vh; }
+  .about-slider-stage { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+  /* the photo layer spans the whole stage: nothing crops a photo but the screen itself.
+     It leans away from the pointer while the text leans towards it, a few pixels each */
+  .story-photos {
+    position: absolute;
+    inset: 0;
+    translate: calc(var(--mx, 0) * -18px) calc(var(--my, 0) * -13px);
+  }
+  .story-track { position: absolute; inset: 0; will-change: transform; }
+  /* a stack of cards: every photo rests in the same place; src/main.js deals the next one
+     in from the upper right onto the pile and slides the old one out from underneath */
+  .story-track .slide-photo {
+    position: absolute;
+    left: 45vw;
+    top: 15vh;
+    width: 43vw;
+    height: 70vh;
+    margin: 0;
+    border-radius: 2rem;
     overflow: hidden;
   }
-  .about-slider-track {
-    display: flex;
-    height: 100%;
-    width: 250vw;
-    transform: translateX(10vw);
-    will-change: transform;
-    animation: slider linear forwards;
-  }
-  .slide-card {
-    position: relative;
+  .story-track img { width: 100%; height: 100%; object-fit: cover; }
+  /* the copy stands towards the middle, in front of the photos. Body text keeps to the
+     bare yellow; the lead line is allowed to step onto the photo beside it */
+  .story-text {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 9vw;
+    width: 39vw;
     z-index: 2;
-    width: 31vw;
-    height: fit-content;
-    margin: 6vh -31vw 0 0;
-    padding: 2rem 2.25rem;
-    background: var(--sulfur);
-    border-radius: 2rem;
+    display: grid;
+    align-items: center;
+    translate: calc(var(--mx, 0) * 7px) calc(var(--my, 0) * 5px);
   }
-  /* one size for all three cards: a caption to the room (24px at 1440), not a poster */
-  .slide-card p { margin: 0; font-weight: 300; font-size: clamp(1.125rem, 0.825rem + 0.75vw, 1.5rem); line-height: 1.28; }
-  .slide-card--2 { align-self: center; transform: translateX(-12vw); }
-  .slide-card--3 { align-self: flex-end; transform: translate(-20vw, -6vh); width: 35vw; }
-  .slide-photo {
-    margin: 0 0 0 2.5rem;
-    width: 70vw;
-    height: 95vh;
-    border-radius: 2rem;
-    overflow: hidden;
-    flex: none;
+  .chapter {
+    grid-area: 1 / 1;
+    position: relative;
+    font-size: clamp(1.0625rem, min(1.5vw, 2.45vh), 1.5rem);
   }
-  .slide-photo--low { transform: translateY(25vh); }
-  .slide-photo--lower { transform: translateY(50vh); }
-  .slide-photo img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    animation: img-parallax linear;
-    animation-timeline: view(y);
-    animation-range: entry exit;
+  .chapter p { margin: 0; font-weight: 300; line-height: 1.5; max-width: 18em; } /* narrow enough that a sliding photo never reaches it */
+  /* the lead line: the page heading in the first paragraph, the first sentence in the others.
+     It carries a yellow outline, invisible on the page and a clean sticker edge wherever a
+     word crosses onto a photo */
+  .chapter .about-title,
+  .chapter--lead .sent:first-child {
+    width: 46vw; /* wider than the column: its tail reaches over the photo */
+    max-width: none;
+    margin: 0 0 0.55em;
+    font-size: clamp(2.25rem, min(4.5vw, 8vh), 5.25rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    -webkit-text-stroke: 0.2em var(--sulfur);
+    paint-order: stroke fill;
   }
-}
-}
-
-@keyframes slider {
-  from { transform: translateX(10vw); }
-  to { transform: translateX(calc(-80% + 100vw)) translateY(-40%); }
-}
-@keyframes img-parallax {
-  from { object-position: 100% center; }
-  to { object-position: 0% center; }
+  /* the heading is always three lines: Welcome to / When Coffee / Meets Whisky */
+  .chapter .about-title { width: min-content; font-size: clamp(2.1rem, min(4.1vw, 7.4vh), 4.9rem); }
+  .chapter .about-title b { display: block; }
+  /* the first paragraph keeps the owner's exact line breaks */
+  .chapter br { display: inline; }
+  /* sized so its longest line ends before the photo begins */
+  .chapter:first-child p { max-width: none; font-size: max(0.875rem, min(1em, 1.31vw)); }
+  .chapter:first-child .sent { white-space: nowrap; text-wrap: initial; }
+  /* the two figures live in the empty yellow around the copy: the burst fellow above the
+     second paragraph, the record carrier below the third (src/main.js brings them in) */
+  .chapter { display: flex; flex-direction: column; align-items: flex-start; }
+  .chapter .slide-guy { display: block; width: clamp(5rem, 7.5vw, 8rem); }
+  .chapter .slide-guy svg { display: block; width: 100%; height: auto; }
+  .chapter:nth-child(2) .slide-guy { order: -1; margin: 0 0 1.5em; }
+  .chapter:nth-child(3) .slide-guy { margin: 1.75em 0 0; }
+  .chapter .slide-guy--flip svg { scale: -1 1; }
+  .chapter p b { white-space: nowrap; } /* a name in the text is never split across lines */
 }
 
 /* ==========================================================================
@@ -837,6 +892,19 @@ a { color: inherit; }
    ========================================================================== */
 .feed,
 .events { padding: clamp(3rem, 8vw, 6rem) var(--g) 1rem; }
+/* the title with the follow button beside it, at the right end of the row */
+.feed-title { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.feed-title .kin { flex: 1; min-width: 0; }
+.feed-title .pill { flex: none; margin: 0; }
+/* the @ in the display face closes up into a blob: set it in the text face, a touch larger */
+.pill .at { font-family: var(--f-text); font-weight: 400; font-size: 1.15em; letter-spacing: 0; text-transform: none; margin: 0 0.05em 0 0.3em; position: relative; top: -0.09em; } /* lifted so it centres on the capitals */
+/* phones and tablets: the button in the title row gives way to one under the grid, at the right */
+.pill.feed-follow { display: none; }
+@media (max-width: 1023px) {
+  .feed-title .pill { display: none; }
+  .feed { display: flex; flex-direction: column; }
+  .pill.feed-follow { display: inline-flex; align-self: flex-end; margin: 1rem 0 0; }
+}
 /* the feed belongs to About, so its title speaks at half the volume of the three destinations */
 .feed .kin { font-size: calc(var(--t-kin) * 0.5); }
 .feed-shell { position: relative; margin-top: 2rem; min-height: 616px; } /* the widget renders 616px tall at every width */
@@ -881,14 +949,19 @@ a { color: inherit; }
 .swap-run, .feed-foot { display: none; }
 @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
   main { --swap-len: 150vh; }
-  /* a second spring under the feed title: the posts slip away behind it, cut clean like a
-     record going into its sleeve (src/main.js clips the grid at that line) */
+  /* the title bar rides at the bottom of the screen and the grid rises out from behind it.
+     The bar is solid yellow below its upper spring, and that spring is filled yellow under
+     its teeth, so the browser itself hides the grid along the zigzag: no script, no lag */
+  .feed { display: flex; flex-direction: column; margin-top: 6vh; padding-top: 3rem; padding-bottom: 0; }
+  .feed-head { order: 2; position: sticky; bottom: 0; z-index: 2; padding: 0 0 1.25rem; background: linear-gradient(transparent 1.25rem, var(--sulfur) 1.25rem); }
+  .feed-head > .coil-rule { margin: 0 0 1rem; }
   .feed-foot { display: block; padding-top: 1rem; }
   .feed-foot .coil-rule { margin: 0; }
-  .feed-shell { margin-top: 2.5rem; }
-  .feed { padding-top: 0; margin-top: 45vh; } /* half a screen of quiet between About and the feed */
-  /* pinned, the title sits 3rem from the top of the screen (its roomy top padding scrolls away) */
-  .feed-head { position: sticky; top: calc(3rem - clamp(3rem, 8vw, 6rem)); z-index: 2; padding-top: clamp(3rem, 8vw, 6rem); }
+  .feed-shell { margin: 0 0 0.375rem; } /* with the spring's own 2px of air: the same 8px gap as between the posts */
+  .feed .kin { font-size: min(calc(var(--t-kin) * 0.5), 5.2vw); }
+  .feed .kin-track { animation: none; } /* held at the bottom, it has no pass to pan through */
+  .feed-head .coil-rule path { animation: none; stroke-dasharray: none; } /* same for its springs: drawn in full */
+  .feed-head .coil-fill { fill: var(--sulfur); }
   .has-swap .swap-run { display: block; height: var(--swap-len); }
   .has-swap .swap-out > section { position: sticky; top: var(--stick, 0px); }
   .has-swap .swap-in { margin-top: var(--pull, 0px); }
@@ -1098,6 +1171,15 @@ a { color: inherit; }
   .hours-time { text-align: center; white-space: nowrap; font-size: 0.9375rem; }
 }
 
+/* the address with its two buttons after it on the same line; they wrap under it when short of room */
+.visit-where { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-bottom: 1.75rem; }
+.visit-where .visit-address, .visit-where .visit-actions { margin: 0; }
+/* two-column desktop: the address is sized so it and both buttons share one line */
+@media (min-width: 1360px) {
+  .visit-where { flex-wrap: nowrap; gap: 1rem; }
+  .visit-where .visit-address { font-size: min(var(--t-l), calc((43.9vw - 21.25rem) / 10.7)); white-space: nowrap; }
+  .visit-where .visit-actions { flex: none; flex-wrap: nowrap; }
+}
 .visit-address {
   margin: 0 0 1rem;
   font-weight: 300;
@@ -1244,7 +1326,19 @@ a { color: inherit; }
   white-space: nowrap;
   transition: background-color 0.2s, color 0.2s, padding var(--dock-t);
 }
-.dock-row > a[aria-current="true"] { background: var(--sulfur); color: var(--ink); }
+.dock-row { position: relative; }
+.dock-row > a { position: relative; z-index: 1; }
+.dock-row > a[aria-current="true"] { color: var(--ink); }
+/* the yellow marker under the lit link: it slides from link to link (src/main.js places it) */
+.dock-marker {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--sulfur);
+  opacity: 0;
+  transition: transform 0.5s var(--ease-out), width 0.5s var(--ease-out), opacity 0.2s;
+}
 @media (max-width: 389px) { .dock-row > a { padding: 0 0.75rem; } }
 @media (max-width: 359px) { .dock { --dial-w: 6.5rem; } .dock-row > a { padding: 0 0.6rem; font-size: 0.75rem; } }
 
@@ -1344,7 +1438,8 @@ a { color: inherit; }
     right: 0.5rem; /* the same gap the drinks rail keeps from the top of the page */
     top: 50%;
     bottom: auto;
-    padding: 0.35rem;
+    --rim: 4px; /* the tray's rim; the hover capsule's border uses the same value */
+    padding: var(--rim);
     border-radius: 2.25rem;
     transform: translate(calc(100% + 2rem), -50%);
   }
@@ -1352,6 +1447,8 @@ a { color: inherit; }
   .dock.is-visible.is-away { transform: translate(0, -50%); }
   .dock-card, .dock-dial, .dock-chev { display: none; }
   .dock-row { flex-direction: column; gap: 0.25rem; }
+  .dock-marker { display: none; }
+  .dock-row > a[aria-current="true"] { background: var(--sulfur); transition: color 0.2s, background-color 0.2s; }
   /* symbols only; on hover or keyboard focus the button grows out of the dock to the left:
      a yellow capsule with a black border widens from around the symbol, round end first,
      and uncovers the word. Leaving, it closes back onto the symbol and only then lets go. */
@@ -1361,20 +1458,24 @@ a { color: inherit; }
     height: 2.9rem;
     min-height: 0;
     padding: 0;
-    transition: color 0.15s 0.4s, background-color 0.3s;
+    /* leaving hover or the lit state: symbol and background wait together (the capsule
+       closes first), so the symbol is never black on black */
+    transition: color 0.15s 0.4s, background-color 0.15s 0.4s;
   }
   .dock-icon { position: relative; z-index: 1; width: 1.375rem; opacity: 1; }
   .dock-word {
     position: absolute;
-    top: -3px; right: -3px; bottom: -3px;
+    /* its border is as thick as the tray's own rim (the dock's padding), so its outer edge
+       lines up with the tray's top, right and bottom */
+    top: calc(var(--rim) * -1); right: calc(var(--rim) * -1); bottom: calc(var(--rim) * -1);
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: flex-end; /* the word stays put by the symbol while the capsule opens over it */
     overflow: hidden;
-    max-width: calc(2.9rem + 6px); /* closed: a ring exactly around the symbol */
+    max-width: calc(2.9rem + var(--rim) * 2); /* closed: a ring exactly around the symbol */
     padding: 0 2.9rem 0 0; /* closed there is no room for the word at all */
-    border: 3px solid var(--ink);
+    border: var(--rim) solid var(--ink);
     border-radius: 999px;
     background: var(--sulfur);
     color: var(--ink);

@@ -177,6 +177,56 @@ function initDock() {
     ...links.map((a) => document.getElementById(a.dataset.dock)),
     ...document.querySelectorAll("[data-dock-part]"),
   ].filter(Boolean)
+  // one yellow marker slides between the links (phones and tablets); it follows the lit
+  // link through every change of the dock's shape
+  const row = dock.querySelector(".dock-row")
+  const marker = document.createElement("span")
+  marker.className = "dock-marker"
+  marker.setAttribute("aria-hidden", "true")
+  row.prepend(marker)
+  const place = () => {
+    const a = row.querySelector('a[aria-current="true"]')
+    marker.style.opacity = a ? "1" : "0"
+    if (!a) return
+    marker.style.width = `${a.offsetWidth}px`
+    marker.style.transform = `translateX(${a.offsetLeft}px)`
+  }
+  const light = (id) => {
+    links.forEach((a) => (a.dataset.dock === id ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")))
+    place()
+  }
+  new ResizeObserver(place).observe(row)
+  links.forEach((a) => new ResizeObserver(place).observe(a))
+  // a tapped link: the marker slides straight to it, over whatever lies between, and the
+  // dock takes the target's shape at once (the drum for Drinks, plain words otherwise)
+  // instead of reacting to each section the page scrolls past on the way
+  let arriving = 0
+  const arrive = () => {
+    delete dock.dataset.travel
+    dock.dispatchEvent(new Event("dock:travel"))
+    queueSpy()
+  }
+  dock.addEventListener("click", (e) => {
+    const a = e.target.closest("a[data-dock]")
+    if (!a || e.defaultPrevented) return // the drinks window opening its card is not a journey
+    dock.dataset.travel = a.dataset.dock
+    light(a.dataset.dock)
+    dock.dispatchEvent(new Event("dock:travel"))
+    clearTimeout(arriving)
+    arriving = setTimeout(arrive, 1500) // in case the page was already there and never scrolls
+  })
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!dock.dataset.travel) return
+      clearTimeout(arriving)
+      arriving = setTimeout(arrive, 550) // at rest for good: the page may pause once to correct its landing
+    },
+    { passive: true }
+  )
+  ;["wheel", "touchstart"].forEach((t) =>
+    window.addEventListener(t, () => dock.dataset.travel && (clearTimeout(arriving), arrive()), { passive: true })
+  )
   // lit = the section sitting at the centre of the screen, measured as drawn, so a panel
   // that is still off to the side during a curtain does not count yet
   let spying = false
@@ -189,8 +239,8 @@ function initDock() {
       if (active) break
     }
     if (!active) return // between sections: keep the last one lit
-    const id = active.dataset.dockPart || active.id
-    links.forEach((a) => (a.dataset.dock === id ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")))
+    if (dock.dataset.travel) return // on the way to a tapped link: the marker already went there
+    light(active.dataset.dockPart || active.id)
   }
   const queueSpy = () => {
     if (!spying) {
@@ -288,7 +338,9 @@ function initDockDrinks(dock) {
     if (!small.matches) return setDrinks(false)
     const h = window.innerHeight
     const lb = layout.getBoundingClientRect()
-    setDrinks(lb.top < h * 0.55 && lb.bottom > h * 0.45)
+    // on the way to a tapped link the dock already wears the target's shape
+    const travel = dock.dataset.travel
+    setDrinks(travel ? travel === "drinks" : lb.top < h * 0.55 && lb.bottom > h * 0.45)
     if (open && Math.abs(window.scrollY - openY) > 80) setOpen(false)
     const vis = cats.filter((c) => !c.el.hidden)
     if (!inDrinks || !vis.length) return
@@ -329,6 +381,7 @@ function initDockDrinks(dock) {
   window.addEventListener("scroll", queue, { passive: true })
   window.addEventListener("resize", queue)
   dock.addEventListener("transitionend", queue) // re-centre once the window has opened
+  dock.addEventListener("dock:travel", update)
   document.querySelector("[data-menu-search]")?.addEventListener("input", queue)
   update()
 }
@@ -710,19 +763,6 @@ async function initCurtains() {
         )
         .to({}, { duration: SETTLE }).scrollTrigger
     })
-    // the feed grid and its button slip away behind the spring under the pinned title:
-    // both are clipped at the middle of that spring, which hides the cut itself
-    const foot = document.querySelector(".feed-foot")
-    const under = [document.querySelector(".feed-shell"), document.querySelector(".feed > .pill")].filter(Boolean)
-    const cut = () => {
-      if (!foot) return
-      const line = foot.getBoundingClientRect().bottom - 10
-      under.forEach((el) => {
-        const d = line - el.getBoundingClientRect().top
-        el.style.clipPath = d > 0 ? `inset(${d.toFixed(1)}px 0px 0px 0px)` : ""
-      })
-    }
-    const cutter = ScrollTrigger.create({ trigger: "#instagram", start: "top bottom", end: "bottom top", onUpdate: cut, onRefresh: cut })
     // the feed grows when Instagram loads, the strip when its photos do
     let pending = 0
     let landing = null // the panel a link is taking the visitor to, until they scroll themselves
@@ -754,12 +794,127 @@ async function initCurtains() {
     document.addEventListener("click", jump, true) // capture: before the in-page settle sees the click
     return () => {
       ro.disconnect()
-      cutter.kill()
-      under.forEach((el) => (el.style.clipPath = ""))
       document.removeEventListener("click", jump, true)
       ;["wheel", "touchstart", "keydown"].forEach((t) => window.removeEventListener(t, release))
       root.classList.remove("has-swap")
       pairs.forEach((p) => gsap.set([p.out, p.into], { clearProps: "transform,clipPath" }))
+    }
+  })
+}
+
+/* ------------------------------------------------------------------ */
+/* About story (desktop): pinned by CSS sticky; the scroll, smoothed,  */
+/* inks in each paragraph word by word, hands over to the next one,    */
+/* and carries the photos along a curved diagonal in their frame.      */
+/* ------------------------------------------------------------------ */
+async function initAboutStory() {
+  const stage = document.querySelector(".about-slider-stage")
+  const query = "(min-width: 1024px) and (prefers-reduced-motion: no-preference)"
+  if (!stage) return
+  if (!window.matchMedia(query).matches) {
+    window.matchMedia(query).addEventListener("change", () => initAboutStory(), { once: true })
+    return
+  }
+  const [{ gsap }, { ScrollTrigger }] = await Promise.all([import("gsap"), import("gsap/ScrollTrigger")])
+  gsap.registerPlugin(ScrollTrigger)
+  const root = document.documentElement
+  const slider = stage.parentElement
+  const track = stage.querySelector(".story-track")
+  const chapters = [...stage.querySelectorAll(".chapter")]
+
+  // split the copy into words once, leaving the markup (bold names, sentence lines) as it is
+  chapters.forEach((ch) => {
+    const walker = document.createTreeWalker(ch, NodeFilter.SHOW_TEXT)
+    const texts = []
+    while (walker.nextNode()) if (!walker.currentNode.parentElement.closest("svg")) texts.push(walker.currentNode)
+    texts.forEach((node) => {
+      const frag = document.createDocumentFragment()
+      node.textContent.split(/(\s+)/).forEach((part) => {
+        if (!part) return
+        if (/^\s+$/.test(part)) return frag.append(part)
+        const w = document.createElement("span")
+        w.className = "w"
+        w.textContent = part
+        frag.append(w)
+      })
+      node.replaceWith(frag)
+    })
+  })
+
+  gsap.matchMedia().add(query, () => {
+    root.classList.add("has-story")
+    const n = chapters.length
+    const tl = gsap.timeline({
+      defaults: { ease: "none" },
+      scrollTrigger: { trigger: slider, start: "top top", end: "bottom bottom", scrub: 0.8, invalidateOnRefresh: true },
+    })
+    chapters.forEach((ch, k) => {
+      const words = ch.querySelectorAll(".w")
+      const guy = ch.querySelector(".slide-guy")
+      // arrive (the first is already there), ink in, rest, leave (the last one stays)
+      if (k > 0) tl.fromTo(ch, { autoAlpha: 0, y: 48 }, { autoAlpha: 1, y: 0, duration: 0.16, ease: "expo.out" }, k - 0.02)
+      // every word is set pale up front (a staggered from-state only reaches the first word
+      // before the scroll arrives), then inked in one after another
+      gsap.set(words, { opacity: 0.14 })
+      tl.to(words, { opacity: 1, duration: 0.08, stagger: { each: 0.5 / words.length } }, k + 0.06)
+      // a figure above the copy drops in ahead of the lead line; one below rises once the copy has inked in
+      if (guy) {
+        const above = getComputedStyle(guy).order === "-1"
+        tl.fromTo(
+          guy,
+          { autoAlpha: 0, y: above ? -90 : 90, rotate: above ? -28 : 22, scale: 0.7 },
+          { autoAlpha: 1, y: 0, rotate: 0, scale: 1, duration: 0.24, ease: "back.out(1.7)" },
+          above ? k + 0.02 : k + 0.5
+        )
+      }
+      if (k < n - 1) {
+        tl.to(ch, { autoAlpha: 0, y: -48, duration: 0.14, ease: "power2.in" }, k + 0.84)
+      }
+    })
+    tl.to({}, { duration: 0.12 }) // a short rest on the last paragraph before the page moves on
+    // The photos are a stack of cards. One rests in place; the next waits at the upper right
+    // with its foot showing. Before a paragraph changes, the next card slides down the
+    // diagonal and lands almost on top of the pile; once the new heading has inked in, the
+    // old card slides out from underneath, down and to the left, and the pile settles.
+    const vw = () => root.clientWidth / 100
+    const vh = () => window.innerHeight / 100
+    const photos = [...stage.querySelectorAll(".story-track .slide-photo")]
+    const wait = { x: () => 17 * vw(), y: () => -66 * vh(), rotate: 2.5 } // foot showing, top right
+    const far = { x: () => 36 * vw(), y: () => -140 * vh(), rotate: 5 } // further up the diagonal, out of sight
+    const top = { x: () => 1.6 * vw(), y: () => -2.2 * vh(), rotate: 0.8 } // landed, a little off the pile
+    const gone = { x: () => -24 * vw(), y: () => 104 * vh(), rotate: -5 } // out by the bottom left
+    photos.forEach((ph, i) => gsap.set(ph, i === 0 ? { x: 0, y: 0, rotate: 0 } : i === 1 ? wait : far))
+    for (let k = 0; k < n - 1; k++) {
+      tl.to(photos[k + 1], { ...top, duration: 0.42, ease: "power3.out" }, k + 0.6) // deal the next card
+      if (photos[k + 2]) tl.to(photos[k + 2], { ...wait, duration: 0.5, ease: "power2.out" }, k + 0.95) // the one after steps up to wait
+      tl.to(photos[k], { ...gone, duration: 0.5, ease: "power2.in" }, k + 1.12) // the old one leaves from underneath
+      tl.to(photos[k + 1], { x: 0, y: 0, rotate: 0, duration: 0.4, ease: "power2.inOut" }, k + 1.2) // the pile settles
+    }
+    // inside each frame the picture drifts slowly the whole time, so a resting card is never dead still
+    photos.forEach((ph) => {
+      tl.fromTo(ph.querySelector("img"), { scale: 1.16, yPercent: -5, xPercent: 3 }, { scale: 1.16, yPercent: 5, xPercent: -3, duration: tl.duration(), ease: "none" }, 0)
+    })
+
+    // photos lean away from the pointer and the text towards it, eased so they float instead of tracking
+    gsap.set(stage, { "--mx": 0, "--my": 0 })
+    const mx = gsap.quickTo(stage, "--mx", { duration: 0.9, ease: "power3.out" })
+    const my = gsap.quickTo(stage, "--my", { duration: 0.9, ease: "power3.out" })
+    const lean = (e) => {
+      mx((e.clientX / window.innerWidth) * 2 - 1)
+      my((e.clientY / window.innerHeight) * 2 - 1)
+    }
+    const level = () => {
+      mx(0)
+      my(0)
+    }
+    stage.addEventListener("pointermove", lean)
+    stage.addEventListener("pointerleave", level)
+    requestAnimationFrame(() => ScrollTrigger.refresh()) // the page just changed height: everything below re-measures
+    return () => {
+      stage.removeEventListener("pointermove", lean)
+      stage.removeEventListener("pointerleave", level)
+      root.classList.remove("has-story")
+      gsap.set([...chapters, track, ...stage.querySelectorAll(".w, .slide-guy, .slide-photo, .slide-photo img")], { clearProps: "all" })
     }
   })
 }
@@ -799,6 +954,7 @@ initDock()
 initBoom()
 initWalkers()
 initAnchorSettle()
+initAboutStory()
 initCurtains()
 // Everything below the first screen waits for an idle moment so the poster paints first
 const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 200))

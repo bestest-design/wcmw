@@ -8,7 +8,7 @@ import { pathToFileURL } from 'url';
 import { renderMenuRail, renderMenuBody, renderMenuVisual, menuJsonLd } from './src/menu.render.mjs';
 import { fetchRaEvents, renderEvents, eventsJsonLd, eventsText } from './src/events.mjs';
 import { execSync } from 'child_process';
-import { about, goodToKnow } from './src/about.copy.mjs';
+import { about, aboutTitle, goodToKnow } from './src/about.copy.mjs';
 
 // Inlines the bar menu (src/menu.data.mjs) and SVG partials into index.html at build/dev time.
 // Zigzag sampled along a centreline so the spring bends smoothly.
@@ -43,9 +43,11 @@ const springAlong = (segments, { half = 3, amp = 5 } = {}) => {
 
 // Section rule: a coil with a fixed period (the box is sliced, never stretched),
 // the brandbook's WCMWWWW spring. It draws itself on scroll.
-const rule = () => {
+const rule = (filled = false) => {
   const d = springAlong([['line', 0, 12, 2600, 12]], { half: 7, amp: 8 });
-  return `<div class="coil-rule" aria-hidden="true"><svg viewBox="0 0 2600 24" preserveAspectRatio="xMinYMid slice" focusable="false"><path d="${d}" pathLength="1" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+  // filled: everything under the zigzag is page yellow, so what scrolls behind is cut along the teeth
+  const under = filled ? `<path class="coil-fill" d="${d}L2600 40L0 40Z" stroke="none"/>` : '';
+  return `<div class="coil-rule" aria-hidden="true"><svg viewBox="0 0 2600 24" preserveAspectRatio="xMinYMid slice" focusable="false">${under}<path d="${d}" pathLength="1" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
 };
 
 const SITE = 'https://wcmw.bar/';
@@ -101,8 +103,11 @@ const wcmwHtml = () => ({
       .replace('<!-- MENU_VISUAL -->', renderMenuVisual(menu))
       .replace('<!-- MENU_BODY -->', renderMenuBody(menu))
       .replace(/<!-- EVENTS:[^>]*-->/, renderEvents(events))
-      .replace(/<!-- ABOUT:(\d) -->/g, (_, n) => about[n - 1])
+      .replaceAll('<!-- ABOUT:TITLE -->', aboutTitle)
+      // each sentence of a paragraph starts on its own line
+      .replace(/<!-- ABOUT:(\d) -->/g, (_, n) => about[n - 1].split(/(?<=\.)\s+/).map((t) => `<span class="sent">${t}</span>`).join(' '))
       .replaceAll('<!-- RULE -->', rule())
+      .replaceAll('<!-- RULE:FILL -->', rule(true))
       .replace(/<!-- SVG:([\w.-]+) -->/g, (_, file) => svg(file));
 
     // Structured data: the full drinks menu and the RA events join the bar's details
@@ -163,7 +168,8 @@ const llmsText = (menu, ld, events) => {
     ``,
     `## About`,
     ``,
-    ...about.map((p) => p.replace(/<[^>]+>/g, '').replace(/\u00a0/g, ' ') + '\n'),
+    // the heading and the first paragraph read as one sentence in plain text
+    ...[`${aboutTitle}, ${about[0][0].toLowerCase()}${about[0].slice(1)}`, ...about.slice(1)].map((p) => p.replace(/<[^>]+>/g, '').replace(/\u00a0/g, ' ').replace(/\u2011/g, '-') + '\n'),
     `## Good to know`,
     ``,
     ...goodToKnow.map(({ q, a }) => `- ${q}: ${a}`),
